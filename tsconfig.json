@@ -1,0 +1,26 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"outDir": "dist",
+		"sourceMap": true,
+		"types": [
+			"node",
+			"@league-of-foundry-developers/foundry-vtt-types"
+		]
+	},
+	"include": [
+		"src/**/*.ts",
+		"build/**/*.ts",
+		"types/**/*.d.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"dist"
+	]
+}

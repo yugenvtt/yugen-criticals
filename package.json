@@ -1,0 +1,29 @@
+{
+	"name": "yugen-criticals",
+	"version": "1.0.0",
+	"description": "fire emblem style critical animations for foundry vtt.",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"build": "PATH=$PATH:$(pwd)/node_modules/typescript/bin:$(pwd)/node_modules/vite/bin vite build && node ./node_modules/ts-node/dist/bin.js build/post-build.ts",
+		"dev": "PATH=$PATH:$(pwd)/node_modules/typescript/bin:$(pwd)/node_modules/vite/bin vite build --watch",
+		"clean": "node ./node_modules/ts-node/dist/bin.js build/clean.ts",
+		"link": "node ./node_modules/ts-node/dist/bin.js build/link.ts"
+	},
+	"author": "Yugen",
+	"license": "MIT",
+	"devDependencies": {
+		"@league-of-foundry-developers/foundry-vtt-types": "^12.331.5",
+		"@types/archiver": "^7.0.0",
+		"@types/fs-extra": "^11.0.4",
+		"@types/node": "^20.11.24",
+		"archiver": "^7.0.1",
+		"dotenv": "^16.4.5",
+		"fs-extra": "^11.2.0",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.6.2",
+		"vite": "^6.0.1",
+		"vite-plugin-checker": "^0.8.0",
+		"vite-plugin-terminal": "^1.4.0"
+	}
+}

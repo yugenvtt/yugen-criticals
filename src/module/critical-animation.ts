@@ -1,0 +1,115 @@
+/**
+ * @file src/module/critical-animation.ts
+ * handles the fire emblem style critical animation overlay with enhanced cinematic features.
+ **/
+
+export class CriticalAnimation 
+{
+	/**
+	 * displays the critical animation for a given actor
+	 **/
+	public static async show_animation( actor : Actor, type : 'critical' | 'fumble' = 'critical', damage_type : string = '' ) : Promise<void>
+	{
+		/** ensure we are on the client side and canvas is ready **/
+		if ( !canvas?.ready ) 
+		{
+			return;
+		}
+
+		/** retrieve settings and localization **/
+		const settings = ( game as any ).settings;
+		const is_fumble = type === 'fumble';
+		
+		const default_crit_msg = settings.get( 'yugen-criticals', 'critical-message' ) || "CRITICAL HIT";
+		const default_fumble_msg = settings.get( 'yugen-criticals', 'fumble-message' ) || "FUMBLE";
+		
+		/** resolve the actor quote based on type (crit or fumble) **/
+		const actor_quote = ( actor as any ).getFlag( 'yugen-criticals', is_fumble ? 'fumble-quote' : 'crit-quote' ) || '';
+		
+		/** use the actor's quote if present, otherwise fallback to defaults **/
+		const message = actor_quote || ( is_fumble ? default_fumble_msg : default_crit_msg );
+		
+		/** resolve theme color based on damage type or default settings **/
+		let color = is_fumble ? '#333333' : ( settings.get( 'yugen-criticals', 'critical-color' ) || '#ffffff' );
+		
+		if ( !is_fumble && damage_type ) 
+		{
+			color = this._get_color_for_damage( damage_type ) || color;
+		}
+
+		const scale = settings.get( 'yugen-criticals', 'critical-size' ) || 1.0;
+		const volume = settings.get( 'yugen-criticals', 'critical-volume' ) ?? 0.5;
+
+		/** resolve sound source: actor override -> type default **/
+		const actor_sound = ( actor as any ).getFlag( 'yugen-criticals', is_fumble ? 'fumble-sound' : 'crit-sound' );
+		const sound_src = actor_sound || ( is_fumble ? settings.get( 'yugen-criticals', 'fumble-sound' ) : settings.get( 'yugen-criticals', 'critical-sound' ) );
+
+		/** play the sound effect **/
+		if ( sound_src ) 
+		{
+			void ( game as any ).audio.play( sound_src, { volume: volume, loop: false } );
+		}
+
+		/** create the overlay container **/
+		const overlay = document.createElement( 'div' );
+		overlay.classList.add( 'yugen-critical-overlay' );
+		if ( is_fumble ) 
+		{ 
+			overlay.classList.add( 'fumble' ); 
+		}
+		
+		/** apply custom variables for css to consume **/
+		overlay.style.setProperty( '--yugen-crit-color', color );
+		overlay.style.setProperty( '--yugen-crit-scale', scale.toString( ) );
+		
+		/** 
+		 * construct the inner html 
+		 * includes the impact flash (eye-slit), diagonal bar, avatar, and text container.
+		 **/
+		overlay.innerHTML = `
+			<div class="yugen-impact-flash animate"></div>
+			<div class="yugen-critical-bar"></div>
+			<div class="yugen-critical-avatar" style="background-image: url('${ actor.img }');"></div>
+			<div class="yugen-critical-text-container">
+				<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
+			</div>
+		`;
+
+		document.body.appendChild( overlay );
+
+		/** remove the overlay after the animation completes **/
+		setTimeout( ( ) => 
+		{
+			overlay.classList.add( 'fade-out' );
+			
+			setTimeout( ( ) => 
+			{
+				overlay.remove( );
+			}, 1000 );
+
+		}, 3500 );
+	}
+
+	/**
+	 * maps damage types to specific theme colors
+	 **/
+	private static _get_color_for_damage( damage_type : string ) : string | null 
+	{
+		const type = damage_type.toLowerCase( );
+		const colors : Record<string, string> = 
+		{
+			fire: '#ff4400',
+			cold: '#00ccff',
+			lightning: '#ffff00',
+			acid: '#00ff00',
+			poison: '#aa00ff',
+			necrotic: '#440044',
+			radiant: '#ffffcc',
+			force: '#ff00ff',
+			thunder: '#cccccc',
+			psychic: '#ff66aa'
+		};
+
+		return colors[ type ] || null;
+	}
+}

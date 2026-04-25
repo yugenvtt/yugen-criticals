@@ -1,0 +1,47 @@
+{
+	"yugen-criticals": {
+		"title": "yugen-criticals",
+		"settings": {
+			"critical-message": {
+				"name": "Default Critical Message",
+				"hint": "The text displayed during a critical hit animation (fallback if no actor quote)."
+			},
+			"fumble-message": {
+				"name": "Default Fumble Message",
+				"hint": "The text displayed during a natural 1 fumble animation."
+			},
+			"critical-color": {
+				"name": "Critical Theme Color",
+				"hint": "The primary glow and bar color for standard critical hits."
+			},
+			"critical-size": {
+				"name": "Animation Scale",
+				"hint": "Adjust the size of the animation overlay."
+			},
+			"critical-sound": {
+				"name": "Critical Sound Effect",
+				"hint": "The sound file played during a critical hit."
+			},
+			"fumble-sound": {
+				"name": "Fumble Sound Effect",
+				"hint": "The sound file played during a fumble (Natural 1)."
+			},
+			"critical-volume": {
+				"name": "Sound Volume",
+				"hint": "Adjust the volume of the sound effects."
+			},
+			"always-show-crit": {
+				"name": "Always Show Critical Animation",
+				"hint": "Force the critical animation on every roll for yourself."
+			},
+			"always-show-fumble": {
+				"name": "Always Show Fumble Animation",
+				"hint": "Force the fumble animation on every roll for yourself (if Always Show Critical is off)."
+			},
+			"user-only": {
+				"name": "User-Only Animations",
+				"hint": "If enabled, animations will only appear for the player who made the roll."
+			}
+		}
+	}
+}
