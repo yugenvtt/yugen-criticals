@@ -10,7 +10,7 @@
 		"clean": "node ./node_modules/ts-node/dist/bin.js build/clean.ts",
 		"link": "node ./node_modules/ts-node/dist/bin.js build/link.ts"
 	},
-	"author": "Yugen",
+	"author": "yugen",
 	"license": "MIT",
 	"devDependencies": {
 		"@league-of-foundry-developers/foundry-vtt-types": "^12.331.5",
