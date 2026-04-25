@@ -1,6 +1,10 @@
 # yugen-criticals
 <p align="center">
-  <video src=".github/assets/yugen-criticals.mp4" width="100%" controls></video>
+  <a href="https://www.youtube.com/watch?v=cyKwPv-iJ3s">
+    <img src="https://img.youtube.com/vi/cyKwPv-iJ3s/maxresdefault.jpg" width="100%" alt="Watch the demo">
+  </a>
+  <br>
+  <a href="https://www.youtube.com/watch?v=cyKwPv-iJ3s">Click here for video demonstration</a>
 </p>
 
 _Fire Emblem Awakening style critical animations for Foundry VTT v14._
