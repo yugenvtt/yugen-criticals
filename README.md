@@ -20,13 +20,23 @@ You can also make it so that it always appears for you or everyone whenever you 
 
 ## Actor Customization
 ### 1. Set Signature Quotes
-This replaces the "CRITICAL HIT" or "FUMBLE" text with your custom line.
+This replaces the "CRITICAL HIT" or "FUMBLE" text with your custom line. You can provide a single string, a delimiter string, or an array of strings. If multiple quotes are provided, one will be chosen at random for each animation.
+
 ```javascript
 const actor = canvas.tokens.controlled[0]?.actor || game.user.character;
-// For Critical Hits
+
+// Single quote
 await actor.setFlag('yugen-criticals', 'crit-quote', "Pick a god and pray!");
-// For Fumbles
-await actor.setFlag('yugen-criticals', 'fumble-quote', "I miscalculated...");
+
+// Multiple quotes (Array)
+await actor.setFlag('yugen-criticals', 'crit-quote', [
+  "Pick a god and pray!",
+  "My sword hand hungers!",
+  "This ends now!"
+]);
+
+// Multiple quotes (| Delimiter)
+await actor.setFlag('yugen-criticals', 'fumble-quote', "I miscalculated... | Not like this... | How could I fail?");
 ```
 
 ### 2. Set Custom Sounds

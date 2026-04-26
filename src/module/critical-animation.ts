@@ -23,8 +23,35 @@ export class CriticalAnimation
 		const default_crit_msg = settings.get( 'yugen-criticals', 'critical-message' ) || "CRITICAL HIT";
 		const default_fumble_msg = settings.get( 'yugen-criticals', 'fumble-message' ) || "FUMBLE";
 		
-		/** resolve the actor quote based on type (crit or fumble) **/
-		const actor_quote = ( actor as any ).getFlag( 'yugen-criticals', is_fumble ? 'fumble-quote' : 'crit-quote' ) || '';
+		/** resolve the actor quote: supports strings, arrays, or pipe-delimited strings **/
+		const raw_quote = ( actor as any ).getFlag( 'yugen-criticals', is_fumble ? 'fumble-quote' : 'crit-quote' );
+		let actor_quote = '';
+
+		if ( raw_quote ) 
+		{
+			let quotes : string[] = [ ];
+
+			if ( Array.isArray( raw_quote ) ) 
+			{
+				/** handle array of strings **/
+				quotes = raw_quote;
+			}
+			else if ( typeof raw_quote === 'string' ) 
+			{
+				/** handle pipe-delimited or single string **/
+				quotes = raw_quote.split( '|' ).map( ( q : string ) => 
+				{
+					return q.trim( );
+				} );
+			}
+
+			if ( quotes.length > 0 ) 
+			{
+				/** pick a random message from the pool **/
+				const random_index = Math.floor( Math.random( ) * quotes.length );
+				actor_quote = quotes[ random_index ];
+			}
+		}
 		
 		/** use the actor's quote if present, otherwise fallback to defaults **/
 		const message = actor_quote || ( is_fumble ? default_fumble_msg : default_crit_msg );
