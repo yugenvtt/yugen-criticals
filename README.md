@@ -40,12 +40,14 @@ await actor.setFlag('yugen-criticals', 'fumble-quote', "I miscalculated... | Not
 ```
 
 ### 2. Set Custom Sounds
+Supports single files, delimited strings, or arrays for random playback.
+
 ```javascript
 const actor = canvas.tokens.controlled[0]?.actor || game.user.character;
-// For Critical Hits
-await actor.setFlag('yugen-criticals', 'crit-sound', "sounds/my-custom-crit.ogg");
-// For Fumbles
-await actor.setFlag('yugen-criticals', 'fumble-sound', "sounds/my-custom-fail.ogg");
+
+// Multiple sounds (Array or Delimited)
+await actor.setFlag('yugen-criticals', 'crit-sound', "sounds/crit1.ogg|sounds/crit2.ogg");
+await actor.setFlag('yugen-criticals', 'fumble-sound', ["sounds/fail1.ogg", "sounds/fail2.ogg"]);
 ```
 
 ### 3. Reset to Defaults

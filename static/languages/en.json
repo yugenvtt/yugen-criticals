@@ -20,11 +20,11 @@
 			},
 			"critical-sound": {
 				"name": "Critical Sound Effect",
-				"hint": "The sound file played during a critical hit."
+				"hint": "The sound file played during a critical hit. Supports multiple sounds separated by '|' for a random pool."
 			},
 			"fumble-sound": {
 				"name": "Fumble Sound Effect",
-				"hint": "The sound file played during a fumble (Natural 1)."
+				"hint": "The sound file played during a fumble (Natural 1). Supports multiple sounds separated by '|' for a random pool."
 			},
 			"critical-volume": {
 				"name": "Sound Volume",

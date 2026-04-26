@@ -23,7 +23,7 @@ export class CriticalAnimation
 		const default_crit_msg = settings.get( 'yugen-criticals', 'critical-message' ) || "CRITICAL HIT";
 		const default_fumble_msg = settings.get( 'yugen-criticals', 'fumble-message' ) || "FUMBLE";
 		
-		/** resolve the actor quote: supports strings, arrays, or pipe-delimited strings **/
+		/** resolve the actor quote: supports strings, arrays, or delimited strings **/
 		const raw_quote = ( actor as any ).getFlag( 'yugen-criticals', is_fumble ? 'fumble-quote' : 'crit-quote' );
 		let actor_quote = '';
 
@@ -38,7 +38,7 @@ export class CriticalAnimation
 			}
 			else if ( typeof raw_quote === 'string' ) 
 			{
-				/** handle pipe-delimited or single string **/
+				/** handle delimited or single string **/
 				quotes = raw_quote.split( '|' ).map( ( q : string ) => 
 				{
 					return q.trim( );
@@ -67,9 +67,35 @@ export class CriticalAnimation
 		const scale = settings.get( 'yugen-criticals', 'critical-size' ) || 1.0;
 		const volume = settings.get( 'yugen-criticals', 'critical-volume' ) ?? 0.5;
 
-		/** resolve sound source: actor override -> type default **/
-		const actor_sound = ( actor as any ).getFlag( 'yugen-criticals', is_fumble ? 'fumble-sound' : 'crit-sound' );
-		const sound_src = actor_sound || ( is_fumble ? settings.get( 'yugen-criticals', 'fumble-sound' ) : settings.get( 'yugen-criticals', 'critical-sound' ) );
+		/** resolve sound source: actor override -> type default (supports arrays or delimited strings) **/
+		const raw_sound = ( actor as any ).getFlag( 'yugen-criticals', is_fumble ? 'fumble-sound' : 'crit-sound' ) || ( is_fumble ? settings.get( 'yugen-criticals', 'fumble-sound' ) : settings.get( 'yugen-criticals', 'critical-sound' ) );
+		let sound_src = '';
+
+		if ( raw_sound ) 
+		{
+			let sounds : string[] = [ ];
+
+			if ( Array.isArray( raw_sound ) ) 
+			{
+				/** handle array of strings **/
+				sounds = raw_sound;
+			}
+			else if ( typeof raw_sound === 'string' ) 
+			{
+				/** handle delimited or single string **/
+				sounds = raw_sound.split( '|' ).map( ( s : string ) => 
+				{
+					return s.trim( );
+				} );
+			}
+
+			if ( sounds.length > 0 ) 
+			{
+				/** pick a random sound from the pool **/
+				const random_index = Math.floor( Math.random( ) * sounds.length );
+				sound_src = sounds[ random_index ];
+			}
+		}
 
 		/** play the sound effect **/
 		if ( sound_src ) 
