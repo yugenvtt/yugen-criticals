@@ -68,6 +68,11 @@ await actor.unsetFlag('yugen-criticals', 'fumble-sound');
   <a href="https://www.youtube.com/watch?v=dVJ1ZBkfbgo">Click here for video demonstration</a>
 </p>
 
+- Fire Emblem (default)
+- Anime
+- Cyberpunk
+- Mortal Kombat
+
 ## Compatibility
 - **D&D 5e** (2014 & 2024)
 - **Pathfinder 2e**
