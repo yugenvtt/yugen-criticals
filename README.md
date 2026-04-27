@@ -59,6 +59,15 @@ await actor.unsetFlag('yugen-criticals', 'crit-sound');
 await actor.unsetFlag('yugen-criticals', 'fumble-sound');
 ```
 
+## Styles
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=dVJ1ZBkfbgo">
+    <img src="https://img.youtube.com/vi/dVJ1ZBkfbgo/maxresdefault.jpg" width="100%" alt="Watch the demo">
+  </a>
+  <br>
+  <a href="https://www.youtube.com/watch?v=dVJ1ZBkfbgo">Click here for video demonstration</a>
+</p>
+
 ## Compatibility
 - **D&D 5e** (2014 & 2024)
 - **Pathfinder 2e**
