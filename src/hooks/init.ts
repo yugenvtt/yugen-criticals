@@ -70,6 +70,51 @@ const register_settings = ( ) =>
 		default: 'FUMBLE'
 	} );
 
+	/** register setting for the animation style (client preference) **/
+	settings.register( 'yugen-criticals', 'animation-style', 
+	{
+		name: 'yugen-criticals.settings.animation-style.name',
+		hint: 'yugen-criticals.settings.animation-style.hint',
+		scope: 'client',
+		config: true,
+		type: String,
+		choices: {
+			'cinematic': 'yugen-criticals.settings.animation-style.choices.cinematic',
+			'anime': 'yugen-criticals.settings.animation-style.choices.anime',
+			'cyberpunk': 'yugen-criticals.settings.animation-style.choices.cyberpunk',
+			'mk': 'yugen-criticals.settings.animation-style.choices.mk'
+		},
+		default: 'cinematic'
+	} );
+
+	/** register setting for the global animation style (gm choice) **/
+	settings.register( 'yugen-criticals', 'global-animation-style', 
+	{
+		name: 'yugen-criticals.settings.global-animation-style.name',
+		hint: 'yugen-criticals.settings.global-animation-style.hint',
+		scope: 'world',
+		config: true,
+		type: String,
+		choices: {
+			'cinematic': 'yugen-criticals.settings.animation-style.choices.cinematic',
+			'anime': 'yugen-criticals.settings.animation-style.choices.anime',
+			'cyberpunk': 'yugen-criticals.settings.animation-style.choices.cyberpunk',
+			'mk': 'yugen-criticals.settings.animation-style.choices.mk'
+		},
+		default: 'cinematic'
+	} );
+
+	/** gm setting: override client animation style **/
+	settings.register( 'yugen-criticals', 'gm-style-override', 
+	{
+		name: 'yugen-criticals.settings.gm-style-override.name',
+		hint: 'yugen-criticals.settings.gm-style-override.hint',
+		scope: 'world',
+		config: true,
+		type: Boolean,
+		default: false
+	} );
+
 	/** register setting for the critical animation color **/
 	settings.register( 'yugen-criticals', 'critical-color', 
 	{

@@ -16,6 +16,12 @@ export class CriticalAnimation
 			return;
 		}
 
+		/** prevent overlapping animations to avoid visual layering/clutter **/
+		if ( document.querySelector( '.yugen-critical-overlay' ) ) 
+		{
+			return;
+		}
+
 		/** retrieve settings and localization **/
 		const settings = ( game as any ).settings;
 		const is_fumble = type === 'fumble';
@@ -67,6 +73,10 @@ export class CriticalAnimation
 		const scale = settings.get( 'yugen-criticals', 'critical-size' ) || 1.0;
 		const volume = settings.get( 'yugen-criticals', 'critical-volume' ) ?? 0.5;
 
+		/** resolve style: world override -> client preference **/
+		const gm_override = settings.get( 'yugen-criticals', 'gm-style-override' );
+		const style = gm_override ? settings.get( 'yugen-criticals', 'global-animation-style' ) : ( settings.get( 'yugen-criticals', 'animation-style' ) || 'cinematic' );
+
 		/** resolve sound source: actor override -> type default (supports arrays or delimited strings) **/
 		const raw_sound = ( actor as any ).getFlag( 'yugen-criticals', is_fumble ? 'fumble-sound' : 'crit-sound' ) || ( is_fumble ? settings.get( 'yugen-criticals', 'fumble-sound' ) : settings.get( 'yugen-criticals', 'critical-sound' ) );
 		let sound_src = '';
@@ -106,6 +116,8 @@ export class CriticalAnimation
 		/** create the overlay container **/
 		const overlay = document.createElement( 'div' );
 		overlay.classList.add( 'yugen-critical-overlay' );
+		overlay.classList.add( `style-${ style }` );
+
 		if ( is_fumble ) 
 		{ 
 			overlay.classList.add( 'fumble' ); 
@@ -117,16 +129,54 @@ export class CriticalAnimation
 		
 		/** 
 		 * construct the inner html 
-		 * includes the impact flash (eye-slit), diagonal bar, avatar, and text container.
+		 * switches between styles based on user preference.
 		 **/
-		overlay.innerHTML = `
-			<div class="yugen-impact-flash animate"></div>
-			<div class="yugen-critical-bar"></div>
-			<div class="yugen-critical-avatar" style="background-image: url('${ actor.img }');"></div>
-			<div class="yugen-critical-text-container">
-				<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
-			</div>
-		`;
+		if ( style === 'anime' ) 
+		{
+			overlay.innerHTML = `
+				<div class="yugen-speed-lines"></div>
+				<div class="yugen-anime-portrait-container">
+					<div class="yugen-anime-portrait" style="background-image: url('${ actor.img }');"></div>
+				</div>
+				<div class="yugen-critical-text-container anime">
+					<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
+				</div>
+			`;
+		}
+		else if ( style === 'cyberpunk' )
+		{
+			overlay.innerHTML = `
+				<div class="yugen-cyber-bg"></div>
+				<div class="yugen-scanlines"></div>
+				<div class="yugen-cyber-portrait" style="background-image: url('${ actor.img }');"></div>
+				<div class="yugen-critical-text-container cyber">
+					<div class="yugen-cyber-label">// CRITICAL HIT DETECTED //</div>
+					<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
+				</div>
+			`;
+		}
+		else if ( style === 'mk' )
+		{
+			overlay.innerHTML = `
+				<div class="yugen-mk-overlay"></div>
+				<div class="yugen-mk-portrait" style="background-image: url('${ actor.img }');"></div>
+				<div class="yugen-critical-text-container mk">
+					<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
+				</div>
+			`;
+		}
+		else
+		{
+			/** default cinematic style **/
+			overlay.innerHTML = `
+				<div class="yugen-impact-flash animate"></div>
+				<div class="yugen-critical-bar"></div>
+				<div class="yugen-critical-avatar" style="background-image: url('${ actor.img }');"></div>
+				<div class="yugen-critical-text-container">
+					<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
+				</div>
+			`;
+		}
 
 		document.body.appendChild( overlay );
 

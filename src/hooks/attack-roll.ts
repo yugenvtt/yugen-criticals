@@ -85,8 +85,9 @@ const resolve_actor = ( obj : any ) : any =>
 	return null;
 };
 
-/** track the last processed roll id to prevent double-triggering from multiple hooks **/
+/** track the last processed roll id and time to prevent double-triggering **/
 let last_roll_id = '';
+let last_trigger_time = 0;
 
 /**
  * checks if any of the provided arguments represent a critical hit or a fumble
@@ -120,8 +121,8 @@ const check_roll_result = ( args : any[] ) : { type : 'critical' | 'fumble' | nu
 		{
 			if ( roll && typeof roll === 'object' && ( roll.constructor.name === 'Roll' || roll.dice ) ) 
 			{
-				/** track roll id for debouncing **/
-				roll_id = roll._id || roll.options?.rollId || '';
+				/** track roll id for debouncing (handles v14 document IDs and roll options) **/
+				roll_id = roll._id || roll.id || roll.options?.rollId || '';
 
 				/** 
 				 * dnd5e v3/v4 uses isCritical/isFumble properties.
@@ -176,15 +177,27 @@ const handle_hook_params = ( args : any[] ) =>
 {
 	let { type, damage_type, roll_id } = check_roll_result( args );
 
-	/** debounce: if we just processed this specific roll, skip it **/
+	const now = Date.now( );
+
+	/** 
+	 * debounce: if we just processed this specific roll, or triggered very recently, skip it.
+	 * 100ms is enough to catch double-hooks while allowing rapid successive attacks.
+	 **/
 	if ( roll_id && roll_id === last_roll_id ) 
 	{
 		return;
 	}
+	
+	if ( !roll_id && ( now - last_trigger_time < 100 ) ) 
+	{
+		return;
+	}
+
 	if ( roll_id ) 
 	{ 
 		last_roll_id = roll_id; 
 	}
+	last_trigger_time = now;
 
 	const always_crit = ( game as any ).settings.get( 'yugen-criticals', 'always-show-crit' );
 	const always_fumble = ( game as any ).settings.get( 'yugen-criticals', 'always-show-fumble' );

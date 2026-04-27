@@ -10,6 +10,24 @@
 				"name": "Default Fumble Message",
 				"hint": "The text displayed during a natural 1 fumble animation."
 			},
+			"animation-style": {
+				"name": "Animation Style",
+				"hint": "Choose your personal visual style for the animation overlay.",
+				"choices": {
+					"cinematic": "Cinematic (Fire Emblem)",
+					"anime": "Anime (Speed Lines)",
+					"cyberpunk": "Cyberpunk (Neon Glitch)",
+					"mk": "Mortal Kombat (Blood Red)"
+				}
+			},
+			"global-animation-style": {
+				"name": "Global Animation Style (GM)",
+				"hint": "The visual style used when the GM override is enabled."
+			},
+			"gm-style-override": {
+				"name": "Force Global Style",
+				"hint": "If enabled, all players will see the Global Animation Style instead of their own choice."
+			},
 			"critical-color": {
 				"name": "Critical Theme Color",
 				"hint": "The primary glow and bar color for standard critical hits."

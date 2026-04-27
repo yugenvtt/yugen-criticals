@@ -32,6 +32,10 @@ export const pf2e_hooks = ( ) =>
 	} );
 };
 
+/** track the last processed event ID and time to prevent double-triggering **/
+let last_event_id = '';
+let last_trigger_time = 0;
+
 /**
  * handles pf2e specific roll data and triggers animations
  **/
@@ -41,6 +45,27 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 	{ 
 		return; 
 	}
+
+	const now = Date.now( );
+
+	/** debounce: resolve a unique ID for this event (roll ID or message ID) **/
+	const event_id = roll?._id || roll?.id || data?.id || '';
+	
+	if ( event_id && event_id === last_event_id ) 
+	{
+		return;
+	}
+	
+	if ( !event_id && ( now - last_trigger_time < 100 ) ) 
+	{
+		return;
+	}
+
+	if ( event_id ) 
+	{
+		last_event_id = event_id;
+	}
+	last_trigger_time = now;
 
 	/** 
 	 * resolve degree of success from multiple potential locations.

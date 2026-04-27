@@ -93,18 +93,71 @@
 	filter: grayscale(0.8) contrast(1.2);
 }
 
-.yugen-critical-overlay.fumble .yugen-critical-bar {
-	background: linear-gradient(90deg, transparent 0%, #111 50%, transparent 100%);
-	box-shadow: 0 0 30px #000;
+.yugen-critical-overlay.fumble.style-anime .yugen-speed-lines {
+	background: repeating-conic-gradient(
+		from 0deg,
+		#000 0deg,
+		#000 1deg,
+		transparent 1deg,
+		transparent 10deg
+	);
+	opacity: 0.6;
 }
 
-.yugen-critical-overlay.fumble .yugen-critical-avatar {
-	filter: drop-shadow(0 0 15px #000) brightness(0.5);
-}
-
-.yugen-critical-overlay.fumble .yugen-critical-text {
+.yugen-critical-overlay.fumble.style-anime .yugen-critical-text {
 	color: #ff4444;
 	text-shadow: 4px 4px 0px #000, 0 0 20px #ff0000;
+}
+
+/** anime style specific elements **/
+.style-anime .yugen-speed-lines {
+	position: absolute;
+	top: -50%;
+	left: -50%;
+	width: 200%;
+	height: 200%;
+	background: repeating-conic-gradient(
+		from 0deg,
+		var(--yugen-crit-color) 0deg 1deg,
+		transparent 1deg 15deg
+	);
+	opacity: 0.3;
+	z-index: 1;
+	animation: speed-lines-rotate 3s linear infinite;
+	filter: blur(1px);
+}
+
+.yugen-anime-portrait-container {
+	position: absolute;
+	width: calc(600px * var(--yugen-crit-scale));
+	height: calc(600px * var(--yugen-crit-scale));
+	z-index: 5;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.yugen-anime-portrait {
+	width: 100%;
+	height: 100%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	filter: drop-shadow(0 0 30px var(--yugen-crit-color));
+	transform: scale(0);
+	opacity: 0;
+	animation: portrait-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.yugen-critical-text-container.anime {
+	z-index: 10;
+	transform: skewX(-5deg);
+	text-align: center;
+}
+
+.yugen-critical-text-container.anime .yugen-critical-text {
+	font-size: calc(90px * var(--yugen-crit-scale));
+	animation: text-shake 0.1s linear infinite, text-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards;
 }
 
 .yugen-critical-overlay.fade-out {
@@ -171,4 +224,256 @@
 		opacity: 1;
 		transform: translateX(0);
 	}
+}
+
+@keyframes speed-lines-rotate {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+
+@keyframes speed-lines-pulse {
+	0% { opacity: 0.1; transform: scale(1); }
+	50% { opacity: 0.2; transform: scale(1.05); }
+	100% { opacity: 0.1; transform: scale(1); }
+}
+
+@keyframes portrait-pop {
+	0% { transform: scale(0); opacity: 0; }
+	100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes text-shake {
+	0% { transform: translate(2px, 1px) rotate(0deg); }
+	10% { transform: translate(-1px, -2px) rotate(-1deg); }
+	20% { transform: translate(-3px, 0px) rotate(1deg); }
+	30% { transform: translate(0px, 2px) rotate(0deg); }
+	40% { transform: translate(1px, -1px) rotate(1deg); }
+	50% { transform: translate(-1px, 2px) rotate(-1deg); }
+	60% { transform: translate(-3px, 1px) rotate(0deg); }
+	70% { transform: translate(2px, 1px) rotate(-1deg); }
+	80% { transform: translate(-1px, -1px) rotate(1deg); }
+	90% { transform: translate(2px, 2px) rotate(0deg); }
+	100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+/** cyberpunk / neon style **/
+.style-cyber .yugen-cyber-bg {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 5, 20, 0.88);
+	z-index: 0;
+	opacity: 0;
+	animation: cyber-bg-in 0.3s ease-out forwards;
+}
+
+.style-cyber .yugen-scanlines {
+	position: absolute;
+	inset: 0;
+	background: repeating-linear-gradient(
+		0deg,
+		transparent,
+		transparent 3px,
+		rgba(0, 0, 0, 0.12) 3px,
+		rgba(0, 0, 0, 0.12) 4px
+	);
+	z-index: 20;
+	pointer-events: none;
+}
+
+.style-cyber .yugen-cyber-portrait {
+	position: absolute;
+	left: 5%;
+	width: calc(380px * var(--yugen-crit-scale));
+	height: calc(380px * var(--yugen-crit-scale));
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	filter: drop-shadow(0 0 15px #00ffff) drop-shadow(0 0 30px rgba(0,255,255,0.5)) saturate(1.2);
+	opacity: 0;
+	z-index: 5;
+	animation: cyber-portrait-in 0.4s ease-out 0.1s forwards;
+}
+
+.yugen-critical-text-container.cyber {
+	z-index: 10;
+	right: 6%;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	text-align: right;
+	align-items: flex-end;
+}
+
+.yugen-cyber-label {
+	font-size: calc(13px * var(--yugen-crit-scale));
+	color: #00ffff;
+	font-family: 'Courier New', Courier, monospace;
+	letter-spacing: 0.25em;
+	opacity: 0;
+	animation: cyber-tag-in 0.3s ease-out 0.6s forwards;
+	text-shadow: 0 0 8px #00ffff;
+}
+
+.yugen-critical-text-container.cyber .yugen-critical-text {
+	color: #00ffff;
+	text-shadow:
+		4px 0 0 rgba(255, 0, 255, 0.75),
+		-4px 0 0 rgba(255, 50, 50, 0.75),
+		0 0 25px #00ffff,
+		0 0 50px rgba(0, 255, 255, 0.5);
+	animation: cyber-glitch 2.5s linear 0.5s infinite, text-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards;
+}
+
+.yugen-critical-overlay.fumble.style-cyber {
+	filter: none;
+}
+
+.yugen-critical-overlay.fumble.style-cyber .yugen-cyber-portrait {
+	filter: drop-shadow(0 0 15px #ff0040) drop-shadow(0 0 30px rgba(255,0,64,0.5)) saturate(0.7) grayscale(0.4);
+}
+
+.yugen-critical-overlay.fumble.style-cyber .yugen-cyber-label {
+	color: #ff0040;
+	text-shadow: 0 0 8px #ff0040;
+}
+
+.yugen-critical-overlay.fumble.style-cyber .yugen-critical-text {
+	color: #ff0040;
+	text-shadow:
+		4px 0 0 rgba(255, 0, 100, 0.75),
+		-4px 0 0 rgba(100, 0, 255, 0.75),
+		0 0 25px #ff0040,
+		0 0 50px rgba(255, 0, 64, 0.5);
+}
+
+@keyframes cyber-bg-in {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes cyber-portrait-in {
+	from { opacity: 0; transform: translateX(-20px) scale(0.95); }
+	to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes cyber-tag-in {
+	from { opacity: 0; transform: translateX(15px); }
+	to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes cyber-glitch {
+	0%, 87%, 100% {
+		text-shadow:
+			4px 0 0 rgba(255, 0, 255, 0.75),
+			-4px 0 0 rgba(255, 50, 50, 0.75),
+			0 0 25px #00ffff,
+			0 0 50px rgba(0, 255, 255, 0.5);
+		transform: translate(0);
+	}
+	88% {
+		text-shadow:
+			-8px 0 0 rgba(255, 0, 255, 0.9),
+			8px 0 0 rgba(255, 0, 0, 0.9),
+			0 0 15px #00ffff;
+		transform: translate(-5px, 2px) skewX(3deg);
+	}
+	90% {
+		text-shadow:
+			8px 0 0 rgba(255, 0, 255, 0.9),
+			-8px 0 0 rgba(255, 0, 0, 0.9),
+			0 0 15px #00ffff;
+		transform: translate(5px, -2px) skewX(-2deg);
+	}
+	92% {
+		text-shadow:
+			4px 0 0 rgba(255, 0, 255, 0.75),
+			-4px 0 0 rgba(255, 50, 50, 0.75),
+			0 0 25px #00ffff;
+		transform: translate(-2px, 0);
+	}
+}
+
+/** mortal kombat style **/
+.style-mk .yugen-mk-overlay {
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(ellipse at center, rgba(50, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.96) 65%);
+	z-index: 0;
+	opacity: 0;
+	animation: mk-darkness 0.4s ease-out forwards;
+}
+
+.style-mk .yugen-mk-portrait {
+	position: absolute;
+	width: calc(480px * var(--yugen-crit-scale));
+	height: calc(480px * var(--yugen-crit-scale));
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	filter: drop-shadow(0 0 25px #cc0000) contrast(1.05) saturate(0.85);
+	opacity: 0;
+	z-index: 5;
+	top: 5%;
+	animation: mk-portrait-in 0.5s ease-out 0.25s forwards;
+}
+
+.yugen-critical-text-container.mk {
+	z-index: 10;
+	transform: none;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	bottom: 18%;
+	text-align: center;
+	align-items: center;
+}
+
+.yugen-critical-text-container.mk .yugen-critical-text {
+	color: #cc1010;
+	font-size: calc(95px * var(--yugen-crit-scale));
+	text-shadow:
+		3px 3px 0 #000,
+		-1px -1px 0 #000,
+		0 0 30px #ff2020,
+		0 0 60px rgba(255, 0, 0, 0.6);
+	letter-spacing: 0.08em;
+	opacity: 0;
+	transform: scale(1.8);
+	animation: mk-text-in 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.65s forwards;
+}
+
+.yugen-critical-overlay.fumble.style-mk {
+	filter: none;
+}
+
+.yugen-critical-overlay.fumble.style-mk .yugen-mk-overlay {
+	background: radial-gradient(ellipse at center, rgba(20, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.98) 65%);
+}
+
+.yugen-critical-overlay.fumble.style-mk .yugen-mk-portrait {
+	filter: drop-shadow(0 0 15px #660000) contrast(1.1) saturate(0.4) brightness(0.8);
+}
+
+.yugen-critical-overlay.fumble.style-mk .yugen-critical-text {
+	color: #880000;
+	text-shadow:
+		3px 3px 0 #000,
+		-1px -1px 0 #000,
+		0 0 20px #aa0000,
+		0 0 40px rgba(150, 0, 0, 0.4);
+}
+
+@keyframes mk-darkness {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes mk-portrait-in {
+	from { opacity: 0; transform: scale(1.08); }
+	to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes mk-text-in {
+	from { opacity: 0; transform: scale(1.8); letter-spacing: 0.3em; }
+	to { opacity: 1; transform: scale(1); letter-spacing: 0.08em; }
 }
