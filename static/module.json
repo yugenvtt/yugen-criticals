@@ -2,8 +2,8 @@
 	"id": "yugen-criticals",
 	"name": "yugen-criticals",
 	"title": "yugen-criticals",
-	"description": "fire emblem style critical animations for foundry vtt.",
-	"version": "1.0.0",
+	"description": "Fire Emblem style critical animations for Foundry VTT.",
+	"version": "1.0.1",
 	"authors": [
 		{
 			"name": "yugen."
@@ -29,5 +29,5 @@
 	"socket": true,
 	"url": "https://github.com/yugenvtt/yugen-criticals",
 	"manifest": "https://raw.githubusercontent.com/yugenvtt/yugen-criticals/refs/heads/main/static/module.json",
-	"download": "https://github.com/yugenvtt/yugen-criticals/releases/download/1.0.0/module.zip"
+	"download": "https://github.com/yugenvtt/yugen-criticals/releases/download/1.0.1/module.zip"
 }
