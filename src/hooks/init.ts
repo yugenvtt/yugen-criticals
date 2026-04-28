@@ -214,4 +214,26 @@ const register_settings = ( ) =>
 		type: Boolean,
 		default: false
 	} );
+
+	/** gm setting: ignore discarded dice in advantage/disadvantage **/
+	settings.register( 'yugen-criticals', 'ignore-discarded-dice', 
+	{
+		name: 'yugen-criticals.settings.ignore-discarded-dice.name',
+		hint: 'yugen-criticals.settings.ignore-discarded-dice.hint',
+		scope: 'world',
+		config: true,
+		type: Boolean,
+		default: true
+	} );
+
+	/** gm setting: ignore large dice pools **/
+	settings.register( 'yugen-criticals', 'ignore-multi-dice', 
+	{
+		name: 'yugen-criticals.settings.ignore-multi-dice.name',
+		hint: 'yugen-criticals.settings.ignore-multi-dice.hint',
+		scope: 'world',
+		config: true,
+		type: Boolean,
+		default: true
+	} );
 };

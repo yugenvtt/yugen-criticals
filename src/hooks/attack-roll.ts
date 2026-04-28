@@ -92,7 +92,7 @@ let last_trigger_time = 0;
 /**
  * checks if any of the provided arguments represent a critical hit or a fumble
  **/
-const check_roll_result = ( args : any[] ) : { type : 'critical' | 'fumble' | null, damage_type : string, roll_id : string } => 
+const check_roll_result = ( args : any[], options : { ignore_discarded : boolean, ignore_multi : boolean } ) : { type : 'critical' | 'fumble' | null, damage_type : string, roll_id : string } => 
 {
 	let damage_type = '';
 	let roll_id = '';
@@ -141,11 +141,22 @@ const check_roll_result = ( args : any[] ) : { type : 'critical' | 'fumble' | nu
 				const d20 = roll.dice?.find( ( d : any ) => d.faces === 20 );
 				if ( d20 ) 
 				{
-					if ( d20.results.some( ( r : any ) => r.result === 20 ) ) 
+					/** skip check if it's a massive dice pool and we're ignoring them **/
+					if ( options.ignore_multi && d20.results.length > 2 ) 
+					{ 
+						continue; 
+					}
+
+					/** filter for active results if ignoring discarded dice **/
+					const valid_results = options.ignore_discarded 
+						? d20.results.filter( ( r : any ) => r.active !== false && r.discarded !== true )
+						: d20.results;
+
+					if ( valid_results.some( ( r : any ) => r.result === 20 ) ) 
 					{ 
 						return { type: 'critical', damage_type, roll_id }; 
 					}
-					if ( d20.results.some( ( r : any ) => r.result === 1 ) ) 
+					if ( valid_results.some( ( r : any ) => r.result === 1 ) ) 
 					{ 
 						return { type: 'fumble', damage_type, roll_id }; 
 					}
@@ -175,33 +186,15 @@ const check_roll_result = ( args : any[] ) : { type : 'critical' | 'fumble' | nu
  **/
 const handle_hook_params = ( args : any[] ) => 
 {
-	let { type, damage_type, roll_id } = check_roll_result( args );
-
-	const now = Date.now( );
-
-	/** 
-	 * debounce: if we just processed this specific roll, or triggered very recently, skip it.
-	 * 100ms is enough to catch double-hooks while allowing rapid successive attacks.
-	 **/
-	if ( roll_id && roll_id === last_roll_id ) 
-	{
-		return;
-	}
-	
-	if ( !roll_id && ( now - last_trigger_time < 100 ) ) 
-	{
-		return;
-	}
-
-	if ( roll_id ) 
-	{ 
-		last_roll_id = roll_id; 
-	}
-	last_trigger_time = now;
-
 	const always_crit = ( game as any ).settings.get( 'yugen-criticals', 'always-show-crit' );
 	const always_fumble = ( game as any ).settings.get( 'yugen-criticals', 'always-show-fumble' );
 	const user_only = ( game as any ).settings.get( 'yugen-criticals', 'user-only' );
+	const ignore_discarded = ( game as any ).settings.get( 'yugen-criticals', 'ignore-discarded-dice' );
+	const ignore_multi = ( game as any ).settings.get( 'yugen-criticals', 'ignore-multi-dice' );
+
+	let { type, damage_type, roll_id } = check_roll_result( args, { ignore_discarded, ignore_multi } );
+
+	const now = Date.now( );
 
 	/** handle natural results first **/
 	const is_natural = type !== null;

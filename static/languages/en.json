@@ -59,6 +59,14 @@
 			"user-only": {
 				"name": "User-Only Animations",
 				"hint": "If enabled, animations will only appear for the player who made the roll."
+			},
+			"ignore-discarded-dice": {
+				"name": "Ignore Discarded Dice",
+				"hint": "If enabled, results on dice discarded by advantage/disadvantage will not trigger animations."
+			},
+			"ignore-multi-dice": {
+				"name": "Ignore Large Dice Pools",
+				"hint": "If enabled, dice pools with more than 2 d20s (e.g., 10d20) will not trigger automatic animations."
 			}
 		}
 	}
