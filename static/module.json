@@ -29,5 +29,14 @@
 	"socket": true,
 	"url": "https://github.com/yugenvtt/yugen-criticals",
 	"manifest": "https://raw.githubusercontent.com/yugenvtt/yugen-criticals/refs/heads/main/static/module.json",
-	"download": "https://github.com/yugenvtt/yugen-criticals/releases/download/1.0.2/module.zip"
+	"download": "https://github.com/yugenvtt/yugen-criticals/releases/download/1.0.2/module.zip",
+	"relationships": {
+		"requires": [
+			{
+				"id": "yugen-utils",
+				"type": "module",
+				"manifest": "https://raw.githubusercontent.com/yugenvtt/yugen-utils/refs/heads/main/static/module.json"
+			}
+		]
+	}
 }

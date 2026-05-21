@@ -21,8 +21,6 @@ const post_build = async ( ) =>
 		const dist_dir = path.resolve( __dirname, '../dist' );
 		const root_dir = path.resolve( __dirname, '..' );
 		const zip_path = path.resolve( root_dir, 'module.zip' );
-		const foundry_out_dir = process.env.FOUNDRY_OUT_DIR;
-
 		if ( !fs.existsSync( dist_dir ) ) 
 		{
 			return;
@@ -39,11 +37,16 @@ const post_build = async ( ) =>
 		}
 
 		/** live sync deployment **/
-		if ( foundry_out_dir ) 
+		const sync_targets = [
+			process.env.FOUNDRY_V14_OUT_DIR || process.env.FOUNDRY_OUT_DIR,
+			process.env.FOUNDRY_V13_OUT_DIR,
+		].filter( Boolean ) as string[];
+
+		for ( const target of sync_targets ) 
 		{
-			await fs.ensureDir( foundry_out_dir );
-			await fs.copy( dist_dir, foundry_out_dir, { overwrite: true } );
-			console.log( `yugen-criticals | deployed to: ${ foundry_out_dir }` );
+			await fs.ensureDir( target );
+			await fs.copy( dist_dir, target, { overwrite: true } );
+			console.log( `yugen-criticals | deployed to: ${ target }` );
 		}
 
 		/** package release **/
