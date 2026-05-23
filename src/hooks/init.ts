@@ -7,6 +7,7 @@ import { attack_roll_hook } from './attack-roll.js';
 import { pf2e_hooks } from './pf2e.js';
 
 import { CriticalAnimation } from '../module/critical-animation.js';
+import { ActorConfigApp } from '../module/actor-config.js';
 
 export const init_hook = ( ) => 
 {
@@ -15,9 +16,19 @@ export const init_hook = ( ) =>
 	{
 		register_settings( );
 
+		/** expose the public API for external macro access **/
+		const module = ( game as any ).modules.get( 'yugen-criticals' );
+		if ( module ) 
+		{
+			module.api = {
+				ActorConfigApp
+			};
+		}
+
 		/** initialize system-specific critical animation hooks **/
 		attack_roll_hook( );
 		pf2e_hooks( );
+
 
 		/** register socket listener early (in init) for v14 stability **/
 		( game as any ).socket.on( 'module.yugen-criticals', async ( data: any ) => 

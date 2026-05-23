@@ -68,6 +68,36 @@
 				"name": "Ignore Large Dice Pools",
 				"hint": "If enabled, dice pools with more than 2 d20s (e.g., 10d20) will not trigger automatic animations."
 			}
+		},
+		"actor-config": {
+			"title": "yugen-criticals-config",
+			"crit-quote-name": "Critical Quotes",
+			"crit-quote-hint": "Enter one quote per line. One will be chosen at random for critical hits.",
+			"fumble-quote-name": "Fumble Quotes",
+			"fumble-quote-hint": "Enter one quote per line. One will be chosen at random for fumbles.",
+			"crit-sound-name": "Critical Sound Override",
+			"crit-sound-hint": "Override the default critical sound effect for this actor.",
+			"fumble-sound-name": "Fumble Sound Override",
+			"fumble-sound-hint": "Override the default fumble sound effect for this actor.",
+			"style-name": "Signature Animation Style",
+			"style-hint": "Choose a signature visual style for this actor's animations.",
+			"style-choices": {
+				"default": "Default (Use settings)",
+				"cinematic": "Cinematic (Fire Emblem)",
+				"anime": "Anime (Speed Lines)",
+				"cyberpunk": "Cyberpunk (Neon Glitch)",
+				"mk": "Mortal Kombat (Blood Red)",
+				"barbarian": "Barbarian",
+				"bard": "Bard",
+				"cleric": "Cleric/Paladin",
+				"druid": "Druid",
+				"fighter": "Fighter/Rogue",
+				"warlock": "Warlock",
+				"wizard": "Wizard/Sorcerer"
+			},
+			"reset": "Reset to Defaults",
+			"save": "Save Changes"
 		}
 	}
 }
+

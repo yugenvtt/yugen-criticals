@@ -70,12 +70,20 @@ export class CriticalAnimation
 			color = this._get_color_for_damage( damage_type ) || color;
 		}
 
+		/** retrieve the critical animation scale setting **/
 		const scale = settings.get( 'yugen-criticals', 'critical-size' ) || 1.0;
+
+		/** retrieve the critical sound volume setting **/
 		const volume = settings.get( 'yugen-criticals', 'critical-volume' ) ?? 0.5;
 
-		/** resolve style: world override -> client preference **/
+		/** retrieve the custom signature style override flag **/
+		const actor_style = ( actor as any ).getFlag( 'yugen-criticals', 'style-override' );
+
+		/** retrieve the force global style setting **/
 		const gm_override = settings.get( 'yugen-criticals', 'gm-style-override' );
-		const style = gm_override ? settings.get( 'yugen-criticals', 'global-animation-style' ) : ( settings.get( 'yugen-criticals', 'animation-style' ) || 'cinematic' );
+
+		const style = gm_override ? settings.get( 'yugen-criticals', 'global-animation-style' ) : ( actor_style && actor_style !== 'default' ? actor_style : ( settings.get( 'yugen-criticals', 'animation-style' ) || 'cinematic' ) );
+
 
 		/** resolve sound source: actor override -> type default (supports arrays or delimited strings) **/
 		const raw_sound = ( actor as any ).getFlag( 'yugen-criticals', is_fumble ? 'fumble-sound' : 'crit-sound' ) || ( is_fumble ? settings.get( 'yugen-criticals', 'fumble-sound' ) : settings.get( 'yugen-criticals', 'critical-sound' ) );
@@ -113,6 +121,21 @@ export class CriticalAnimation
 			void ( game as any ).audio.play( sound_src, { volume: volume, loop: false } );
 		}
 
+		/**
+		 * resolve the portrait image, falling back to token texture if portrait is mystery man
+		 **/
+		let portrait_img = actor.img || '';
+
+		const token_img = ( actor as any ).prototypeToken?.texture?.src;
+
+		if ( !portrait_img || portrait_img.includes( 'mystery-man.svg' ) ) 
+		{
+			if ( token_img ) 
+			{
+				portrait_img = token_img;
+			}
+		}
+
 		/** create the overlay container **/
 		const overlay = document.createElement( 'div' );
 		overlay.classList.add( 'yugen-critical-overlay' );
@@ -136,7 +159,7 @@ export class CriticalAnimation
 			overlay.innerHTML = `
 				<div class="yugen-speed-lines"></div>
 				<div class="yugen-anime-portrait-container">
-					<div class="yugen-anime-portrait" style="background-image: url('${ actor.img }');"></div>
+					<div class="yugen-anime-portrait" style="background-image: url('${ portrait_img }');"></div>
 				</div>
 				<div class="yugen-critical-text-container anime">
 					<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
@@ -148,7 +171,7 @@ export class CriticalAnimation
 			overlay.innerHTML = `
 				<div class="yugen-cyber-bg"></div>
 				<div class="yugen-scanlines"></div>
-				<div class="yugen-cyber-portrait" style="background-image: url('${ actor.img }');"></div>
+				<div class="yugen-cyber-portrait" style="background-image: url('${ portrait_img }');"></div>
 				<div class="yugen-critical-text-container cyber">
 					<div class="yugen-cyber-label">// CRITICAL HIT DETECTED //</div>
 					<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
@@ -159,9 +182,98 @@ export class CriticalAnimation
 		{
 			overlay.innerHTML = `
 				<div class="yugen-mk-overlay"></div>
-				<div class="yugen-mk-portrait" style="background-image: url('${ actor.img }');"></div>
+				<div class="yugen-mk-portrait" style="background-image: url('${ portrait_img }');"></div>
 				<div class="yugen-critical-text-container mk">
 					<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
+				</div>
+			`;
+		}
+		else if ( style === 'barbarian' )
+		{
+			overlay.innerHTML = `
+				<div class="yugen-class-bg yugen-barbarian"></div>
+				<div class="yugen-class-effect yugen-barbarian"></div>
+				<div class="yugen-class-portrait yugen-barbarian" style="background-image: url('${ portrait_img }');"></div>
+				<div class="yugen-critical-text-container yugen-class-barbarian">
+					<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
+				</div>
+			`;
+		}
+		else if ( style === 'bard' )
+		{
+			overlay.innerHTML = `
+				<div class="yugen-class-bg yugen-bard"></div>
+				<div class="yugen-music-staff"></div>
+				<div class="yugen-class-effect yugen-bard"></div>
+				<div class="yugen-class-portrait yugen-bard" style="background-image: url('${ portrait_img }');"></div>
+				<div class="yugen-critical-text-container yugen-class-bard">
+					<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
+				</div>
+			`;
+		}
+		else if ( style === 'cleric' )
+		{
+			overlay.innerHTML = `
+				<div class="yugen-class-bg yugen-cleric"></div>
+				<div class="yugen-holy-pillar"></div>
+				<div class="yugen-class-effect yugen-cleric"></div>
+				<div class="yugen-class-portrait yugen-cleric" style="background-image: url('${ portrait_img }');"></div>
+				<div class="yugen-critical-text-container yugen-class-cleric">
+					<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
+				</div>
+			`;
+		}
+		else if ( style === 'druid' )
+		{
+			overlay.innerHTML = `
+				<div class="yugen-class-bg yugen-druid"></div>
+				<div class="yugen-class-effect yugen-druid"></div>
+				<div class="yugen-class-portrait yugen-druid" style="background-image: url('${ portrait_img }');"></div>
+				<div class="yugen-druid-quote-wrapper">
+					<div class="yugen-critical-text-container yugen-class-druid">
+						<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
+						<div class="yugen-druid-vine"></div>
+					</div>
+				</div>
+			`;
+		}
+		else if ( style === 'fighter' )
+		{
+			overlay.innerHTML = `
+				<div class="yugen-class-bg yugen-fighter"></div>
+				<div class="yugen-slash-bar"></div>
+				<div class="yugen-class-effect yugen-fighter"></div>
+				<div class="yugen-class-portrait yugen-fighter" style="background-image: url('${ portrait_img }');"></div>
+				<div class="yugen-critical-text-container yugen-class-fighter">
+					<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
+				</div>
+			`;
+		}
+		else if ( style === 'warlock' )
+		{
+			overlay.innerHTML = `
+				<div class="yugen-class-bg yugen-warlock"></div>
+				<div class="yugen-void-crack"></div>
+				<div class="yugen-class-effect yugen-warlock"></div>
+				<div class="yugen-class-portrait yugen-warlock" style="background-image: url('${ portrait_img }');"></div>
+				<div class="yugen-critical-text-container yugen-class-warlock">
+					<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
+				</div>
+			`;
+		}
+		else if ( style === 'wizard' )
+		{
+			overlay.innerHTML = `
+				<div class="yugen-class-bg yugen-wizard"></div>
+				<div class="yugen-rune-circle-1"></div>
+				<div class="yugen-rune-circle-2"></div>
+				<div class="yugen-class-effect yugen-wizard"></div>
+				<div class="yugen-class-portrait yugen-wizard" style="background-image: url('${ portrait_img }');"></div>
+				<div class="yugen-wizard-quote-wrapper">
+					<div class="yugen-wizard-spell-ward"></div>
+					<div class="yugen-critical-text-container yugen-class-wizard">
+						<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
+					</div>
 				</div>
 			`;
 		}
@@ -171,7 +283,7 @@ export class CriticalAnimation
 			overlay.innerHTML = `
 				<div class="yugen-impact-flash animate"></div>
 				<div class="yugen-critical-bar"></div>
-				<div class="yugen-critical-avatar" style="background-image: url('${ actor.img }');"></div>
+				<div class="yugen-critical-avatar" style="background-image: url('${ portrait_img }');"></div>
 				<div class="yugen-critical-text-container">
 					<div class="yugen-critical-text">${ message.toUpperCase( ) }</div>
 				</div>

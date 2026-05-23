@@ -71,6 +71,7 @@
 	gap: 10px;
 	transform: skewX(-10deg);
 	max-width: 80vw;
+	z-index: 20;
 }
 
 .yugen-critical-text {
@@ -476,4 +477,1241 @@
 @keyframes mk-text-in {
 	from { opacity: 0; transform: scale(1.8); letter-spacing: 0.3em; }
 	to { opacity: 1; transform: scale(1); letter-spacing: 0.08em; }
+}
+
+/* actor configuration sheet styles */
+.yugen-actor-config {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	padding: 10px;
+	background: #181a20;
+	color: #e0e0e0;
+	font-family: "Outfit", "Signika", sans-serif;
+	border-radius: 8px;
+}
+
+.yugen-actor-config .sheet-header {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	border-bottom: 2px solid #2d313c;
+	padding-bottom: 12px;
+}
+
+.yugen-actor-config .sheet-header .profile-img {
+	width: 60px;
+	height: 60px;
+	border-radius: 6px;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	object-fit: cover;
+}
+
+.yugen-actor-config .sheet-header .header-details {
+	display: flex;
+	flex-direction: column;
+}
+
+.yugen-actor-config .sheet-header .charname {
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin: 0;
+	color: #fff;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.yugen-actor-config .sheet-header .subtitle {
+	font-size: 0.8rem;
+	color: #7b8396;
+	margin: 2px 0 0 0;
+	letter-spacing: 0.05em;
+}
+
+.yugen-config-body {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	max-height: 480px;
+	overflow-y: auto;
+	padding-right: 4px;
+}
+
+.yugen-config-body::-webkit-scrollbar {
+	width: 5px;
+}
+
+.yugen-config-body::-webkit-scrollbar-track {
+	background: rgba(0, 0, 0, 0.1);
+}
+
+.yugen-config-body::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.15);
+	border-radius: 4px;
+}
+
+.yugen-actor-config fieldset {
+	border: 1px solid #2d313c;
+	border-radius: 6px;
+	padding: 10px 12px 14px 12px;
+	background: rgba(0, 0, 0, 0.15);
+}
+
+.yugen-actor-config legend {
+	font-size: 0.85rem;
+	font-weight: 700;
+	color: #ff9f43;
+	padding: 0 6px;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.yugen-actor-config .form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-bottom: 0;
+}
+
+.yugen-actor-config label {
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: #a4b0be;
+}
+
+.yugen-actor-config .notes {
+	font-size: 0.75rem;
+	color: #747d8c;
+	margin: 0 0 4px 0;
+	line-height: 1.25;
+}
+
+.yugen-actor-config textarea {
+	width: 100%;
+	background: #0f1015;
+	border: 1px solid #2d313c;
+	border-radius: 4px;
+	color: #fff;
+	padding: 8px;
+	font-family: inherit;
+	font-size: 0.85rem;
+	resize: vertical;
+	transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.yugen-actor-config textarea:focus {
+	border-color: #ff9f43;
+	box-shadow: 0 0 6px rgba(255, 159, 67, 0.35);
+	outline: none;
+}
+
+.yugen-actor-config .form-fields {
+	display: flex;
+	gap: 6px;
+	width: 100%;
+}
+
+.yugen-actor-config input[type="text"] {
+	flex: 1;
+	background: #0f1015;
+	border: 1px solid #2d313c;
+	border-radius: 4px;
+	color: #fff;
+	padding: 0 8px;
+	height: 28px;
+	font-size: 0.85rem;
+	transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.yugen-actor-config input[type="text"]:focus {
+	border-color: #ff9f43;
+	box-shadow: 0 0 6px rgba(255, 159, 67, 0.35);
+	outline: none;
+}
+
+.yugen-actor-config .yugen-file-picker-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	background: #2f3542;
+	border: 1px solid #2d313c;
+	border-radius: 4px;
+	color: #a4b0be;
+	cursor: pointer;
+	transition: background 0.25s, color 0.25s, transform 0.15s;
+}
+
+.yugen-actor-config .yugen-file-picker-btn:hover {
+	background: #ff9f43;
+	color: #1e222b;
+	transform: scale(1.05);
+}
+
+.yugen-actor-config .yugen-sound-preview-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	background: #2f3542;
+	border: 1px solid #2d313c;
+	border-radius: 4px;
+	color: #a4b0be;
+	cursor: pointer;
+	transition: background 0.25s, color 0.25s, transform 0.15s;
+}
+
+.yugen-actor-config .yugen-sound-preview-btn:hover {
+	background: #2ed573;
+	color: #1e222b;
+	transform: scale(1.05);
+}
+
+
+.yugen-actor-config .sheet-footer {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	border-top: 1px solid #2d313c;
+	padding-top: 12px;
+	margin-top: 5px;
+}
+
+.yugen-actor-config .sheet-footer button {
+	flex: 1;
+	height: 32px;
+	font-size: 0.85rem;
+	font-weight: 700;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+}
+
+.yugen-actor-config button.reset-defaults {
+	background: #2f3542;
+	color: #a4b0be;
+}
+
+.yugen-actor-config button.reset-defaults:hover {
+	background: #ff4757;
+	color: #fff;
+	transform: scale(1.02);
+	box-shadow: 0 0 8px rgba(255, 71, 87, 0.4);
+}
+
+.yugen-actor-config button[type="submit"] {
+	background: #ff9f43;
+	color: #1e222b;
+}
+
+.yugen-actor-config button[type="submit"]:hover {
+	background: #ffa801;
+	transform: scale(1.02);
+	box-shadow: 0 0 8px rgba(255, 159, 67, 0.4);
+}
+
+/* --- class-specific themes --- */
+
+/**
+ * class-specific themes
+ **/
+
+.yugen-class-bg
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	opacity: 0;
+	transition: opacity 0.5s ease;
+	animation: class-bg-in 0.4s ease-out forwards;
+}
+
+.yugen-class-portrait
+{
+	position: absolute;
+	width: calc(360px * var(--yugen-crit-scale));
+	height: calc(360px * var(--yugen-crit-scale));
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	z-index: 5;
+	opacity: 0;
+}
+
+.yugen-class-effect
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 3;
+	pointer-events: none;
+	overflow: hidden;
+}
+
+/**
+ * barbarian: primal rage / center slam
+ **/
+.yugen-class-bg.yugen-barbarian
+{
+	background: radial-gradient(circle, rgba(176, 10, 10, 0.9) 0%, rgba(15, 2, 2, 0.99) 80%);
+	box-shadow: inset 0 0 120px rgba(255, 0, 0, 0.4);
+	animation: class-bg-in 0.25s ease-out forwards, barbarian-screen-shake 0.2s infinite;
+}
+
+.yugen-class-portrait.yugen-barbarian
+{
+	width: calc(420px * var(--yugen-crit-scale));
+	height: calc(420px * var(--yugen-crit-scale));
+	left: 50%;
+	top: 40%;
+	border-radius: 4px;
+	border: 4px solid #ff2a2a;
+	box-shadow: 0 0 50px rgba(255, 42, 42, 0.8), inset 0 0 30px #5c0000;
+	animation: barbarian-portrait-in 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s forwards, barbarian-flicker 0.4s infinite alternate;
+}
+
+.yugen-class-effect.yugen-barbarian::before
+{
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: radial-gradient(circle, transparent 60%, rgba(139, 0, 0, 0.9) 100%);
+	animation: barbarian-rage-pulse 1.2s infinite ease-in-out;
+}
+
+.yugen-critical-text-container.yugen-class-barbarian
+{
+	position: absolute;
+	left: 50%;
+	top: 75%;
+	transform: translate(-50%, -50%) skewX(-12deg);
+	z-index: 20;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	max-width: 80vw;
+	text-align: center;
+}
+
+.yugen-critical-text-container.yugen-class-barbarian .yugen-critical-text
+{
+	color: #ff2a2a;
+	font-family: "Impact", "Arial Black", sans-serif;
+	font-size: calc(105px * var(--yugen-crit-scale));
+	font-weight: 900;
+	text-shadow: 4px 4px 0px #000, 0 0 40px rgba(255, 42, 42, 0.9);
+	letter-spacing: -0.02em;
+	transform: scale(2) rotate(-5deg);
+	animation: barbarian-text-slam 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/**
+ * bard: grand performance / neon harmony
+ **/
+.yugen-class-bg.yugen-bard
+{
+	background: linear-gradient(135deg, rgba(253, 114, 182, 0.8) 0%, rgba(130, 88, 252, 0.95) 100%);
+	animation: class-bg-in 0.4s ease-out forwards, bard-bg-wave 8s infinite alternate ease-in-out;
+}
+
+.yugen-music-staff
+{
+	position: absolute;
+	top: 50%;
+	left: -10%;
+	width: 120vw;
+	height: 100px;
+	background: repeating-linear-gradient(
+		0deg,
+		rgba(253, 114, 182, 0.35) 0px,
+		rgba(253, 114, 182, 0.35) 2px,
+		transparent 2px,
+		transparent 18px
+	);
+	border-top: 2px solid #fd72b6;
+	border-bottom: 2px solid #fd72b6;
+	transform: translateY(-50%) rotate(-3deg);
+	z-index: 2;
+	opacity: 0;
+	animation: bard-staff-slide 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.yugen-class-portrait.yugen-bard
+{
+	width: calc(340px * var(--yugen-crit-scale));
+	height: calc(340px * var(--yugen-crit-scale));
+	right: 12%;
+	top: 50%;
+	border-radius: 50%;
+	border: 6px double #fd72b6;
+	box-shadow: 0 0 35px rgba(253, 114, 182, 0.8), 0 0 15px rgba(130, 88, 252, 0.6);
+	animation: bard-portrait-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards, bard-vinyl-spin 12s linear infinite 0.7s;
+}
+
+.yugen-class-effect.yugen-bard::before,
+.yugen-class-effect.yugen-bard::after
+{
+	content: "♩  ♪  ♫  ♬  ♭  ♮  ♯";
+	position: absolute;
+	font-size: 2.8rem;
+	color: rgba(255, 255, 255, 0.45);
+	text-shadow: 0 0 15px rgba(253, 114, 182, 0.9);
+	white-space: nowrap;
+	bottom: -60px;
+	animation: bard-notes-3d 4s linear infinite;
+}
+
+.yugen-class-effect.yugen-bard::before
+{
+	left: 20%;
+	animation-delay: 0.2s;
+}
+
+.yugen-class-effect.yugen-bard::after
+{
+	left: 50%;
+	animation-delay: 2.2s;
+}
+
+.yugen-critical-text-container.yugen-class-bard
+{
+	position: absolute;
+	left: 10%;
+	top: 50%;
+	transform: translateY(-50%) rotate(-3deg);
+	z-index: 20;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	max-width: 500px;
+}
+
+.yugen-critical-text-container.yugen-class-bard .yugen-critical-text
+{
+	color: #fff;
+	font-size: calc(90px * var(--yugen-crit-scale));
+	font-family: "Outfit", sans-serif;
+	font-weight: 800;
+	text-shadow: 0 0 15px #8258fc, 0 0 30px #fd72b6;
+}
+
+/**
+ * cleric / paladin: holy pillar
+ **/
+.yugen-class-bg.yugen-cleric
+{
+	background: radial-gradient(circle, rgba(255, 223, 0, 0.8) 0%, rgba(20, 20, 24, 0.98) 75%);
+}
+
+.yugen-class-bg.yugen-cleric::before
+{
+	content: "";
+	position: absolute;
+	top: -50%;
+	left: -50%;
+	width: 200%;
+	height: 200%;
+	background: conic-gradient(
+		from 0deg, 
+		transparent 0deg, 
+		rgba(255, 223, 0, 0.25) 15deg, 
+		transparent 30deg, 
+		transparent 45deg, 
+		rgba(255, 223, 0, 0.25) 60deg, 
+		transparent 75deg
+	);
+	animation: cleric-sunburst-rotate 40s linear infinite;
+	z-index: 1;
+}
+
+.yugen-holy-pillar
+{
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: calc(380px * var(--yugen-crit-scale));
+	height: 100%;
+	background: linear-gradient(to right, transparent, rgba(255, 223, 0, 0.18) 25%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 223, 0, 0.18) 75%, transparent);
+	transform: translateX(-50%) scaleX(0);
+	z-index: 2;
+	opacity: 0;
+	animation: cleric-pillar-beam 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.yugen-class-portrait.yugen-cleric
+{
+	width: calc(320px * var(--yugen-crit-scale));
+	height: calc(320px * var(--yugen-crit-scale));
+	left: 50%;
+	top: 38%;
+	border-radius: 50%;
+	border: 4px solid #ffdf00;
+	box-shadow: 0 0 45px rgba(255, 223, 0, 0.8), 0 0 100px rgba(255, 255, 255, 0.2);
+	animation: cleric-portrait-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards;
+}
+
+.yugen-class-portrait.yugen-cleric::before
+{
+	content: "";
+	position: absolute;
+	top: -12px;
+	left: -12px;
+	right: -12px;
+	bottom: -12px;
+	border: 2px solid rgba(255, 223, 0, 0.45);
+	border-radius: 50%;
+	animation: cleric-halo-ring 3s infinite alternate ease-in-out;
+}
+
+.yugen-class-effect.yugen-cleric::before
+{
+	content: "✦";
+	position: absolute;
+	font-size: 2rem;
+	color: #ffdf00;
+	text-shadow: 0 0 10px #ffdf00;
+	bottom: -50px;
+	left: 15%;
+	animation: cleric-dust-rise 3s ease-out infinite;
+}
+
+.yugen-class-effect.yugen-cleric::after
+{
+	content: "✧";
+	position: absolute;
+	font-size: 1.5rem;
+	color: #ffdf00;
+	text-shadow: 0 0 10px #ffdf00;
+	bottom: -50px;
+	left: 45%;
+	animation: cleric-dust-rise 3.5s ease-out infinite;
+	animation-delay: 1.5s;
+}
+
+.yugen-critical-text-container.yugen-class-cleric
+{
+	position: absolute;
+	left: 50%;
+	top: 76%;
+	transform: translate(-50%, -50%);
+	z-index: 20;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	max-width: 600px;
+	text-align: center;
+}
+
+.yugen-critical-text-container.yugen-class-cleric .yugen-critical-text
+{
+	color: #ffffff;
+	font-size: calc(90px * var(--yugen-crit-scale));
+	font-family: "Outfit", "Georgia", serif;
+	font-weight: 800;
+	text-shadow: 2px 2px 0 #000, 0 0 20px #ffdf00, 0 0 40px #ffffff;
+}
+
+/**
+ * druid: natural growth / leaf scroll
+ **/
+.yugen-class-bg.yugen-druid
+{
+	background: radial-gradient(circle, rgba(46, 204, 113, 0.75) 0%, rgba(13, 20, 11, 0.99) 80%);
+}
+
+.yugen-class-portrait.yugen-druid
+{
+	width: calc(340px * var(--yugen-crit-scale));
+	height: calc(340px * var(--yugen-crit-scale));
+	left: 12%;
+	top: 50%;
+	border-color: #2ecc71;
+	border-radius: 35% 65% 60% 40% / 50% 45% 55% 50%;
+	box-shadow: 0 0 35px rgba(46, 204, 113, 0.7), inset 0 0 20px rgba(39, 174, 96, 0.5);
+	animation: druid-portrait-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s forwards, druid-organic-wobble 8s infinite alternate ease-in-out;
+}
+
+.yugen-druid-quote-wrapper
+{
+	position: absolute;
+	right: 12%;
+	top: 50%;
+	transform: translateY(-50%);
+	width: calc(520px * var(--yugen-crit-scale));
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 10;
+}
+
+.yugen-class-effect.yugen-druid::before,
+.yugen-class-effect.yugen-druid::after
+{
+	content: "✿  ☘  ❀  ❃";
+	position: absolute;
+	font-size: 2.2rem;
+	top: -50px;
+	color: #2ecc71;
+	animation: druid-leaves-fall 4.2s linear infinite;
+}
+
+.yugen-class-effect.yugen-druid::before
+{
+	left: 10%;
+	animation-delay: 0.5s;
+}
+
+.yugen-class-effect.yugen-druid::after
+{
+	left: 45%;
+	animation-delay: 2.5s;
+}
+
+.yugen-critical-text-container.yugen-class-druid
+{
+	position: relative;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 20px 0;
+	z-index: 20;
+}
+
+.yugen-critical-text-container.yugen-class-druid .yugen-critical-text
+{
+	color: #e2fbe8;
+	font-size: calc(32px * var(--yugen-crit-scale));
+	font-family: "Outfit", sans-serif;
+	font-weight: 600;
+	text-shadow: 0 0 10px rgba(46, 204, 113, 0.6), 2px 2px 4px rgba(0, 0, 0, 0.8);
+	line-height: 1.4;
+	margin-bottom: 15px;
+}
+
+.yugen-druid-vine
+{
+	width: 80%;
+	height: 4px;
+	background: linear-gradient(90deg, transparent, #2ecc71, #a3e9a4, #2ecc71, transparent);
+	box-shadow: 0 0 10px #2ecc71, 0 0 20px rgba(46, 204, 113, 0.5);
+	border-radius: 2px;
+	transform: scaleX(0);
+	transform-origin: center;
+	animation: druid-vine-grow 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.4s forwards;
+}
+
+.yugen-druid-vine::before,
+.yugen-druid-vine::after
+{
+	content: "☘";
+	position: absolute;
+	color: #a3e9a4;
+	font-size: 1.2rem;
+	top: -8px;
+	text-shadow: 0 0 8px #2ecc71;
+	opacity: 0;
+	animation: druid-leaf-fade 0.5s ease-out 1s forwards;
+}
+
+.yugen-druid-vine::before
+{
+	left: 10%;
+}
+
+.yugen-druid-vine::after
+{
+	right: 10%;
+}
+
+/**
+ * fighter: blade slash
+ **/
+.yugen-class-bg.yugen-fighter
+{
+	background: linear-gradient(135deg, rgba(74, 85, 104, 0.8) 0%, rgba(17, 20, 24, 0.99) 75%);
+}
+
+.yugen-slash-bar
+{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 160vw;
+	height: calc(180px * var(--yugen-crit-scale));
+	background: linear-gradient(90deg, transparent, rgba(200, 214, 229, 0.8) 50%, transparent);
+	transform: translate(-50%, -50%) rotate(-20deg) scaleX(0);
+	z-index: 2;
+	border-top: 3px solid #ffffff;
+	border-bottom: 3px solid #ffffff;
+	box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+	animation: fighter-slash-bar-in 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.yugen-class-portrait.yugen-fighter
+{
+	width: calc(340px * var(--yugen-crit-scale));
+	height: calc(340px * var(--yugen-crit-scale));
+	left: 15%;
+	top: 50%;
+	transform: translateY(-50%) skewX(-15deg);
+	border-radius: 0;
+	clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+	box-shadow: 0 0 40px rgba(200, 214, 229, 0.7);
+	background-color: rgba(74, 85, 104, 0.5);
+	border-left: 4px solid #c8d6e5;
+	border-right: 4px solid #c8d6e5;
+	animation: fighter-portrait-in 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s forwards;
+}
+
+.yugen-class-effect.yugen-fighter::before
+{
+	content: "";
+	position: absolute;
+	top: -50%;
+	left: -50%;
+	width: 200%;
+	height: 12px;
+	background: linear-gradient(to right, transparent, #ffffff, transparent);
+	transform: rotate(35deg);
+	animation: fighter-metallic-slash 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0.25s forwards;
+	box-shadow: 0 0 20px #ffffff;
+	opacity: 0;
+}
+
+.yugen-critical-text-container.yugen-class-fighter
+{
+	position: absolute;
+	right: 15%;
+	top: 50%;
+	transform: translateY(-50%) skewX(-15deg);
+	z-index: 20;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	max-width: 550px;
+}
+
+.yugen-critical-text-container.yugen-class-fighter .yugen-critical-text
+{
+	color: #c8d6e5;
+	font-size: calc(90px * var(--yugen-crit-scale));
+	font-family: "Impact", sans-serif;
+	font-weight: 900;
+	letter-spacing: 0.05em;
+	text-shadow: 3px 3px 0px #000, 0 0 20px rgba(255, 255, 255, 0.6);
+}
+
+/**
+ * warlock: eldritch void / glitch fissure
+ **/
+.yugen-class-bg.yugen-warlock
+{
+	background: radial-gradient(circle, rgba(122, 18, 180, 0.85) 0%, rgba(5, 1, 10, 0.99) 75%);
+}
+
+.yugen-class-bg.yugen-warlock::before
+{
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: repeating-linear-gradient(
+		0deg,
+		rgba(0, 255, 110, 0.02),
+		rgba(0, 255, 110, 0.02) 2px,
+		transparent 2px,
+		transparent 4px
+	);
+	z-index: 2;
+}
+
+.yugen-void-crack
+{
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 8px;
+	height: 100%;
+	background: #00ff6e;
+	box-shadow: 0 0 20px #00ff6e, 0 0 40px #7a12b4;
+	transform: translateX(-50%) rotate(35deg) scaleY(0);
+	z-index: 2;
+	opacity: 0;
+	animation: warlock-crack-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.yugen-class-portrait.yugen-warlock
+{
+	width: calc(320px * var(--yugen-crit-scale));
+	height: calc(320px * var(--yugen-crit-scale));
+	right: 15%;
+	top: 25%;
+	border-radius: 8px;
+	border: 3px solid #7a12b4;
+	box-shadow: 0 0 40px #7a12b4, 0 0 20px #00ff6e;
+	animation: warlock-portrait-in 0.4s ease-out 0.25s forwards, warlock-void-glitch 1.8s infinite steps(1) 0.65s;
+}
+
+.yugen-critical-text-container.yugen-class-warlock
+{
+	position: absolute;
+	left: 15%;
+	bottom: 22%;
+	transform: none;
+	z-index: 20;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	max-width: 550px;
+}
+
+.yugen-critical-text-container.yugen-class-warlock .yugen-critical-text
+{
+	color: #00ff6e;
+	font-size: calc(90px * var(--yugen-crit-scale));
+	font-family: "Outfit", sans-serif;
+	font-weight: 900;
+	letter-spacing: -0.01em;
+	text-shadow: 3px 3px 0px #1a022b, 0 0 25px rgba(0, 255, 110, 0.8), 0 0 10px #7a12b4;
+}
+
+/**
+ * wizard: cosmic rune circles
+ **/
+.yugen-class-bg.yugen-wizard
+{
+	background: radial-gradient(circle, rgba(29, 78, 216, 0.85) 0%, rgba(5, 7, 18, 0.99) 80%);
+}
+
+.yugen-class-bg.yugen-wizard::before
+{
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+	                  radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
+	background-size: 550px 550px, 350px 350px;
+	background-position: 0 0, 40px 60px;
+	opacity: 0.3;
+	animation: wizard-stars-drift 60s linear infinite;
+	z-index: 1;
+}
+
+.yugen-rune-circle-1
+{
+	position: absolute;
+	left: 18%;
+	top: 50%;
+	width: calc(480px * var(--yugen-crit-scale));
+	height: calc(480px * var(--yugen-crit-scale));
+	border: 3px dashed rgba(30, 144, 255, 0.4);
+	border-radius: 50%;
+	box-shadow: 0 0 30px rgba(30, 144, 255, 0.2);
+	transform: translate(-50%, -50%) rotate(0deg);
+	animation: wizard-rune-spin 25s linear infinite;
+	pointer-events: none;
+	z-index: 2;
+}
+
+.yugen-rune-circle-2
+{
+	position: absolute;
+	left: 18%;
+	top: 50%;
+	width: calc(420px * var(--yugen-crit-scale));
+	height: calc(420px * var(--yugen-crit-scale));
+	border: 1px dotted rgba(0, 191, 255, 0.5);
+	border-radius: 50%;
+	transform: translate(-50%, -50%) rotate(0deg);
+	animation: wizard-rune-spin-reverse 15s linear infinite;
+	pointer-events: none;
+	z-index: 2;
+}
+
+.yugen-class-portrait.yugen-wizard
+{
+	width: calc(320px * var(--yugen-crit-scale));
+	height: calc(320px * var(--yugen-crit-scale));
+	background-color: #0e1626;
+	background-size: cover;
+	background-position: center;
+	left: 18%;
+	top: 50%;
+	transform: translate(-50%, -50%) scale(0.8);
+	border-radius: 50%;
+	border: 4px solid #1e90ff;
+	box-shadow: 0 0 35px #1e90ff;
+	animation: wizard-portrait-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards;
+}
+
+.yugen-wizard-quote-wrapper
+{
+	position: absolute;
+	right: 10%;
+	top: 50%;
+	transform: translateY(-50%);
+	width: calc(520px * var(--yugen-crit-scale));
+	min-height: calc(180px * var(--yugen-crit-scale));
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 10;
+}
+
+.yugen-wizard-spell-ward
+{
+	position: absolute;
+	inset: 0;
+	background: rgba(10, 20, 45, 0.4);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	border: 1px solid rgba(30, 144, 255, 0.3);
+	box-shadow: 0 0 25px rgba(30, 144, 255, 0.3), inset 0 0 20px rgba(30, 144, 255, 0.15);
+	z-index: 5;
+	opacity: 0;
+	transform: scale(0.9);
+	animation: wizard-ward-appear 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0.3s forwards;
+}
+
+.yugen-wizard-spell-ward::before
+{
+	content: "";
+	position: absolute;
+	inset: -3px;
+	border: 2px solid transparent;
+	background: 
+		linear-gradient(to right, #00bfff 4px, transparent 4px) 0 0,
+		linear-gradient(to bottom, #00bfff 4px, transparent 4px) 0 0,
+		linear-gradient(to left, #00bfff 4px, transparent 4px) 100% 0,
+		linear-gradient(to bottom, #00bfff 4px, transparent 4px) 100% 0,
+		linear-gradient(to right, #00bfff 4px, transparent 4px) 0 100%,
+		linear-gradient(to top, #00bfff 4px, transparent 4px) 0 100%,
+		linear-gradient(to left, #00bfff 4px, transparent 4px) 100% 100%,
+		linear-gradient(to top, #00bfff 4px, transparent 4px) 100% 100%;
+	background-repeat: no-repeat;
+	background-size: 15px 15px;
+	filter: drop-shadow(0 0 5px #00bfff);
+	pointer-events: none;
+}
+
+.yugen-critical-text-container.yugen-class-wizard
+{
+	position: relative;
+	width: calc(100% - 24px);
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	z-index: 20;
+	box-sizing: border-box;
+}
+
+.yugen-critical-text-container.yugen-class-wizard .yugen-critical-text
+{
+	color: #e3f2fd;
+	font-size: calc(30px * var(--yugen-crit-scale));
+	font-family: "Outfit", sans-serif;
+	font-weight: 600;
+	text-shadow: 2px 2px 4px #000, 0 0 15px rgba(30, 144, 255, 0.8);
+	line-height: 1.4;
+}
+
+/**
+ * animations
+ **/
+
+@keyframes class-bg-in
+{
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes class-portrait-in
+{
+	from { opacity: 0; transform: scale(0.6) translateY(50px); }
+	to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes barbarian-screen-shake
+{
+	0% { transform: translate(0, 0); }
+	20% { transform: translate(-3px, 2px); }
+	40% { transform: translate(3px, -2px); }
+	60% { transform: translate(-3px, -1px); }
+	80% { transform: translate(2px, 3px); }
+	100% { transform: translate(1px, -2px); }
+}
+
+@keyframes barbarian-portrait-in
+{
+	from { opacity: 0; transform: translate(-50%, -30%) scale(0.6) rotate(-15deg); }
+	to { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(-4deg); }
+}
+
+@keyframes barbarian-rage-pulse
+{
+	0%, 100% { opacity: 0.4; }
+	50% { opacity: 0.8; }
+}
+
+@keyframes barbarian-flicker
+{
+	0% { filter: brightness(1); }
+	100% { filter: brightness(1.2); }
+}
+
+@keyframes barbarian-pulse
+{
+	0%, 100% { box-shadow: 0 0 40px #ff2a2a; }
+	50% { box-shadow: 0 0 65px #ff5c5c, 0 0 25px #ff2a2a; }
+}
+
+@keyframes barbarian-text-slam
+{
+	0% { transform: translate(-50%, -50%) scale(3.5) rotate(-15deg); opacity: 0; }
+	60% { transform: translate(-50%, -50%) scale(0.9) rotate(2deg); }
+	100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes bard-bg-wave
+{
+	0% { background-position: 0% 50%; }
+	100% { background-position: 100% 50%; }
+}
+
+@keyframes bard-staff-slide
+{
+	from { transform: translateY(-50%) rotate(-3deg) translateX(-100%); opacity: 0; }
+	to { transform: translateY(-50%) rotate(-3deg) translateX(0); opacity: 1; }
+}
+
+@keyframes bard-portrait-in
+{
+	from { opacity: 0; right: -400px; transform: translateY(-50%) rotate(-180deg); }
+	to { opacity: 1; right: 12%; transform: translateY(-50%) rotate(0deg); }
+}
+
+@keyframes bard-vinyl-spin
+{
+	from { transform: translateY(-50%) rotate(0deg); }
+	to { transform: translateY(-50%) rotate(360deg); }
+}
+
+@keyframes bard-notes-3d
+{
+	0%
+	{
+		transform: translateY(0) translateX(0) rotateX(0deg) rotateY(0deg) scale(0.8);
+		opacity: 0;
+	}
+	10% { opacity: 0.7; }
+	90% { opacity: 0.7; }
+	100%
+	{
+		transform: translateY(-800px) translateX(80px) rotateX(180deg) rotateY(360deg) scale(1.1);
+		opacity: 0;
+	}
+}
+
+@keyframes cleric-sunburst-rotate
+{
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+
+@keyframes cleric-pillar-beam
+{
+	from { transform: translateX(-50%) scaleX(0); opacity: 0; }
+	to { transform: translateX(-50%) scaleX(1); opacity: 1; }
+}
+
+@keyframes cleric-portrait-in
+{
+	from { opacity: 0; transform: translate(-50%, -50%) scale(0.6) translateY(-50px); }
+	to { opacity: 1; transform: translate(-50%, -50%) scale(1) translateY(0); }
+}
+
+@keyframes cleric-halo-ring
+{
+	0% { transform: scale(0.98); opacity: 0.3; }
+	100% { transform: scale(1.04); opacity: 0.8; }
+}
+
+@keyframes cleric-dust-rise
+{
+	0% { transform: translateY(0) scale(0.5); opacity: 0; }
+	20% { opacity: 0.8; }
+	80% { opacity: 0.8; }
+	100% { transform: translateY(-700px) scale(1.2); opacity: 0; }
+}
+
+@keyframes druid-portrait-in
+{
+	from { opacity: 0; transform: translateY(-50%) translateX(-150px) scale(0.8); }
+	to { opacity: 1; transform: translateY(-50%) translateX(0) scale(1); }
+}
+
+@keyframes druid-scroll-unfurl
+{
+	from { transform: translateY(-50%) scaleX(0); opacity: 0; }
+	to { transform: translateY(-50%) scaleX(1); opacity: 1; }
+}
+
+@keyframes druid-organic-wobble
+{
+	0% { border-radius: 35% 65% 60% 40% / 50% 45% 55% 50%; }
+	100% { border-radius: 55% 45% 40% 60% / 45% 60% 50% 55%; }
+}
+
+@keyframes druid-leaves-fall
+{
+	0%
+	{
+		transform: translateY(0) translateX(0) rotate(0deg);
+		opacity: 0;
+	}
+	15% { opacity: 0.7; }
+	85% { opacity: 0.7; }
+	100%
+	{
+		transform: translateY(850px) translateX(80px) rotate(480deg);
+		opacity: 0;
+	}
+}
+
+@keyframes fighter-slash-bar-in
+{
+	from { transform: translate(-50%, -50%) rotate(-20deg) scaleX(0); }
+	to { transform: translate(-50%, -50%) rotate(-20deg) scaleX(1); }
+}
+
+@keyframes fighter-portrait-in
+{
+	from { opacity: 0; transform: translateY(-50%) translateX(-200px) skewX(-15deg); }
+	to { opacity: 1; transform: translateY(-50%) translateX(0) skewX(-15deg); }
+}
+
+@keyframes fighter-metallic-slash
+{
+	0%
+	{
+		top: -50%;
+		left: -50%;
+		opacity: 0;
+	}
+	20%
+	{
+		opacity: 1;
+	}
+	80%
+	{
+		opacity: 1;
+	}
+	100%
+	{
+		top: 150%;
+		left: 150%;
+		opacity: 0;
+	}
+}
+
+@keyframes warlock-crack-in
+{
+	from { transform: translateX(-50%) rotate(35deg) scaleY(0); opacity: 0; }
+	to { transform: translateX(-50%) rotate(35deg) scaleY(1); opacity: 1; }
+}
+
+@keyframes warlock-portrait-in
+{
+	from { opacity: 0; transform: scale(0.7) translate(100px, -50px); }
+	to { opacity: 1; transform: scale(1) translate(0, 0); }
+}
+
+@keyframes warlock-void-glitch
+{
+	0%, 95%, 100%
+	{
+		transform: skew(0deg) scale(1);
+		filter: hue-rotate(0deg) contrast(1);
+	}
+	96%
+	{
+		transform: skew(-8deg) scale(1.04);
+		filter: hue-rotate(90deg) contrast(1.4);
+	}
+	98%
+	{
+		transform: skew(8deg) scale(0.97);
+		filter: hue-rotate(-90deg) brightness(1.2);
+	}
+}
+
+@keyframes wizard-stars-drift
+{
+	from { background-position: 0 0, 40px 60px; }
+	to { background-position: 550px 1100px, 390px 760px; }
+}
+
+@keyframes wizard-rune-spin
+{
+	from { transform: translate(-50%, -50%) rotate(0deg); }
+	to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes wizard-rune-spin-reverse
+{
+	from { transform: translate(-50%, -50%) rotate(360deg); }
+	to { transform: translate(-50%, -50%) rotate(0deg); }
+}
+
+@keyframes wizard-portrait-in
+{
+	from { opacity: 0; transform: translate(-50%, -50%) scale(0.5) translateY(50px); }
+	to { opacity: 1; transform: translate(-50%, -50%) scale(0.8) translateY(0); }
+}
+
+@keyframes wizard-ward-appear
+{
+	from { opacity: 0; transform: scale(0.9); }
+	to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes wizard-scroll-in
+{
+	from { opacity: 0; transform: translateY(-50%) scale(0.8); }
+	to { opacity: 1; transform: translateY(-50%) scale(1); }
+}
+
+@keyframes druid-vine-grow
+{
+	from { transform: scaleX(0); }
+	to { transform: scaleX(1); }
+}
+
+@keyframes druid-leaf-fade
+{
+	from { opacity: 0; transform: scale(0.5); }
+	to { opacity: 1; transform: scale(1); }
 }
