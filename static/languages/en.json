@@ -67,6 +67,14 @@
 			"ignore-multi-dice": {
 				"name": "Ignore Large Dice Pools",
 				"hint": "If enabled, dice pools with more than 2 d20s (e.g., 10d20) will not trigger automatic animations."
+			},
+			"screen-shake": {
+				"name": "Screen Shake & Zoom",
+				"hint": "Briefly shake and zoom the game canvas during critical animations."
+			},
+			"debug-mode": {
+				"name": "Debug Mode",
+				"hint": "Enable browser console logging for animation and hook events."
 			}
 		},
 		"actor-config": {

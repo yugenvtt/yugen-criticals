@@ -138,8 +138,16 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 		return; 
 	}
 
-	/** 3. trigger animation and broadcast **/
-	void CriticalAnimation.show_animation( actor, type, '' );
+	/** 3. trigger animation locally **/
+	const is_dsn_active = ( game as any ).modules.get( 'dice-so-nice' )?.active;
+	if ( is_dsn_active && event_id ) 
+	{
+		CriticalAnimation.queue_animation( event_id, actor, type, '' );
+	}
+	else 
+	{
+		void CriticalAnimation.show_animation( actor, type, '' );
+	}
 
 	if ( !user_only && is_natural ) 
 	{
@@ -147,7 +155,8 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 			actor_uuid: actor.uuid,
 			type: type,
 			damage_type: '',
-			sender_id: ( game as any ).user.id
+			sender_id: ( game as any ).user.id,
+			roll_id: event_id
 		};
 
 		( game as any ).socket.emit( 'module.yugen-criticals', socket_data );

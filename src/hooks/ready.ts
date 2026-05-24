@@ -4,6 +4,8 @@
  **/
 
 import { ActorConfigApp } from '../module/actor-config.js';
+import { CriticalAnimation } from '../module/critical-animation.js';
+import { debug_log } from '../module/utils.js';
 
 export const ready_hook = ( ) => 
 {
@@ -54,6 +56,40 @@ else
 		}
 	}
 }`
+			} );
+		}
+
+		/** register Dice So Nice hook if active **/
+		if ( ( game as any ).modules.get( 'dice-so-nice' )?.active ) 
+		{
+			Hooks.on( 'diceSoNiceRollComplete', ( message_id : string ) => 
+			{
+				debug_log( 'diceSoNiceRollComplete hook fired:', { message_id } );
+				const message = ( game as any ).messages.get( message_id );
+				if ( !message ) 
+				{
+					debug_log( 'message not found for ID:', message_id );
+					return;
+				}
+
+				/** check if the message ID itself is queued **/
+				if ( CriticalAnimation.has_pending( message_id ) ) 
+				{
+					debug_log( 'pending animation matched message ID:', message_id );
+					CriticalAnimation.trigger_pending( message_id );
+					return;
+				}
+
+				/** check if any of the rolls in the message are queued **/
+				for ( const roll of message.rolls || [ ] ) 
+				{
+					const roll_id = roll._id || roll.id || '';
+					if ( roll_id && CriticalAnimation.has_pending( roll_id ) ) 
+					{
+						debug_log( 'pending animation matched roll ID:', roll_id );
+						CriticalAnimation.trigger_pending( roll_id );
+					}
+				}
 			} );
 		}
 	} );

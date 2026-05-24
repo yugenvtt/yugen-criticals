@@ -1715,3 +1715,56 @@
 	from { opacity: 0; transform: scale(0.5); }
 	to { opacity: 1; transform: scale(1); }
 }
+
+#board.yugen-board-shake
+{
+	animation: yugen-canvas-shake-zoom 1.2s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes yugen-canvas-shake-zoom
+{
+	0%
+	{
+		transform: scale(1) translate(0, 0);
+	}
+	10%
+	{
+		transform: scale(1.03) translate(-4px, 3px) rotate(-0.5deg);
+	}
+	20%
+	{
+		transform: scale(1.03) translate(4px, -3px) rotate(0.5deg);
+	}
+	30%
+	{
+		transform: scale(1.03) translate(-6px, 1px) rotate(-0.2deg);
+	}
+	40%
+	{
+		transform: scale(1.03) translate(6px, -1px) rotate(0.2deg);
+	}
+	50%
+	{
+		transform: scale(1.02) translate(-3px, 3px) rotate(-0.1deg);
+	}
+	60%
+	{
+		transform: scale(1.02) translate(3px, -3px) rotate(0.1deg);
+	}
+	70%
+	{
+		transform: scale(1.01) translate(-1px, 1px);
+	}
+	80%
+	{
+		transform: scale(1.01) translate(1px, -1px);
+	}
+	90%
+	{
+		transform: scale(1.005) translate(0, 0);
+	}
+	100%
+	{
+		transform: scale(1) translate(0, 0);
+	}
+}

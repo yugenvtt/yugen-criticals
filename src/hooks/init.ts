@@ -31,7 +31,7 @@ export const init_hook = ( ) =>
 
 
 		/** register socket listener early (in init) for v14 stability **/
-		( game as any ).socket.on( 'module.yugen-criticals', async ( data: any ) => 
+		( game as any ).socket.on( 'module.yugen-criticals', async ( data : any ) => 
 		{
 			/** ignore events emitted by the current user to prevent double-triggering **/
 			if ( data?.sender_id === ( game as any ).user.id ) 
@@ -49,7 +49,15 @@ export const init_hook = ( ) =>
 			
 			if ( actor ) 
 			{
-				void CriticalAnimation.show_animation( actor, data.type || 'critical', data.damage_type || '' );
+				const is_dsn_active = ( game as any ).modules.get( 'dice-so-nice' )?.active;
+				if ( is_dsn_active && data.roll_id ) 
+				{
+					CriticalAnimation.queue_animation( data.roll_id, actor, data.type || 'critical', data.damage_type || '' );
+				}
+				else 
+				{
+					void CriticalAnimation.show_animation( actor, data.type || 'critical', data.damage_type || '' );
+				}
 			}
 		} );
 	} );
@@ -246,5 +254,27 @@ const register_settings = ( ) =>
 		config: true,
 		type: Boolean,
 		default: true
+	} );
+
+	/** user setting: enable screen shake and zoom **/
+	settings.register( 'yugen-criticals', 'screen-shake', 
+	{
+		name: 'yugen-criticals.settings.screen-shake.name',
+		hint: 'yugen-criticals.settings.screen-shake.hint',
+		scope: 'client',
+		config: true,
+		type: Boolean,
+		default: true
+	} );
+
+	/** user setting: enable debug mode **/
+	settings.register( 'yugen-criticals', 'debug-mode', 
+	{
+		name: 'yugen-criticals.settings.debug-mode.name',
+		hint: 'yugen-criticals.settings.debug-mode.hint',
+		scope: 'client',
+		config: true,
+		type: Boolean,
+		default: false
 	} );
 };

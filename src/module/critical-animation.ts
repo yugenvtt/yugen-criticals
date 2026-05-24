@@ -3,8 +3,55 @@
  * handles the fire emblem style critical animation overlay with enhanced cinematic features.
  **/
 
+import { debug_log } from './utils.js';
+
 export class CriticalAnimation 
 {
+	private static _pending = new Map<string, { actor : Actor; type : 'critical' | 'fumble'; damage_type : string }>( );
+
+	/**
+	 * queues a critical/fumble animation waiting for dice rolling completion
+	 **/
+	public static queue_animation( id : string, actor : Actor, type : 'critical' | 'fumble', damage_type : string ) : void 
+	{
+		this._pending.set( id, { actor, type, damage_type } );
+
+		/** safety cleanup fallback: trigger after 5 seconds if not resolved to prevent memory leak **/
+		setTimeout( ( ) => 
+		{
+			if ( this._pending.has( id ) ) 
+			{
+				const data = this._pending.get( id );
+				this._pending.delete( id );
+				if ( data ) 
+				{
+					void this.show_animation( data.actor, data.type, data.damage_type );
+				}
+			}
+		}, 5000 );
+	}
+
+	/**
+	 * checks if an animation is pending for a given ID
+	 **/
+	public static has_pending( id : string ) : boolean 
+	{
+		return this._pending.has( id );
+	}
+
+	/**
+	 * triggers a pending animation by its ID
+	 **/
+	public static trigger_pending( id : string ) : void 
+	{
+		const data = this._pending.get( id );
+		if ( data ) 
+		{
+			this._pending.delete( id );
+			void this.show_animation( data.actor, data.type, data.damage_type );
+		}
+	}
+
 	/**
 	 * displays the critical animation for a given actor
 	 **/
@@ -21,6 +68,12 @@ export class CriticalAnimation
 		{
 			return;
 		}
+
+		debug_log( 'showing animation:', {
+			actor: actor.name,
+			type: type,
+			damage_type: damage_type
+		} );
 
 		/** retrieve settings and localization **/
 		const settings = ( game as any ).settings;
@@ -291,6 +344,21 @@ export class CriticalAnimation
 		}
 
 		document.body.appendChild( overlay );
+
+		/** trigger screen shake and zoom if enabled **/
+		const is_shake_enabled = settings.get( 'yugen-criticals', 'screen-shake' ) ?? true;
+		if ( is_shake_enabled ) 
+		{
+			const board = document.getElementById( 'board' );
+			if ( board ) 
+			{
+				board.classList.add( 'yugen-board-shake' );
+				setTimeout( ( ) => 
+				{
+					board.classList.remove( 'yugen-board-shake' );
+				}, 1200 );
+			}
+		}
 
 		/** remove the overlay after the animation completes **/
 		setTimeout( ( ) => 

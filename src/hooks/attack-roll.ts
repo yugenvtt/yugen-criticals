@@ -1,266 +1,182 @@
 /**
  * @file src/hooks/attack-roll.ts
- * hooks into dnd5e attack rolls to trigger animations.
+ * hooks into dnd5e chat messages to trigger critical hit animations.
+ * customized by yugen. to integrate with the activities framework and dice so nice.
  **/
 
 import { CriticalAnimation } from '../module/critical-animation.js';
+import { debug_log } from '../module/utils.js';
 
 export const attack_roll_hook = ( ) => 
 {
-	/** listen for attack rolls in the dnd5e system (standard hook) **/
-	Hooks.on( 'dnd5e.rollAttack', ( ...args : any[] ) => 
+	/** listen for chat messages to capture rolls that have been generated **/
+	Hooks.on( 'createChatMessage', ( message : any ) => 
 	{
-		handle_hook_params( args );
-	} );
+		debug_log( 'createChatMessage hook triggered:', {
+			id: message.id,
+			has_rolls: !!message.rolls,
+			rolls_count: message.rolls?.length || 0
+		} );
 
-	/** listen for post-roll attack in newer dnd5e versions **/
-	Hooks.on( 'dnd5e.postRollAttack', ( ...args : any[] ) => 
-	{
-		handle_hook_params( args );
-	} );
-};
-
-/**
- * deep-resolves an actor from an unknown object or property
- **/
-const resolve_actor = ( obj : any ) : any => 
-{
-	if ( !obj ) 
-	{
-		return null;
-	}
-
-	/** 1. direct document check **/
-	if ( obj.documentName === 'Actor' ) 
-	{
-		return obj;
-	}
-
-	/** 2. item parent resolution **/
-	if ( obj.documentName === 'Item' ) 
-	{
-		return obj.actor || obj.parent;
-	}
-
-	/** 3. check common properties **/
-	if ( obj.actor?.documentName === 'Actor' ) 
-	{
-		return obj.actor;
-	}
-
-	if ( obj.parent?.documentName === 'Actor' ) 
-	{
-		return obj.parent;
-	}
-
-	if ( obj.item?.actor ) 
-	{
-		return obj.item.actor;
-	}
-
-	/** 4. check for v14 specific roll config properties **/
-	if ( obj.subject?.actor ) 
-	{
-		return obj.subject.actor;
-	}
-
-	if ( obj.subject?.documentName === 'Actor' ) 
-	{
-		return obj.subject;
-	}
-
-	/** 5. check for uuid-style references **/
-	const uuid = obj.uuid || obj.actorUuid || obj.itemUuid || obj.options?.itemUuid || obj.options?.actorUuid;
-	
-	if ( typeof uuid === 'string' ) 
-	{
-		const resolved : any = ( fromUuidSync as any )( uuid );
-		
-		if ( resolved ) 
+		if ( !message.rolls || message.rolls.length === 0 ) 
 		{
-			return resolved.documentName === 'Actor' ? resolved : ( resolved.actor || resolved.parent );
+			return;
 		}
-	}
 
-	return null;
+		/** determine if the message is a valid attack roll **/
+		const is_attack = message.flags?.dnd5e?.roll?.type === 'attack';
+		const always_crit = ( game as any ).settings.get( 'yugen-criticals', 'always-show-crit' );
+		const always_fumble = ( game as any ).settings.get( 'yugen-criticals', 'always-show-fumble' );
+
+		/** only process if it is a valid attack roll, or if always show crit/fumble is active on any roll **/
+		if ( !is_attack && !always_crit && !always_fumble ) 
+		{
+			return;
+		}
+
+		/** resolve the actor from the message **/
+		const actor = message.actor || ( message.speaker?.actor ? ( game as any ).actors.get( message.speaker.actor ) : null );
+		if ( !actor ) 
+		{
+			return;
+		}
+
+		const ignore_discarded = ( game as any ).settings.get( 'yugen-criticals', 'ignore-discarded-dice' );
+		const ignore_multi = ( game as any ).settings.get( 'yugen-criticals', 'ignore-multi-dice' );
+		const user_only = ( game as any ).settings.get( 'yugen-criticals', 'user-only' );
+
+		let { type, damage_type } = check_roll_result( message.rolls, { ignore_discarded, ignore_multi } );
+
+		const is_natural = type !== null;
+
+		/** force animation type based on local user settings if no natural result was found **/
+		if ( !type ) 
+		{
+			if ( always_crit ) 
+			{
+				type = 'critical';
+			}
+			else if ( always_fumble ) 
+			{
+				type = 'fumble';
+			}
+		}
+		/** if both are on, natural results still take precedence **/
+		else if ( type === 'fumble' && always_crit ) 
+		{
+			type = 'fumble';
+		}
+		else if ( type === 'critical' && always_fumble ) 
+		{
+			type = 'critical';
+		}
+
+		if ( !type ) 
+		{
+			return;
+		}
+
+		/** attempt to resolve damage type from the rolled item **/
+		const item_uuid = message.flags?.dnd5e?.roll?.itemUuid || message.flags?.dnd5e?.itemUuid;
+		if ( typeof item_uuid === 'string' ) 
+		{
+			const item : any = ( fromUuidSync as any )( item_uuid );
+			if ( item ) 
+			{
+				damage_type = item.system?.damage?.parts?.[ 0 ]?.[ 1 ] || damage_type;
+			}
+		}
+
+		debug_log( 'triggering local animation:', {
+			actor: actor.name,
+			type,
+			damage_type
+		} );
+
+		/** trigger locally for the rolling player **/
+		const is_dsn_active = ( game as any ).modules.get( 'dice-so-nice' )?.active;
+		if ( is_dsn_active ) 
+		{
+			CriticalAnimation.queue_animation( message.id, actor, type, damage_type );
+		}
+		else 
+		{
+			void CriticalAnimation.show_animation( actor, type, damage_type );
+		}
+
+		/** broadcast to other clients **/
+		if ( !user_only && is_natural ) 
+		{
+			const socket_data = {
+				actor_uuid: actor.uuid,
+				type: type,
+				damage_type: damage_type,
+				sender_id: ( game as any ).user.id,
+				roll_id: message.id
+			};
+
+			( game as any ).socket.emit( 'module.yugen-criticals', socket_data );
+		}
+	} );
 };
-
-/** track the last processed roll id and time to prevent double-triggering **/
-let last_roll_id = '';
-let last_trigger_time = 0;
 
 /**
  * checks if any of the provided arguments represent a critical hit or a fumble
  **/
-const check_roll_result = ( args : any[], options : { ignore_discarded : boolean, ignore_multi : boolean } ) : { type : 'critical' | 'fumble' | null, damage_type : string, roll_id : string } => 
+const check_roll_result = ( rolls : any[], options : { ignore_discarded : boolean; ignore_multi : boolean } ) : { type : 'critical' | 'fumble' | null; damage_type : string } => 
 {
 	let damage_type = '';
-	let roll_id = '';
 
-	/** flatten arguments to handle arrays of objects **/
-	const flattened_args = args.flat( );
-
-	for ( const arg of flattened_args ) 
+	for ( const roll of rolls ) 
 	{
-		if ( !arg ) 
-		{ 
-			continue; 
-		}
-
-		/** try to extract damage type from item **/
-		if ( arg.documentName === 'Item' || arg.item?.documentName === 'Item' ) 
+		if ( roll && typeof roll === 'object' && ( roll.constructor.name === 'Roll' || roll.dice ) ) 
 		{
-			const item = arg.documentName === 'Item' ? arg : arg.item;
-			damage_type = item.system.damage?.parts?.[ 0 ]?.[ 1 ] || '';
-		}
-
-		/** check for the roll object itself **/
-		const rolls = Array.isArray( arg ) ? arg : [ arg ];
-		
-		for ( const roll of rolls ) 
-		{
-			if ( roll && typeof roll === 'object' && ( roll.constructor.name === 'Roll' || roll.dice ) ) 
-			{
-				/** track roll id for debouncing (handles v14 document IDs and roll options) **/
-				roll_id = roll._id || roll.id || roll.options?.rollId || '';
-
-				/** 
-				 * dnd5e v3/v4 uses isCritical/isFumble properties.
-				 * we check for strict boolean true to avoid threshold traps.
-				 **/
-				if ( roll.isCritical === true ) 
-				{ 
-					return { type: 'critical', damage_type, roll_id }; 
-				}
-				if ( roll.isFumble === true ) 
-				{ 
-					return { type: 'fumble', damage_type, roll_id }; 
-				}
-
-				/** fallback: check dice results for natural 20/1 **/
-				const d20 = roll.dice?.find( ( d : any ) => d.faces === 20 );
-				if ( d20 ) 
-				{
-					/** skip check if it's a massive dice pool and we're ignoring them **/
-					if ( options.ignore_multi && d20.results.length > 2 ) 
-					{ 
-						continue; 
-					}
-
-					/** filter for active results if ignoring discarded dice **/
-					const valid_results = options.ignore_discarded 
-						? d20.results.filter( ( r : any ) => r.active !== false && r.discarded !== true )
-						: d20.results;
-
-					if ( valid_results.some( ( r : any ) => r.result === 20 ) ) 
-					{ 
-						return { type: 'critical', damage_type, roll_id }; 
-					}
-					if ( valid_results.some( ( r : any ) => r.result === 1 ) ) 
-					{ 
-						return { type: 'fumble', damage_type, roll_id }; 
-					}
-				}
-			}
-		}
-
-		/** 
-		 * check for explicit boolean flags. 
-		 * we MUST ignore numbers here as they represent thresholds, not results.
-		 **/
-		if ( arg.criticalSuccess === true ) 
-		{ 
-			return { type: 'critical', damage_type, roll_id }; 
-		}
-		if ( arg.fumble === true ) 
-		{ 
-			return { type: 'fumble', damage_type, roll_id }; 
-		}
-	}
-
-	return { type: null, damage_type, roll_id };
-};
-
-/**
- * iterates through arguments to find a valid actor and triggers if critical/fumble
- **/
-const handle_hook_params = ( args : any[] ) => 
-{
-	const always_crit = ( game as any ).settings.get( 'yugen-criticals', 'always-show-crit' );
-	const always_fumble = ( game as any ).settings.get( 'yugen-criticals', 'always-show-fumble' );
-	const user_only = ( game as any ).settings.get( 'yugen-criticals', 'user-only' );
-	const ignore_discarded = ( game as any ).settings.get( 'yugen-criticals', 'ignore-discarded-dice' );
-	const ignore_multi = ( game as any ).settings.get( 'yugen-criticals', 'ignore-multi-dice' );
-
-	let { type, damage_type, roll_id } = check_roll_result( args, { ignore_discarded, ignore_multi } );
-
-	const now = Date.now( );
-
-	/** handle natural results first **/
-	const is_natural = type !== null;
-
-	/** force animation type based on local user settings if no natural result was found **/
-	if ( !type ) 
-	{
-		if ( always_crit ) 
-		{
-			type = 'critical';
-		}
-		else if ( always_fumble ) 
-		{
-			type = 'fumble';
-		}
-	}
-	/** if both are on, natural results still take precedence **/
-	else if ( type === 'fumble' && always_crit ) 
-	{
-		type = 'fumble';
-	}
-	else if ( type === 'critical' && always_fumble ) 
-	{
-		type = 'critical';
-	}
-
-	if ( !type ) 
-	{
-		return;
-	}
-
-	/** flatten to handle the nested array dnd5e often sends **/
-	const flattened_args = args.flat( );
-
-	for ( const arg of flattened_args ) 
-	{
-		if ( !arg ) 
-		{
-			continue;
-		}
-
-		let actor = resolve_actor( arg );
-		
-		if ( actor && ( actor.documentName === 'Actor' || actor instanceof ( window as any ).Actor ) ) 
-		{
-			/** trigger locally for the rolling player immediately **/
-			void CriticalAnimation.show_animation( actor, type, damage_type );
+			debug_log( 'checking roll result terms:', {
+				formula: roll.formula,
+				total: roll.total,
+				is_critical: roll.isCritical,
+				is_fumble: roll.isFumble
+			} );
 
 			/** 
-			 * broadcast to others only if:
-			 * 1. user-only mode is OFF
-			 * 2. and it was a NATURAL crit/fumble (we don't spam local 'always show' settings to others)
+			 * dnd5e v3/v4 uses isCritical/isFumble properties.
+			 * we check for strict boolean true to avoid threshold traps.
 			 **/
-			if ( !user_only && is_natural ) 
-			{
-				const socket_data = {
-					actor_uuid: actor.uuid,
-					type: type,
-					damage_type: damage_type,
-					sender_id: ( game as any ).user.id
-				};
-
-				( game as any ).socket.emit( 'module.yugen-criticals', socket_data );
+			if ( roll.isCritical === true ) 
+			{ 
+				return { type: 'critical', damage_type }; 
 			}
-			
-			return;
+			if ( roll.isFumble === true ) 
+			{ 
+				return { type: 'fumble', damage_type }; 
+			}
+
+			/** fallback: check dice results for natural 20/1 **/
+			const d20 = roll.dice?.find( ( d : any ) => d.faces === 20 );
+			if ( d20 ) 
+			{
+				/** skip check if it's a massive dice pool and we're ignoring them **/
+				if ( options.ignore_multi && d20.results.length > 2 ) 
+				{ 
+					continue; 
+				}
+
+				/** filter for active results if ignoring discarded dice **/
+				const valid_results = options.ignore_discarded 
+					? d20.results.filter( ( r : any ) => r.active !== false && r.discarded !== true )
+					: d20.results;
+
+				if ( valid_results.some( ( r : any ) => r.result === 20 ) ) 
+				{ 
+					return { type: 'critical', damage_type }; 
+				}
+				if ( valid_results.some( ( r : any ) => r.result === 1 ) ) 
+				{ 
+					return { type: 'fumble', damage_type }; 
+				}
+			}
 		}
 	}
+
+	return { type: null, damage_type };
 };
