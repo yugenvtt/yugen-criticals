@@ -23,12 +23,33 @@ export const attack_roll_hook = ( ) =>
 			return;
 		}
 
-		/** determine if the message is a valid attack roll **/
+		/**
+		 * ignore initiative rolls to prevent yugen-criticals from incorrectly playing critical hit animations during combat entry
+		 **/
+		const is_initiative = message.flags?.dnd5e?.roll?.type === 'initiative';
+		if ( is_initiative ) 
+		{
+			return;
+		}
+
+		/**
+		 * determine if the message is a valid attack roll
+		 **/
 		const is_attack = message.flags?.dnd5e?.roll?.type === 'attack';
+		
+		/**
+		 * retrieve the client setting for always showing criticals
+		 **/
 		const always_crit = ( game as any ).settings.get( 'yugen-criticals', 'always-show-crit' );
+		
+		/**
+		 * retrieve the client setting for always showing fumbles
+		 **/
 		const always_fumble = ( game as any ).settings.get( 'yugen-criticals', 'always-show-fumble' );
 
-		/** only process if it is a valid attack roll, or if always show crit/fumble is active on any roll **/
+		/**
+		 * only process if it is a valid attack roll, or if always show crit/fumble is active on any roll
+		 **/
 		if ( !is_attack && !always_crit && !always_fumble ) 
 		{
 			return;

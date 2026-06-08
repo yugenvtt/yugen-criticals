@@ -46,6 +46,23 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 		return; 
 	}
 
+	/**
+	 * ignore pf2e initiative checks to prevent yugen-criticals from playing animations during combat entry, checking domains, options, and roll type metadata
+	 **/
+	const is_initiative = 
+		data?.type === 'initiative' || 
+		roll?.options?.type === 'initiative' ||
+		( Array.isArray( data?.domains ) && data.domains.includes( 'initiative' ) ) ||
+		( Array.isArray( roll?.options ) && roll.options.includes( 'initiative' ) ) ||
+		( roll?.options instanceof Set && roll.options.has( 'initiative' ) ) ||
+		( Array.isArray( data?.options ) && data.options.includes( 'initiative' ) ) ||
+		( data?.options instanceof Set && data.options.has( 'initiative' ) );
+
+	if ( is_initiative ) 
+	{
+		return;
+	}
+
 	const now = Date.now( );
 
 	/** debounce: resolve a unique ID for this event (roll ID or message ID) **/
