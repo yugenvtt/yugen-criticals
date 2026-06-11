@@ -1,0 +1,88 @@
+<form class="yugen-actor-config" autocomplete="off">
+	<header class="sheet-header">
+		<img class="profile-img" src="{{actor.img}}" title="{{actor.name}}" />
+		<div class="header-details">
+			<h1 class="charname">{{actor.name}}</h1>
+			<p class="subtitle">{{localize "yugen-criticals.actor-config.title"}}</p>
+		</div>
+	</header>
+
+	<div class="yugen-config-body">
+		<fieldset>
+			<legend>{{localize "yugen-criticals.actor-config.crit-quote-name"}}</legend>
+			<div class="form-group">
+				<p class="notes">{{localize "yugen-criticals.actor-config.crit-quote-hint"}}</p>
+				<textarea name="crit_quote" rows="4" placeholder="Enter quotes here...">{{crit_quote}}</textarea>
+			</div>
+		</fieldset>
+
+		<fieldset>
+			<legend>{{localize "yugen-criticals.actor-config.fumble-quote-name"}}</legend>
+			<div class="form-group">
+				<p class="notes">{{localize "yugen-criticals.actor-config.fumble-quote-hint"}}</p>
+				<textarea name="fumble_quote" rows="4" placeholder="Enter quotes here...">{{fumble_quote}}</textarea>
+			</div>
+		</fieldset>
+
+		<fieldset>
+			<legend>{{localize "yugen-criticals.actor-config.style-name"}}</legend>
+			<div class="form-group">
+				<p class="notes">{{localize "yugen-criticals.actor-config.style-hint"}}</p>
+				<select name="style_override">
+					<option value="default" {{#if (eq style_override "default")}}selected{{/if}}>{{localize "yugen-criticals.actor-config.style-choices.default"}}</option>
+					<option value="cinematic" {{#if (eq style_override "cinematic")}}selected{{/if}}>{{localize "yugen-criticals.actor-config.style-choices.cinematic"}}</option>
+					<option value="anime" {{#if (eq style_override "anime")}}selected{{/if}}>{{localize "yugen-criticals.actor-config.style-choices.anime"}}</option>
+					<option value="cyberpunk" {{#if (eq style_override "cyberpunk")}}selected{{/if}}>{{localize "yugen-criticals.actor-config.style-choices.cyberpunk"}}</option>
+					<option value="mk" {{#if (eq style_override "mk")}}selected{{/if}}>{{localize "yugen-criticals.actor-config.style-choices.mk"}}</option>
+					<option value="barbarian" {{#if (eq style_override "barbarian")}}selected{{/if}}>{{localize "yugen-criticals.actor-config.style-choices.barbarian"}}</option>
+					<option value="bard" {{#if (eq style_override "bard")}}selected{{/if}}>{{localize "yugen-criticals.actor-config.style-choices.bard"}}</option>
+					<option value="cleric" {{#if (eq style_override "cleric")}}selected{{/if}}>{{localize "yugen-criticals.actor-config.style-choices.cleric"}}</option>
+					<option value="druid" {{#if (eq style_override "druid")}}selected{{/if}}>{{localize "yugen-criticals.actor-config.style-choices.druid"}}</option>
+					<option value="fighter" {{#if (eq style_override "fighter")}}selected{{/if}}>{{localize "yugen-criticals.actor-config.style-choices.fighter"}}</option>
+					<option value="warlock" {{#if (eq style_override "warlock")}}selected{{/if}}>{{localize "yugen-criticals.actor-config.style-choices.warlock"}}</option>
+					<option value="wizard" {{#if (eq style_override "wizard")}}selected{{/if}}>{{localize "yugen-criticals.actor-config.style-choices.wizard"}}</option>
+				</select>
+			</div>
+		</fieldset>
+
+		<fieldset>
+			<legend>Sound Overrides</legend>
+			<div class="form-group">
+				<label>{{localize "yugen-criticals.actor-config.crit-sound-name"}}</label>
+				<p class="notes">{{localize "yugen-criticals.actor-config.crit-sound-hint"}}</p>
+				<div class="form-fields">
+					<input type="text" name="crit_sound" value="{{crit_sound}}" placeholder="sounds/crit.ogg">
+					<button type="button" class="yugen-sound-preview-btn" data-target="crit_sound" title="Preview Audio">
+						<i class="fas fa-play"></i>
+					</button>
+					<button type="button" class="yugen-file-picker-btn" data-target="crit_sound" title="Browse Audio">
+						<i class="fas fa-file-audio"></i>
+					</button>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label>{{localize "yugen-criticals.actor-config.fumble-sound-name"}}</label>
+				<p class="notes">{{localize "yugen-criticals.actor-config.fumble-sound-hint"}}</p>
+				<div class="form-fields">
+					<input type="text" name="fumble_sound" value="{{fumble_sound}}" placeholder="sounds/fumble.ogg">
+					<button type="button" class="yugen-sound-preview-btn" data-target="fumble_sound" title="Preview Audio">
+						<i class="fas fa-play"></i>
+					</button>
+					<button type="button" class="yugen-file-picker-btn" data-target="fumble_sound" title="Browse Audio">
+						<i class="fas fa-file-audio"></i>
+					</button>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+
+	<footer class="sheet-footer">
+		<button type="button" class="reset-defaults">
+			<i class="fas fa-undo"></i> {{localize "yugen-criticals.actor-config.reset"}}
+		</button>
+		<button type="submit" name="submit">
+			<i class="fas fa-save"></i> {{localize "yugen-criticals.actor-config.save"}}
+		</button>
+	</footer>
+</form>
