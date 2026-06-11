@@ -49,7 +49,7 @@ export const init_hook = ( ) =>
 			
 			if ( actor ) 
 			{
-				const is_dsn_active = ( game as any ).modules.get( 'dice-so-nice' )?.active;
+				const is_dsn_active = ( game as any ).modules.get( 'dice-so-nice' )?.active && ( game as any ).dice3d?.isEnabled?.( );
 				if ( is_dsn_active && data.roll_id ) 
 				{
 					CriticalAnimation.queue_animation( data.roll_id, actor, data.type || 'critical', data.damage_type || '' );

@@ -155,8 +155,10 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 		return; 
 	}
 
-	/** 3. trigger animation locally **/
-	const is_dsn_active = ( game as any ).modules.get( 'dice-so-nice' )?.active;
+	/**
+	 * trigger animation locally
+	 **/
+	const is_dsn_active = ( game as any ).modules.get( 'dice-so-nice' )?.active && ( game as any ).dice3d?.isEnabled?.( );
 	if ( is_dsn_active && event_id ) 
 	{
 		CriticalAnimation.queue_animation( event_id, actor, type, '' );
