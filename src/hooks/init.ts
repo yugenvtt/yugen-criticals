@@ -97,11 +97,21 @@ const register_settings = ( ) =>
 		scope: 'client',
 		config: true,
 		type: String,
-		choices: {
+		choices: 
+		{
 			'cinematic': 'yugen-criticals.settings.animation-style.choices.cinematic',
 			'anime': 'yugen-criticals.settings.animation-style.choices.anime',
 			'cyberpunk': 'yugen-criticals.settings.animation-style.choices.cyberpunk',
-			'mk': 'yugen-criticals.settings.animation-style.choices.mk'
+			'mk': 'yugen-criticals.settings.animation-style.choices.mk',
+			'fire': 'yugen-criticals.settings.animation-style.choices.fire',
+			'impacts': 'yugen-criticals.settings.animation-style.choices.impacts',
+			'barbarian': 'yugen-criticals.settings.animation-style.choices.barbarian',
+			'bard': 'yugen-criticals.settings.animation-style.choices.bard',
+			'cleric': 'yugen-criticals.settings.animation-style.choices.cleric',
+			'druid': 'yugen-criticals.settings.animation-style.choices.druid',
+			'fighter': 'yugen-criticals.settings.animation-style.choices.fighter',
+			'warlock': 'yugen-criticals.settings.animation-style.choices.warlock',
+			'wizard': 'yugen-criticals.settings.animation-style.choices.wizard'
 		},
 		default: 'cinematic'
 	} );
@@ -114,11 +124,21 @@ const register_settings = ( ) =>
 		scope: 'world',
 		config: true,
 		type: String,
-		choices: {
+		choices: 
+		{
 			'cinematic': 'yugen-criticals.settings.animation-style.choices.cinematic',
 			'anime': 'yugen-criticals.settings.animation-style.choices.anime',
 			'cyberpunk': 'yugen-criticals.settings.animation-style.choices.cyberpunk',
-			'mk': 'yugen-criticals.settings.animation-style.choices.mk'
+			'mk': 'yugen-criticals.settings.animation-style.choices.mk',
+			'fire': 'yugen-criticals.settings.animation-style.choices.fire',
+			'impacts': 'yugen-criticals.settings.animation-style.choices.impacts',
+			'barbarian': 'yugen-criticals.settings.animation-style.choices.barbarian',
+			'bard': 'yugen-criticals.settings.animation-style.choices.bard',
+			'cleric': 'yugen-criticals.settings.animation-style.choices.cleric',
+			'druid': 'yugen-criticals.settings.animation-style.choices.druid',
+			'fighter': 'yugen-criticals.settings.animation-style.choices.fighter',
+			'warlock': 'yugen-criticals.settings.animation-style.choices.warlock',
+			'wizard': 'yugen-criticals.settings.animation-style.choices.wizard'
 		},
 		default: 'cinematic'
 	} );

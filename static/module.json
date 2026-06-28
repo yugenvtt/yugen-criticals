@@ -2,8 +2,8 @@
 	"id": "yugen-criticals",
 	"name": "yugen-criticals",
 	"title": "yugen-criticals",
-	"description": "Fire Emblem style critical animations for Foundry VTT.",
-	"version": "1.0.6",
+	"description": "Combat and critical animations for Foundry VTT.",
+	"version": "1.0.7",
 	"authors": [
 		{
 			"name": "yugen."

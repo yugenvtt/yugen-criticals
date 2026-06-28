@@ -330,6 +330,158 @@ export class CriticalAnimation
 				</div>
 			`;
 		}
+		else if ( style === 'fire' )
+		{
+			overlay.innerHTML = `
+				<div class="yugen-fire-flash"></div>
+				<div class="yugen-class-bg yugen-fire"></div>
+				<div class="yugen-fire-corona">
+					<div class="yugen-fire-corona-layer-wrap outer">
+						<div class="yugen-fire-corona-layer" style="background-image: url('modules/yugen-criticals/assets/flames_corona.png');"></div>
+					</div>
+					<div class="yugen-fire-corona-layer-wrap inner">
+						<div class="yugen-fire-corona-layer" style="background-image: url('modules/yugen-criticals/assets/flames_corona.png');"></div>
+					</div>
+				</div>
+				<div class="yugen-fire-wrapper">
+					<div class="yugen-fire-shockwave"></div>
+					<div class="yugen-class-portrait yugen-fire" style="background-image: url('${ portrait_img }');">
+						<div class="yugen-fire-portrait-glow"></div>
+					</div>
+					<div class="yugen-fire-embers-radial">
+						<div class="yugen-fire-ember-radial er1"></div>
+						<div class="yugen-fire-ember-radial er2"></div>
+						<div class="yugen-fire-ember-radial er3"></div>
+						<div class="yugen-fire-ember-radial er4"></div>
+						<div class="yugen-fire-ember-radial er5"></div>
+						<div class="yugen-fire-ember-radial er6"></div>
+						<div class="yugen-fire-ember-radial er7"></div>
+						<div class="yugen-fire-ember-radial er8"></div>
+						<div class="yugen-fire-ember-radial er9"></div>
+						<div class="yugen-fire-ember-radial er10"></div>
+						<div class="yugen-fire-ember-radial er11"></div>
+						<div class="yugen-fire-ember-radial er12"></div>
+					</div>
+					<div class="yugen-fire-text-container">
+						<div class="yugen-fire-text">${ message.toUpperCase( ) }</div>
+					</div>
+				</div>
+			`;
+		}
+		else if ( style === 'impacts' )
+		{
+			overlay.innerHTML = `
+				<div class="yugen-class-bg yugen-impacts"></div>
+				<div class="yugen-impact-screen-flash f1"></div>
+				<div class="yugen-impact-screen-flash f2"></div>
+				<div class="yugen-impact-screen-flash f3"></div>
+				<div class="yugen-impact-screen-flash f4"></div>
+				
+				<div class="yugen-impact-hit h1">
+					<div class="yugen-impact-flash-local"></div>
+					<div class="yugen-impact-slash slash-1"></div>
+					<div class="yugen-impact-slash slash-2"></div>
+					<div class="yugen-impact-star"></div>
+					<div class="yugen-impact-shards">
+						<div class="yugen-impact-shard sh1"></div>
+						<div class="yugen-impact-shard sh2"></div>
+						<div class="yugen-impact-shard sh3"></div>
+						<div class="yugen-impact-shard sh4"></div>
+						<div class="yugen-impact-shard sh5"></div>
+						<div class="yugen-impact-shard sh6"></div>
+					</div>
+					<div class="yugen-impact-rays">
+						<div class="yugen-impact-ray r1"></div>
+						<div class="yugen-impact-ray r2"></div>
+						<div class="yugen-impact-ray r3"></div>
+						<div class="yugen-impact-ray r4"></div>
+						<div class="yugen-impact-ray r5"></div>
+						<div class="yugen-impact-ray r6"></div>
+						<div class="yugen-impact-ray r7"></div>
+						<div class="yugen-impact-ray r8"></div>
+					</div>
+				</div>
+				<div class="yugen-impact-hit h2">
+					<div class="yugen-impact-flash-local"></div>
+					<div class="yugen-impact-slash slash-1"></div>
+					<div class="yugen-impact-slash slash-2"></div>
+					<div class="yugen-impact-star"></div>
+					<div class="yugen-impact-shards">
+						<div class="yugen-impact-shard sh1"></div>
+						<div class="yugen-impact-shard sh2"></div>
+						<div class="yugen-impact-shard sh3"></div>
+						<div class="yugen-impact-shard sh4"></div>
+						<div class="yugen-impact-shard sh5"></div>
+						<div class="yugen-impact-shard sh6"></div>
+					</div>
+					<div class="yugen-impact-rays">
+						<div class="yugen-impact-ray r1"></div>
+						<div class="yugen-impact-ray r2"></div>
+						<div class="yugen-impact-ray r3"></div>
+						<div class="yugen-impact-ray r4"></div>
+						<div class="yugen-impact-ray r5"></div>
+						<div class="yugen-impact-ray r6"></div>
+						<div class="yugen-impact-ray r7"></div>
+						<div class="yugen-impact-ray r8"></div>
+					</div>
+				</div>
+				<div class="yugen-impact-hit h3">
+					<div class="yugen-impact-flash-local"></div>
+					<div class="yugen-impact-slash slash-1"></div>
+					<div class="yugen-impact-slash slash-2"></div>
+					<div class="yugen-impact-star"></div>
+					<div class="yugen-impact-shards">
+						<div class="yugen-impact-shard sh1"></div>
+						<div class="yugen-impact-shard sh2"></div>
+						<div class="yugen-impact-shard sh3"></div>
+						<div class="yugen-impact-shard sh4"></div>
+						<div class="yugen-impact-shard sh5"></div>
+						<div class="yugen-impact-shard sh6"></div>
+					</div>
+					<div class="yugen-impact-rays">
+						<div class="yugen-impact-ray r1"></div>
+						<div class="yugen-impact-ray r2"></div>
+						<div class="yugen-impact-ray r3"></div>
+						<div class="yugen-impact-ray r4"></div>
+						<div class="yugen-impact-ray r5"></div>
+						<div class="yugen-impact-ray r6"></div>
+						<div class="yugen-impact-ray r7"></div>
+						<div class="yugen-impact-ray r8"></div>
+					</div>
+				</div>
+				<div class="yugen-impact-hit h4">
+					<div class="yugen-impact-flash-local"></div>
+					<div class="yugen-impact-slash slash-1"></div>
+					<div class="yugen-impact-slash slash-2"></div>
+					<div class="yugen-impact-star"></div>
+					<div class="yugen-impact-shards">
+						<div class="yugen-impact-shard sh1"></div>
+						<div class="yugen-impact-shard sh2"></div>
+						<div class="yugen-impact-shard sh3"></div>
+						<div class="yugen-impact-shard sh4"></div>
+						<div class="yugen-impact-shard sh5"></div>
+						<div class="yugen-impact-shard sh6"></div>
+					</div>
+					<div class="yugen-impact-rays">
+						<div class="yugen-impact-ray r1"></div>
+						<div class="yugen-impact-ray r2"></div>
+						<div class="yugen-impact-ray r3"></div>
+						<div class="yugen-impact-ray r4"></div>
+						<div class="yugen-impact-ray r5"></div>
+						<div class="yugen-impact-ray r6"></div>
+						<div class="yugen-impact-ray r7"></div>
+						<div class="yugen-impact-ray r8"></div>
+					</div>
+				</div>
+				<div class="yugen-persona-cutin">
+					<div class="yugen-persona-stripe-bg"></div>
+					<div class="yugen-persona-stripe" style="background-image: url('${ portrait_img }');"></div>
+				</div>
+				<div class="yugen-persona-text-wrap">
+					<div class="yugen-persona-text">${ message.toUpperCase( ) }</div>
+				</div>
+			`;
+		}
 		else
 		{
 			/** default cinematic style **/

@@ -17,7 +17,16 @@
 					"cinematic": "Cinematic (Fire Emblem)",
 					"anime": "Anime (Speed Lines)",
 					"cyberpunk": "Cyberpunk (Neon Glitch)",
-					"mk": "Mortal Kombat (Blood Red)"
+					"mk": "Mortal Kombat (Blood Red)",
+					"fire": "Fire (Blazing)",
+					"impacts": "Impacts (Multi-Hit)",
+					"barbarian": "Barbarian",
+					"bard": "Bard",
+					"cleric": "Cleric/Paladin",
+					"druid": "Druid",
+					"fighter": "Fighter/Rogue",
+					"warlock": "Warlock",
+					"wizard": "Wizard/Sorcerer"
 				}
 			},
 			"global-animation-style": {
@@ -95,6 +104,8 @@
 				"anime": "Anime (Speed Lines)",
 				"cyberpunk": "Cyberpunk (Neon Glitch)",
 				"mk": "Mortal Kombat (Blood Red)",
+				"fire": "Fire (Blazing)",
+				"impacts": "Impacts (Multi-Hit)",
 				"barbarian": "Barbarian",
 				"bard": "Bard",
 				"cleric": "Cleric/Paladin",
