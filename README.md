@@ -91,6 +91,8 @@ The module automatically creates a script macro named `yugen-criticals config` i
 *   **Anime:** Speed lines and fast sliding overlay.
 *   **Cyberpunk:** Neon glitch and scanline overlay.
 *   **Mortal Kombat:** Blood red overlay.
+*   **Fire:** Blazing flames animation surrounding a vertical portrait card.
+*   **Impacts:** Multi-hit cyan energy slashes followed by a Persona-style close-up cut-in.
 *   **Barbarian:** Raging screen-shake and text slam.
 *   **Bard:** Musical staff sweep and spinning vinyl.
 *   **Cleric / Paladin:** Sunburst ring and holy pillar beam.
