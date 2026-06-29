@@ -84,6 +84,10 @@
 			"debug-mode": {
 				"name": "Debug Mode",
 				"hint": "Enable browser console logging for animation and hook events."
+			},
+			"hide-private-rolls": {
+				"name": "Hide Private Rolls",
+				"hint": "If enabled, critical animations will not show on player screens if they do not have permission to see the roll details."
 			}
 		},
 		"actor-config": {

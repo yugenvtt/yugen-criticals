@@ -30,10 +30,15 @@ export const init_hook = ( ) =>
 		pf2e_hooks( );
 
 
-		/** register socket listener early (in init) for v14 stability **/
+		/**
+		 * register socket listener early (in init) for v14 stability
+		 **/
 		( game as any ).socket.on( 'module.yugen-criticals', async ( data : any ) => 
 		{
-			/** ignore events emitted by the current user to prevent double-triggering **/
+			/**
+			 * ignore events emitted by the current user to prevent double-triggering
+			 **/
+			/** check current user id **/
 			if ( data?.sender_id === ( game as any ).user.id ) 
 			{ 
 				return; 
@@ -44,11 +49,56 @@ export const init_hook = ( ) =>
 				return; 
 			}
 
-			/** resolve the actor from UUID (handles unlinked tokens) **/
+			/**
+			 * verify that the socket event's associated chat message exists, is visible, and the recipient has permission to see the rolls (respecting secret/blind roll settings)
+			 **/
+			if ( data.roll_id ) 
+			{
+				/** retrieve chat message from messages collection **/
+				const message = ( game as any ).messages.get( data.roll_id );
+				if ( !message || !message.visible ) 
+				{
+					return;
+				}
+
+				/** check setting for hiding private rolls **/
+				const hide_private = ( game as any ).settings.get( 'yugen-criticals', 'hide-private-rolls' );
+				if ( hide_private ) 
+				{
+					const is_whisper = message.whisper && message.whisper.length > 0;
+					if ( is_whisper ) 
+					{
+						/** check current user id **/
+						const user_id = ( game as any ).user.id;
+						const is_recipient = message.whisper.includes( user_id );
+						const is_author = message.author?.id === user_id;
+						
+						/** check if current user is gm **/
+						const is_gm = ( game as any ).user.isGM;
+						if ( !is_recipient && !is_author && !is_gm ) 
+						{
+							return;
+						}
+					}
+
+					/** check if current user is gm **/
+					const is_gm = ( game as any ).user.isGM;
+					if ( message.blind && !is_gm ) 
+					{
+						return;
+					}
+				}
+			}
+
+			/**
+			 * resolve the actor from UUID (handles unlinked tokens)
+			 **/
+			/** resolve document by uuid **/
 			const actor = await ( fromUuid as any )( data.actor_uuid );
 			
 			if ( actor ) 
 			{
+				/** check if dice so nice module is active **/
 				const is_dsn_active = ( game as any ).modules.get( 'dice-so-nice' )?.active && ( game as any ).dice3d?.isEnabled?.( );
 				if ( is_dsn_active && data.roll_id ) 
 				{
@@ -296,5 +346,16 @@ const register_settings = ( ) =>
 		config: true,
 		type: Boolean,
 		default: false
+	} );
+
+	/** gm setting: hide private rolls **/
+	settings.register( 'yugen-criticals', 'hide-private-rolls', 
+	{
+		name: 'yugen-criticals.settings.hide-private-rolls.name',
+		hint: 'yugen-criticals.settings.hide-private-rolls.hint',
+		scope: 'world',
+		config: true,
+		type: Boolean,
+		default: true
 	} );
 };

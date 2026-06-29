@@ -1,25 +1,19 @@
 /**
  * @file src/hooks/pf2e.ts
  * hooks into pf2e attack rolls to trigger animations.
+ * customized by yugen. to integrate with the activities framework and dice so nice.
  **/
 
 import { CriticalAnimation } from '../module/critical-animation.js';
 
+/**
+ * consolidate pf2e animation triggers into a single chat message hook to resolve duplicate animations on damage rolls and respect secret roll permissions
+ **/
 export const pf2e_hooks = ( ) => 
 {
-	/** 1. check roll hook (standard pf2e checks) **/
-	Hooks.on( 'pf2e.rollCheck', ( roll : any ) => 
-	{
-		handle_pf2e_data( roll.options, roll.actor, roll );
-	} );
-
-	/** 2. damage roll hook (for critical damage) **/
-	Hooks.on( 'pf2e.damageRoll', ( roll : any ) => 
-	{
-		handle_pf2e_data( roll.options, roll.actor, roll );
-	} );
-
-	/** 3. chat message fallback (most reliable for degree of success) **/
+	/**
+	 * chat message hook
+	 **/
 	Hooks.on( 'createChatMessage', ( message : any ) => 
 	{
 		const context = message.flags.pf2e?.context;
@@ -32,18 +26,58 @@ export const pf2e_hooks = ( ) =>
 	} );
 };
 
-/** track the last processed event ID and time to prevent double-triggering **/
-let last_event_id = '';
-let last_trigger_time = 0;
-
 /**
  * handles pf2e specific roll data and triggers animations
  **/
 const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) => 
 {
-	if ( !actor ) 
+	if ( !actor || !roll ) 
 	{ 
 		return; 
+	}
+
+	/**
+	 * only process rolls created by the current user to prevent duplicate triggers across clients
+	 **/
+	if ( !roll.isAuthor ) 
+	{
+		return;
+	}
+
+	/**
+	 * ignore damage rolls to prevent double triggering on damage
+	 **/
+	const is_damage = typeof data?.type === 'string' && data.type.includes( 'damage' );
+	if ( is_damage ) 
+	{
+		return;
+	}
+
+	/** check setting for hiding private rolls **/
+	const hide_private = ( game as any ).settings.get( 'yugen-criticals', 'hide-private-rolls' );
+	if ( hide_private ) 
+	{
+		/**
+		 * check if the current user should see the message rolls (handles secret and blind rolls)
+		 **/
+		const is_whisper = roll.whisper && roll.whisper.length > 0;
+		if ( is_whisper ) 
+		{
+			const is_recipient = roll.whisper.includes( ( game as any ).user.id );
+			const is_author = roll.author?.id === ( game as any ).user.id;
+			if ( !is_recipient && !is_author && !( game as any ).user.isGM ) 
+			{
+				return;
+			}
+		}
+
+		/**
+		 * blind rolls should only be visible to gms
+		 **/
+		if ( roll.blind && !( game as any ).user.isGM ) 
+		{
+			return;
+		}
 	}
 
 	/**
@@ -63,26 +97,7 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 		return;
 	}
 
-	const now = Date.now( );
-
-	/** debounce: resolve a unique ID for this event (roll ID or message ID) **/
 	const event_id = roll?._id || roll?.id || data?.id || '';
-	
-	if ( event_id && event_id === last_event_id ) 
-	{
-		return;
-	}
-	
-	if ( !event_id && ( now - last_trigger_time < 100 ) ) 
-	{
-		return;
-	}
-
-	if ( event_id ) 
-	{
-		last_event_id = event_id;
-	}
-	last_trigger_time = now;
 
 	/** 
 	 * resolve degree of success from multiple potential locations.
@@ -91,7 +106,9 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 	let dos = data?.degreeOfSuccess ?? roll?.options?.degreeOfSuccess ?? roll?.degreeOfSuccess;
 	let outcome = data?.outcome ?? roll?.options?.outcome;
 	
-	/** fallback: if it's a message, check its internal rolls array **/
+	/**
+	 * fallback: if it is a message, check its internal rolls array
+	 **/
 	const message_rolls = roll?.rolls || data?.rolls || [ ];
 	if ( ( dos === undefined || dos === null ) && message_rolls.length > 0 ) 
 	{
@@ -99,10 +116,15 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 		dos = first_roll.options?.degreeOfSuccess ?? first_roll.degreeOfSuccess;
 		outcome = first_roll.options?.outcome;
 
-		/** ultimate fallback: check the actual dice faces for natural 1/20 **/
+		/**
+		 * ultimate fallback: check the actual dice faces for natural 1/20
+		 **/
 		if ( dos === undefined || dos === null ) 
 		{
-			const d20 = first_roll.dice?.find( ( d : any ) => d.faces === 20 );
+			const d20 = first_roll.dice?.find( ( d : any ) => 
+			{
+				return d.faces === 20;
+			} );
 			if ( d20 ) 
 			{
 				const face_value = d20.results[ 0 ]?.result;
@@ -118,14 +140,27 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 		}
 	}
 
+	/**
+	 * check setting for showing all critical hits
+	 **/
 	const always_crit = ( game as any ).settings.get( 'yugen-criticals', 'always-show-crit' );
+	
+	/**
+	 * check setting for showing all fumble failures
+	 **/
 	const always_fumble = ( game as any ).settings.get( 'yugen-criticals', 'always-show-fumble' );
+	
+	/**
+	 * check setting for showing animations locally only
+	 **/
 	const user_only = ( game as any ).settings.get( 'yugen-criticals', 'user-only' );
 
 	let type : 'critical' | 'fumble' | null = null;
 	let is_natural = false;
 
-	/** 1. check for natural outcomes (0=Crit Fail, 3=Crit Success) **/
+	/**
+	 * 1. check for natural outcomes (0=crit fail, 3=crit success)
+	 **/
 	if ( dos === 3 || outcome === 'criticalSuccess' ) 
 	{
 		type = 'critical';
@@ -137,7 +172,9 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 		is_natural = true;
 	}
 
-	/** 2. check for 'always show' overrides if no natural outcome was found **/
+	/**
+	 * 2. check for always show overrides if no natural outcome was found
+	 **/
 	if ( !type ) 
 	{
 		if ( always_crit ) 
@@ -156,7 +193,7 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 	}
 
 	/**
-	 * trigger animation locally
+	 * check if dice so nice module is active
 	 **/
 	const is_dsn_active = ( game as any ).modules.get( 'dice-so-nice' )?.active && ( game as any ).dice3d?.isEnabled?.( );
 	if ( is_dsn_active && event_id ) 
@@ -178,6 +215,9 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 			roll_id: event_id
 		};
 
+		/**
+		 * emit critical animation socket event to all clients
+		 **/
 		( game as any ).socket.emit( 'module.yugen-criticals', socket_data );
 	}
 };
