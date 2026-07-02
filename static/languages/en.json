@@ -120,6 +120,24 @@
 			},
 			"reset": "Reset to Defaults",
 			"save": "Save Changes"
+		},
+		"team-critical": {
+			"title": "yugen-criticals (Team)",
+			"select-actors": "Select Actors",
+			"execute": "Go",
+			"theme": "Theme",
+			"custom-message": "Message",
+			"search-placeholder": "Search actors...",
+			"themes": {
+				"persona": "Persona Cut-ins",
+				"vertical": "Vertical Slices",
+				"slash": "Cross Slash",
+				"horizontal": "Horizontal Bands",
+				"grid": "Grid Blocks",
+				"circle": "Circle Pop",
+				"zoom": "Cinematic Zoom",
+				"fade": "Smooth Fade"
+			}
 		}
 	}
 }

@@ -44,9 +44,29 @@ export const init_hook = ( ) =>
 				return; 
 			}
 
-			if ( !data?.actor_uuid ) 
+			if ( !data?.actor_uuid && !data?.actor_uuids ) 
 			{ 
 				return; 
+			}
+
+			if ( data.type === 'team-critical' && data.actor_uuids )
+			{
+				/** resolve multiple actors for team attack **/
+				const actors = [ ];
+				for ( const uuid of data.actor_uuids )
+				{
+					const actor = await ( fromUuid as any )( uuid );
+					if ( actor )
+					{
+						actors.push( actor );
+					}
+				}
+				
+				if ( actors.length > 0 )
+				{
+					void CriticalAnimation.show_team_animation( actors, data.theme || 'persona', data.message || 'Team Attack' );
+				}
+				return;
 			}
 
 			/**

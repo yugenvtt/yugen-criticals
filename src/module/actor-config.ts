@@ -20,11 +20,15 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 		return ( foundry.utils as any ).mergeObject( super.defaultOptions, {
 			id: 'yugen-criticals-config',
 			title: 'yugen-criticals-config',
+			classes: [ 
+				'sheet', 
+				'yugen-app' 
+			],
 			template: 'modules/yugen-criticals/templates/actor-config.hbs',
-			width: 400,
-			height: 'auto',
+			width: 600,
+			height: 750,
 			closeOnSubmit: true,
-			resizable: false
+			resizable: true
 		} );
 	}
 
@@ -77,13 +81,21 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 		/** retrieve the current style override flag **/
 		const style_override = this.actor.getFlag( 'yugen-criticals', 'style-override' ) || 'default';
 
+		/** retrieve the image adjustment flags **/
+		const img_offset_x = this.actor.getFlag( 'yugen-criticals', 'img-offset-x' ) ?? 0;
+		const img_offset_y = this.actor.getFlag( 'yugen-criticals', 'img-offset-y' ) ?? 0;
+		const img_zoom = this.actor.getFlag( 'yugen-criticals', 'img-zoom' ) ?? 0;
+
 		return ( {
 			actor: this.actor,
 			crit_quote,
 			fumble_quote,
 			crit_sound,
 			fumble_sound,
-			style_override
+			style_override,
+			img_offset_x,
+			img_offset_y,
+			img_zoom
 		} );
 	}
 
@@ -146,6 +158,50 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 			} );
 		} );
 
+		/** live slider value indicators **/
+		el.querySelectorAll( 'input[type="range"]' ).forEach( ( slider : HTMLInputElement ) => 
+		{
+			slider.addEventListener( 'input', ( ) => 
+			{
+				const display = slider.nextElementSibling as HTMLElement;
+				if ( display ) 
+				{
+					display.textContent = `${ slider.value }%`;
+				}
+			} );
+		} );
+
+		/** local preview animation handler **/
+		el.querySelector( '.yugen-preview-animation' )?.addEventListener( 'click', async ( event : Event ) => 
+		{
+			event.preventDefault( );
+
+			const raw_quote = ( el.querySelector( 'textarea[name="crit_quote"]' ) as HTMLTextAreaElement )?.value || '';
+			const quotes = raw_quote.split( '\n' ).map( ( q : string ) => 
+			{
+				return q.trim( );
+			} ).filter( Boolean );
+			const quote = quotes.length > 0 ? quotes[ Math.floor( Math.random( ) * quotes.length ) ] : '';
+
+			const style = ( el.querySelector( 'select[name="style_override"]' ) as HTMLSelectElement )?.value || 'default';
+			const sound = ( el.querySelector( 'input[name="crit_sound"]' ) as HTMLInputElement )?.value?.trim( ) || '';
+
+			const img_offset_x = parseInt( ( el.querySelector( 'input[name="img_offset_x"]' ) as HTMLInputElement )?.value ) || 0;
+			const img_offset_y = parseInt( ( el.querySelector( 'input[name="img_offset_y"]' ) as HTMLInputElement )?.value ) || 0;
+			const img_zoom = parseInt( ( el.querySelector( 'input[name="img_zoom"]' ) as HTMLInputElement )?.value ) || 0;
+
+			const { CriticalAnimation } = await import( './critical-animation.js' );
+			void CriticalAnimation.show_animation( this.actor, 'critical', '', {
+				quote,
+				style,
+				sound,
+				img_offset_x,
+				img_offset_y,
+				img_zoom
+			} );
+		} );
+
+
 		el.querySelector( '.reset-defaults' )?.addEventListener( 'click', async ( event : Event ) => 
 		{
 			event.preventDefault( );
@@ -170,6 +226,11 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 
 			/** unset the actor custom signature animation style override flag **/
 			await this.actor.unsetFlag( 'yugen-criticals', 'style-override' );
+
+			/** unset the image offset and zoom flags **/
+			await this.actor.unsetFlag( 'yugen-criticals', 'img-offset-x' );
+			await this.actor.unsetFlag( 'yugen-criticals', 'img-offset-y' );
+			await this.actor.unsetFlag( 'yugen-criticals', 'img-zoom' );
 
 			( ui as any ).notifications?.info( `yugen-criticals | reset configurations for ${ this.actor.name }` );
 			this.close( );
@@ -257,6 +318,24 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 		{
 			/** unset the custom signature animation style override flag **/
 			await this.actor.unsetFlag( 'yugen-criticals', 'style-override' );
+		}
+
+		/** save the custom image offset and zoom flags **/
+		const img_offset_x = parseInt( form_data.img_offset_x );
+		const img_offset_y = parseInt( form_data.img_offset_y );
+		const img_zoom = parseInt( form_data.img_zoom );
+
+		if ( !isNaN( img_offset_x ) )
+		{
+			await this.actor.setFlag( 'yugen-criticals', 'img-offset-x', img_offset_x );
+		}
+		if ( !isNaN( img_offset_y ) )
+		{
+			await this.actor.setFlag( 'yugen-criticals', 'img-offset-y', img_offset_y );
+		}
+		if ( !isNaN( img_zoom ) )
+		{
+			await this.actor.setFlag( 'yugen-criticals', 'img-zoom', img_zoom );
 		}
 	}
 }

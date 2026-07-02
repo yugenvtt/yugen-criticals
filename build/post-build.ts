@@ -21,9 +21,34 @@ const post_build = async ( ) =>
 		const dist_dir = path.resolve( __dirname, '../dist' );
 		const root_dir = path.resolve( __dirname, '..' );
 		const zip_path = path.resolve( root_dir, 'module.zip' );
-		if ( !fs.existsSync( dist_dir ) ) 
+		if ( !fs.existsSync( dist_dir ) )
 		{
 			return;
+		}
+
+		/** synchronize module.json version and download links with package.json **/
+		const pkg = await fs.readJson( path.resolve( root_dir, 'package.json' ) );
+		const version = pkg.version;
+		const module_id = pkg.name;
+
+		const static_manifest_path = path.resolve( root_dir, 'static/module.json' );
+		if ( fs.existsSync( static_manifest_path ) ) 
+		{
+			const manifest = await fs.readJson( static_manifest_path );
+			manifest.version = version;
+			manifest.download = `https://github.com/yugenvtt/${module_id}/releases/download/${version}/module.zip`;
+			manifest.manifest = `https://raw.githubusercontent.com/yugenvtt/${module_id}/refs/heads/main/static/module.json`;
+			await fs.writeJson( static_manifest_path, manifest, { spaces: '\t' } );
+		}
+
+		const dist_manifest_path = path.resolve( dist_dir, 'module.json' );
+		if ( fs.existsSync( dist_manifest_path ) ) 
+		{
+			const manifest = await fs.readJson( dist_manifest_path );
+			manifest.version = version;
+			manifest.download = `https://github.com/yugenvtt/${module_id}/releases/download/${version}/module.zip`;
+			manifest.manifest = `https://raw.githubusercontent.com/yugenvtt/${module_id}/refs/heads/main/static/module.json`;
+			await fs.writeJson( dist_manifest_path, manifest, { spaces: '\t' } );
 		}
 
 		/** copy shared assets **/

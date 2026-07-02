@@ -48,6 +48,32 @@
 		</fieldset>
 
 		<fieldset>
+			<legend>Team Portrait Alignment</legend>
+			<p class="notes">Adjust the placement of the portrait art within team critical animations.</p>
+			<div class="form-group">
+				<label>Horizontal Offset</label>
+				<div class="form-fields">
+					<input type="range" name="img_offset_x" min="-100" max="100" step="5" value="{{img_offset_x}}" />
+					<span class="range-value">{{img_offset_x}}%</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Vertical Offset</label>
+				<div class="form-fields">
+					<input type="range" name="img_offset_y" min="-100" max="100" step="5" value="{{img_offset_y}}" />
+					<span class="range-value">{{img_offset_y}}%</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Zoom Factor</label>
+				<div class="form-fields">
+					<input type="range" name="img_zoom" min="0" max="200" step="5" value="{{img_zoom}}" />
+					<span class="range-value">{{img_zoom}}%</span>
+				</div>
+			</div>
+		</fieldset>
+
+		<fieldset>
 			<legend>Sound Overrides</legend>
 			<div class="form-group">
 				<label>{{localize "yugen-criticals.actor-config.crit-sound-name"}}</label>
@@ -80,6 +106,9 @@
 	</div>
 
 	<footer class="sheet-footer">
+		<button type="button" class="yugen-preview-animation">
+			<i class="fas fa-eye"></i> Preview
+		</button>
 		<button type="button" class="reset-defaults">
 			<i class="fas fa-undo"></i> {{localize "yugen-criticals.actor-config.reset"}}
 		</button>

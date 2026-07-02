@@ -479,242 +479,7 @@
 	to { opacity: 1; transform: scale(1); letter-spacing: 0.08em; }
 }
 
-/* actor configuration sheet styles */
-.yugen-actor-config {
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
-	padding: 10px;
-	background: #181a20;
-	color: #e0e0e0;
-	font-family: "Outfit", "Signika", sans-serif;
-	border-radius: 8px;
-}
-
-.yugen-actor-config .sheet-header {
-	display: flex;
-	align-items: center;
-	gap: 15px;
-	border-bottom: 2px solid #2d313c;
-	padding-bottom: 12px;
-}
-
-.yugen-actor-config .sheet-header .profile-img {
-	width: 60px;
-	height: 60px;
-	border-radius: 6px;
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	object-fit: cover;
-}
-
-.yugen-actor-config .sheet-header .header-details {
-	display: flex;
-	flex-direction: column;
-}
-
-.yugen-actor-config .sheet-header .charname {
-	font-size: 1.5rem;
-	font-weight: 700;
-	margin: 0;
-	color: #fff;
-	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.yugen-actor-config .sheet-header .subtitle {
-	font-size: 0.8rem;
-	color: #7b8396;
-	margin: 2px 0 0 0;
-	letter-spacing: 0.05em;
-}
-
-.yugen-config-body {
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
-	max-height: 480px;
-	overflow-y: auto;
-	padding-right: 4px;
-}
-
-.yugen-config-body::-webkit-scrollbar {
-	width: 5px;
-}
-
-.yugen-config-body::-webkit-scrollbar-track {
-	background: rgba(0, 0, 0, 0.1);
-}
-
-.yugen-config-body::-webkit-scrollbar-thumb {
-	background: rgba(255, 255, 255, 0.15);
-	border-radius: 4px;
-}
-
-.yugen-actor-config fieldset {
-	border: 1px solid #2d313c;
-	border-radius: 6px;
-	padding: 10px 12px 14px 12px;
-	background: rgba(0, 0, 0, 0.15);
-}
-
-.yugen-actor-config legend {
-	font-size: 0.85rem;
-	font-weight: 700;
-	color: #ff9f43;
-	padding: 0 6px;
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
-}
-
-.yugen-actor-config .form-group {
-	display: flex;
-	flex-direction: column;
-	gap: 6px;
-	margin-bottom: 0;
-}
-
-.yugen-actor-config label {
-	font-size: 0.85rem;
-	font-weight: 600;
-	color: #a4b0be;
-}
-
-.yugen-actor-config .notes {
-	font-size: 0.75rem;
-	color: #747d8c;
-	margin: 0 0 4px 0;
-	line-height: 1.25;
-}
-
-.yugen-actor-config textarea {
-	width: 100%;
-	background: #0f1015;
-	border: 1px solid #2d313c;
-	border-radius: 4px;
-	color: #fff;
-	padding: 8px;
-	font-family: inherit;
-	font-size: 0.85rem;
-	resize: vertical;
-	transition: border-color 0.25s, box-shadow 0.25s;
-}
-
-.yugen-actor-config textarea:focus {
-	border-color: #ff9f43;
-	box-shadow: 0 0 6px rgba(255, 159, 67, 0.35);
-	outline: none;
-}
-
-.yugen-actor-config .form-fields {
-	display: flex;
-	gap: 6px;
-	width: 100%;
-}
-
-.yugen-actor-config input[type="text"] {
-	flex: 1;
-	background: #0f1015;
-	border: 1px solid #2d313c;
-	border-radius: 4px;
-	color: #fff;
-	padding: 0 8px;
-	height: 28px;
-	font-size: 0.85rem;
-	transition: border-color 0.25s, box-shadow 0.25s;
-}
-
-.yugen-actor-config input[type="text"]:focus {
-	border-color: #ff9f43;
-	box-shadow: 0 0 6px rgba(255, 159, 67, 0.35);
-	outline: none;
-}
-
-.yugen-actor-config .yugen-file-picker-btn {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 28px;
-	height: 28px;
-	background: #2f3542;
-	border: 1px solid #2d313c;
-	border-radius: 4px;
-	color: #a4b0be;
-	cursor: pointer;
-	transition: background 0.25s, color 0.25s, transform 0.15s;
-}
-
-.yugen-actor-config .yugen-file-picker-btn:hover {
-	background: #ff9f43;
-	color: #1e222b;
-	transform: scale(1.05);
-}
-
-.yugen-actor-config .yugen-sound-preview-btn {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 28px;
-	height: 28px;
-	background: #2f3542;
-	border: 1px solid #2d313c;
-	border-radius: 4px;
-	color: #a4b0be;
-	cursor: pointer;
-	transition: background 0.25s, color 0.25s, transform 0.15s;
-}
-
-.yugen-actor-config .yugen-sound-preview-btn:hover {
-	background: #2ed573;
-	color: #1e222b;
-	transform: scale(1.05);
-}
-
-
-.yugen-actor-config .sheet-footer {
-	display: flex;
-	justify-content: space-between;
-	gap: 10px;
-	border-top: 1px solid #2d313c;
-	padding-top: 12px;
-	margin-top: 5px;
-}
-
-.yugen-actor-config .sheet-footer button {
-	flex: 1;
-	height: 32px;
-	font-size: 0.85rem;
-	font-weight: 700;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 6px;
-	transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
-}
-
-.yugen-actor-config button.reset-defaults {
-	background: #2f3542;
-	color: #a4b0be;
-}
-
-.yugen-actor-config button.reset-defaults:hover {
-	background: #ff4757;
-	color: #fff;
-	transform: scale(1.02);
-	box-shadow: 0 0 8px rgba(255, 71, 87, 0.4);
-}
-
-.yugen-actor-config button[type="submit"] {
-	background: #ff9f43;
-	color: #1e222b;
-}
-
-.yugen-actor-config button[type="submit"]:hover {
-	background: #ffa801;
-	transform: scale(1.02);
-	box-shadow: 0 0 8px rgba(255, 159, 67, 0.4);
-}
+/* actor configuration sheet styles are now inherited from yugen-utils shared styles (.yugen-app) */
 
 /* --- class-specific themes --- */
 
@@ -2587,4 +2352,902 @@
 	{
 		transform: scale(1) translate(0, 0);
 	}
+}
+
+/** TEAM UP STYLES **/
+.yugen-critical-overlay.style-team-up
+{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.yugen-team-stripes-container
+{
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: row;
+	overflow: hidden;
+}
+
+.yugen-team-stripe
+{
+	position: relative;
+	flex: 1;
+	height: 100%;
+	overflow: hidden;
+	box-shadow: 0 0 20px rgba(0,0,0,0.8);
+	opacity: 0;
+	z-index: 1;
+}
+
+.yugen-team-stripe-bg
+{
+	position: absolute;
+	inset: -100px;
+	background: repeating-linear-gradient(
+		45deg,
+		#000,
+		#000 10px,
+		#111 10px,
+		#111 20px
+	);
+	z-index: 0;
+}
+
+.yugen-team-stripe-img
+{
+	position: absolute;
+	inset: -100px;
+	background-size: cover;
+	background-position: center top;
+	background-repeat: no-repeat;
+	z-index: 1;
+	filter: drop-shadow(4px 4px 0 rgba(0,0,0,0.7));
+}
+
+/* Stagger animations for up to 4 characters */
+.yugen-team-stripe.stripe-1 { animation-delay: 0.1s; }
+.yugen-team-stripe.stripe-2 { animation-delay: 0.3s; }
+.yugen-team-stripe.stripe-3 { animation-delay: 0.5s; }
+.yugen-team-stripe.stripe-4 { animation-delay: 0.7s; }
+
+.yugen-team-text-wrap
+{
+	position: absolute;
+	bottom: 12%;
+	width: 100%;
+	text-align: center;
+	z-index: 10;
+	opacity: 0;
+}
+
+.yugen-team-text
+{
+	font-family: 'Bebas Neue', sans-serif;
+	font-size: 8rem;
+	color: #fff;
+	text-shadow: 
+		4px 4px 0 #000,
+		-2px -2px 0 var(--yugen-crit-color),
+		2px -2px 0 var(--yugen-crit-color),
+		-2px 2px 0 var(--yugen-crit-color),
+		2px 2px 0 var(--yugen-crit-color);
+	font-style: italic;
+	font-weight: bold;
+	letter-spacing: 5px;
+}
+
+/* THEME 1: PERSONA (Diagonal Skew) */
+.theme-persona .yugen-team-stripe
+{
+	transform: skewX(-15deg);
+	border-right: 4px solid var(--yugen-crit-color);
+	margin-left: -20px;
+	margin-right: -20px;
+	animation: yugen-stripe-slide-persona 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.theme-persona .yugen-team-stripe:last-child
+{
+	border-right: none;
+}
+
+.theme-persona .yugen-team-stripe-bg,
+.theme-persona .yugen-team-stripe-img
+{
+	transform: skewX(15deg);
+	inset: -100px -300px;
+}
+
+.theme-persona .yugen-team-text-wrap
+{
+	transform: skewX(-15deg) scale(0);
+	animation: yugen-text-pop-skew 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards;
+}
+
+@keyframes yugen-stripe-slide-persona
+{
+	0% {
+		transform: skewX(-15deg) translateY(-100%);
+		opacity: 0;
+	}
+	100% {
+		transform: skewX(-15deg) translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes yugen-text-pop-skew
+{
+	0% {
+		transform: skewX(-15deg) scale(0);
+		opacity: 0;
+	}
+	70% {
+		transform: skewX(-15deg) scale(1.1);
+		opacity: 1;
+	}
+	100% {
+		transform: skewX(-15deg) scale(1);
+		opacity: 1;
+	}
+}
+
+/* THEME 2: VERTICAL (Straight Slices) */
+.theme-vertical .yugen-team-stripe
+{
+	border-right: 4px solid var(--yugen-crit-color);
+	animation: yugen-stripe-slide-vertical 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.theme-vertical .yugen-team-stripe:last-child
+{
+	border-right: none;
+}
+
+.theme-vertical .yugen-team-text-wrap
+{
+	transform: scale(0);
+	animation: yugen-text-pop-straight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards;
+}
+
+@keyframes yugen-stripe-slide-vertical
+{
+	0% {
+		transform: translateY(-100%);
+		opacity: 0;
+	}
+	100% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes yugen-text-pop-straight
+{
+	0% {
+		transform: scale(0);
+		opacity: 0;
+	}
+	70% {
+		transform: scale(1.1);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+/* THEME 3: SLASH (Alternating Skew / Opposite Directions) */
+.theme-slash .yugen-team-stripe
+{
+	border-right: 4px solid var(--yugen-crit-color);
+}
+
+.theme-slash .yugen-team-stripe:last-child
+{
+	border-right: none;
+}
+
+.theme-slash .yugen-team-stripe.stripe-1,
+.theme-slash .yugen-team-stripe.stripe-3
+{
+	transform: skewX(-20deg);
+	margin-left: -30px;
+	margin-right: -30px;
+	animation: yugen-stripe-slide-slash-down 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.theme-slash .yugen-team-stripe.stripe-1 .yugen-team-stripe-bg,
+.theme-slash .yugen-team-stripe.stripe-1 .yugen-team-stripe-img,
+.theme-slash .yugen-team-stripe.stripe-3 .yugen-team-stripe-bg,
+.theme-slash .yugen-team-stripe.stripe-3 .yugen-team-stripe-img
+{
+	transform: skewX(20deg);
+	inset: -100px -300px;
+}
+
+.theme-slash .yugen-team-stripe.stripe-2,
+.theme-slash .yugen-team-stripe.stripe-4
+{
+	transform: skewX(20deg);
+	margin-left: -30px;
+	margin-right: -30px;
+	animation: yugen-stripe-slide-slash-up 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.theme-slash .yugen-team-stripe.stripe-2 .yugen-team-stripe-bg,
+.theme-slash .yugen-team-stripe.stripe-2 .yugen-team-stripe-img,
+.theme-slash .yugen-team-stripe.stripe-4 .yugen-team-stripe-bg,
+.theme-slash .yugen-team-stripe.stripe-4 .yugen-team-stripe-img
+{
+	transform: skewX(-20deg);
+	inset: -100px -300px;
+}
+
+
+.theme-slash .yugen-team-text-wrap
+{
+	transform: scale(0);
+	animation: yugen-text-pop-straight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards;
+}
+
+@keyframes yugen-stripe-slide-slash-down
+{
+	0% {
+		transform: skewX(-20deg) translateY(-100%);
+		opacity: 0;
+	}
+	100% {
+		transform: skewX(-20deg) translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes yugen-stripe-slide-slash-up
+{
+	0% {
+		transform: skewX(20deg) translateY(100%);
+		opacity: 0;
+	}
+	100% {
+		transform: skewX(20deg) translateY(0);
+		opacity: 1;
+	}
+}
+
+/* THEME 4: HORIZONTAL (Horizontal Slices / Alternate Left-Right) */
+.theme-horizontal .yugen-team-stripes-container
+{
+	flex-direction: column;
+}
+
+.theme-horizontal .yugen-team-stripe
+{
+	transform: skewY(-5deg);
+	border-bottom: 4px solid var(--yugen-crit-color);
+	border-right: none;
+	margin-top: -15px;
+	margin-bottom: -15px;
+}
+
+.theme-horizontal .yugen-team-stripe:last-child
+{
+	border-bottom: none;
+}
+
+.theme-horizontal .yugen-team-stripe-bg,
+.theme-horizontal .yugen-team-stripe-img
+{
+	transform: skewY(5deg);
+}
+
+.theme-horizontal .yugen-team-stripe.stripe-1,
+.theme-horizontal .yugen-team-stripe.stripe-3
+{
+	animation: yugen-stripe-slide-horiz-left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.theme-horizontal .yugen-team-stripe.stripe-2,
+.theme-horizontal .yugen-team-stripe.stripe-4
+{
+	animation: yugen-stripe-slide-horiz-right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.theme-horizontal .yugen-team-text-wrap
+{
+	transform: skewY(-5deg) scale(0);
+	animation: yugen-text-pop-skew-y 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards;
+}
+
+@keyframes yugen-stripe-slide-horiz-left
+{
+	0% {
+		transform: skewY(-5deg) translateX(-100%);
+		opacity: 0;
+	}
+	100% {
+		transform: skewY(-5deg) translateX(0);
+		opacity: 1;
+	}
+}
+
+@keyframes yugen-stripe-slide-horiz-right
+{
+	0% {
+		transform: skewY(-5deg) translateX(100%);
+		opacity: 0;
+	}
+	100% {
+		transform: skewY(-5deg) translateX(0);
+		opacity: 1;
+	}
+}
+
+@keyframes yugen-text-pop-skew-y
+{
+	0% {
+		transform: skewY(-5deg) scale(0);
+		opacity: 0;
+	}
+	70% {
+		transform: skewY(-5deg) scale(1.1);
+		opacity: 1;
+	}
+	100% {
+		transform: skewY(-5deg) scale(1);
+		opacity: 1;
+	}
+}
+
+/* THEME 5: GRID (2x2 Grid Layout) */
+.theme-grid .yugen-team-stripes-container
+{
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+}
+
+.theme-grid .yugen-team-stripe
+{
+	border: 2px solid var(--yugen-crit-color);
+	animation: yugen-stripe-pop-grid 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.theme-grid .yugen-team-text-wrap
+{
+	transform: scale(0);
+	animation: yugen-text-pop-straight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards;
+}
+
+@keyframes yugen-stripe-pop-grid
+{
+	0% {
+		transform: scale(0) rotate(-10deg);
+		opacity: 0;
+	}
+	100% {
+		transform: scale(1) rotate(0);
+		opacity: 1;
+	}
+}
+
+/* THEME 6: CIRCLE (Circular Portrait Pop) */
+.theme-circle .yugen-team-stripes-container
+{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 30px;
+	background: rgba(0, 0, 0, 0.5);
+}
+
+.theme-circle .yugen-team-stripe
+{
+	flex: none;
+	width: 200px;
+	height: 200px;
+	border-radius: 50% !important;
+	border: 6px solid var(--yugen-crit-color);
+	overflow: hidden;
+	box-shadow: 0 0 30px rgba(0,0,0,0.9);
+	animation: yugen-stripe-pop-circle 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.theme-circle .yugen-team-stripe-bg
+{
+	border-radius: 50% !important;
+	inset: 0;
+}
+
+.theme-circle .yugen-team-stripe-img
+{
+	border-radius: 50% !important;
+	inset: 0;
+}
+
+.theme-circle .yugen-team-text-wrap
+{
+	transform: scale(0);
+	animation: yugen-text-pop-straight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards;
+}
+
+@keyframes yugen-stripe-pop-circle
+{
+	0% {
+		transform: scale(0);
+		opacity: 0;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+/* THEME 7: ZOOM (Overlapping Cinematic Zoom) */
+.theme-zoom .yugen-team-stripes-container
+{
+	flex-direction: column;
+}
+
+.theme-zoom .yugen-team-stripe
+{
+	border-bottom: 4px solid var(--yugen-crit-color);
+	animation: yugen-stripe-zoom-fade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.theme-zoom .yugen-team-stripe:last-child
+{
+	border-bottom: none;
+}
+
+.theme-zoom .yugen-team-stripe-bg
+{
+	inset: 0;
+}
+
+.theme-zoom .yugen-team-stripe-img
+{
+	inset: 0;
+}
+
+.theme-zoom .yugen-team-text-wrap
+{
+	transform: scale(0);
+	animation: yugen-text-pop-straight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards;
+}
+
+@keyframes yugen-stripe-zoom-fade
+{
+	0% {
+		transform: scale(1.6);
+		opacity: 0;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+
+/* THEME 8: FADE (Clean Overlay Fades) */
+.theme-fade .yugen-team-stripe
+{
+	border-right: 2px solid rgba(255, 255, 255, 0.1);
+	animation: yugen-stripe-fade-in 0.8s ease forwards;
+}
+
+.theme-fade .yugen-team-stripe:last-child
+{
+	border-right: none;
+}
+
+.theme-fade .yugen-team-text-wrap
+{
+	transform: scale(0);
+	animation: yugen-text-pop-straight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards;
+}
+
+@keyframes yugen-stripe-fade-in
+{
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+
+/** TEAM APP UI STYLES **/
+
+#yugen-team-critical-app.window-app
+{
+	background: rgba(20, 20, 25, 0.8) !important;
+	backdrop-filter: blur(16px) !important;
+	border: 1px solid rgba(255, 100, 0, 0.3) !important;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8) !important;
+	border-radius: 12px !important;
+	color: #e0e0e0 !important;
+	overflow: hidden;
+}
+
+#yugen-team-critical-app.window-app .window-content
+{
+	background: transparent !important;
+	padding: 20px !important;
+	overflow: hidden !important;
+	color: #e0e0e0 !important;
+}
+
+#yugen-team-critical-app.window-app .window-header
+{
+	background: transparent !important;
+	border-bottom: none !important;
+	box-shadow: none !important;
+}
+
+#yugen-team-critical-app.window-app .window-header .window-title
+{
+	display: none !important; /* Hide default window title */
+}
+
+#yugen-team-critical-app.window-app .window-header button.header-control,
+#yugen-team-critical-app.window-app .window-header [data-action="close"],
+#yugen-team-critical-app.window-app .window-header button.close,
+#yugen-team-critical-app.window-app .window-header .close
+{
+	color: #aaaaaa !important;
+	text-shadow: none !important;
+}
+
+#yugen-team-critical-app.window-app .window-header button.header-control:hover,
+#yugen-team-critical-app.window-app .window-header [data-action="close"]:hover,
+#yugen-team-critical-app.window-app .window-header button.close:hover,
+#yugen-team-critical-app.window-app .window-header .close:hover
+{
+	color: #ff6400 !important;
+}
+
+.yugen-tc-form
+{
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	gap: 20px;
+}
+
+.yugen-tc-header
+{
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.yugen-tc-title
+{
+	margin: 0 !important;
+	border-bottom: 2px solid rgba(255, 100, 0, 0.8) !important;
+	padding-bottom: 8px;
+	font-family: 'Signika', sans-serif;
+	color: #ffffff !important;
+	text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 1.5rem !important;
+	font-weight: bold;
+}
+
+.yugen-tc-subtitle
+{
+	margin: 0 !important;
+	font-size: 0.95rem !important;
+	color: #cccccc !important;
+	line-height: 1.4;
+}
+
+.yugen-tc-content
+{
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.yugen-tc-section
+{
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.yugen-tc-section-title
+{
+	margin: 0 !important;
+	font-weight: bold;
+	color: #ff9c00 !important;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-size: 0.9rem !important;
+	text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+	border-bottom: none !important;
+}
+
+.yugen-tc-grid
+{
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+	gap: 16px;
+	max-height: 350px;
+	overflow-y: auto;
+	padding: 8px 4px;
+}
+
+/* custom scrollbar for the grid */
+.yugen-tc-grid::-webkit-scrollbar
+{
+	width: 6px;
+}
+.yugen-tc-grid::-webkit-scrollbar-track
+{
+	background: rgba(0, 0, 0, 0.4);
+	border-radius: 3px;
+}
+.yugen-tc-grid::-webkit-scrollbar-thumb
+{
+	background: rgba(255, 100, 0, 0.8);
+	border-radius: 3px;
+}
+
+.yugen-tc-card-label
+{
+	cursor: pointer;
+	display: block;
+	margin: 0 !important;
+}
+
+.yugen-tc-checkbox
+{
+	display: none !important;
+}
+
+.yugen-tc-card
+{
+	position: relative;
+	background: rgba(0, 0, 0, 0.6);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 8px;
+	padding: 12px 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.yugen-tc-card-label:hover .yugen-tc-card
+{
+	background: rgba(255, 100, 0, 0.15);
+	border-color: rgba(255, 100, 0, 0.4);
+	transform: translateY(-4px);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+}
+
+.yugen-tc-avatar-wrap
+{
+	position: relative;
+	width: 64px;
+	height: 64px;
+}
+
+.yugen-tc-avatar
+{
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 2px solid rgba(255, 255, 255, 0.2) !important;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+	transition: all 0.2s ease;
+	display: block;
+	margin: 0 auto;
+}
+
+.yugen-tc-name
+{
+	font-size: 0.95rem;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 100%;
+	color: #cccccc;
+	transition: color 0.2s ease;
+	font-weight: 500;
+}
+
+/* checked state styles */
+.yugen-tc-checkbox:checked + .yugen-tc-card
+{
+	border-color: #ff6400 !important;
+	background: rgba(255, 100, 0, 0.2) ;
+	box-shadow: 0 0 20px rgba(255, 100, 0, 0.4);
+	transform: scale(1.05);
+}
+
+.yugen-tc-checkbox:checked + .yugen-tc-card .yugen-tc-avatar
+{
+	border-color: #ff6400 !important;
+	box-shadow: 0 0 15px rgba(255, 100, 0, 0.8);
+}
+
+.yugen-tc-checkbox:checked + .yugen-tc-card .yugen-tc-name
+{
+	color: #ffffff;
+	font-weight: bold;
+	text-shadow: 0 0 5px rgba(255, 100, 0, 0.8);
+}
+
+/* checkmark badge */
+.yugen-tc-badge
+{
+	position: absolute;
+	top: -6px;
+	right: -6px;
+	background: #ff6400;
+	color: white;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 0.75rem;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+	opacity: 0;
+	transform: scale(0.5);
+	transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	z-index: 2;
+}
+
+.yugen-tc-checkbox:checked + .yugen-tc-card .yugen-tc-badge
+{
+	opacity: 1;
+	transform: scale(1);
+}
+
+.yugen-tc-footer
+{
+	margin-top: auto;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.yugen-tc-btn
+{
+	background: linear-gradient(to right, #ff4500, #ff8c00);
+	color: white !important;
+	border: none !important;
+	border-radius: 6px !important;
+	padding: 10px 24px !important;
+	font-weight: bold !important;
+	font-size: 1.1rem !important;
+	cursor: pointer;
+	box-shadow: 0 4px 10px rgba(255, 100, 0, 0.3) !important;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	line-height: normal !important;
+}
+
+.yugen-tc-btn:hover
+{
+	transform: translateY(-2px);
+	box-shadow: 0 6px 15px rgba(255, 100, 0, 0.5) !important;
+	background: linear-gradient(to right, #ff5500, #ff9c00);
+}
+
+.yugen-tc-btn:active
+{
+	transform: translateY(1px);
+	box-shadow: 0 2px 5px rgba(255, 100, 0, 0.3) !important;
+}
+
+.yugen-tc-controls-row
+{
+	display: flex;
+	gap: 16px;
+	background: rgba(0, 0, 0, 0.3);
+	border: 1px solid rgba(255, 255, 255, 0.05);
+	padding: 12px;
+	border-radius: 8px;
+	box-sizing: border-box;
+}
+
+.yugen-tc-field
+{
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.yugen-tc-field-label
+{
+	font-weight: bold;
+	color: #ff9c00 !important;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-size: 0.8rem !important;
+	text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+	margin: 0 !important;
+}
+
+.yugen-tc-select,
+.yugen-tc-input
+{
+	background: rgba(0, 0, 0, 0.6) !important;
+	border: 1px solid rgba(255, 255, 255, 0.15) !important;
+	color: #ffffff !important;
+	border-radius: 4px !important;
+	padding: 6px 10px !important;
+	height: 32px !important;
+	box-sizing: border-box !important;
+	font-size: 0.9rem !important;
+	transition: all 0.2s ease !important;
+	width: 100% !important;
+}
+
+.yugen-tc-select:focus,
+.yugen-tc-input:focus
+{
+	border-color: #ff6400 !important;
+	box-shadow: 0 0 8px rgba(255, 100, 0, 0.4) !important;
+	outline: none !important;
+}
+
+.yugen-tc-search-wrap
+{
+	position: relative;
+	width: 100%;
+	margin-bottom: 8px;
+	box-sizing: border-box;
+}
+
+/* Portrait Image Offset and Zoom Alignments */
+.yugen-anime-portrait,
+.yugen-cyber-portrait,
+.yugen-mk-portrait,
+.yugen-class-portrait,
+.yugen-persona-stripe,
+.yugen-critical-avatar,
+.yugen-team-stripe-img
+{
+	translate: var(--yugen-img-x, 0%) var(--yugen-img-y, 0%) !important;
+	scale: var(--yugen-img-scale, 1) !important;
+}
+/* Range Slider Indicator Styling */
+.yugen-actor-config .range-value,
+.range-value
+{
+	display: inline-block !important;
+	color: #ffffff !important;
+	font-weight: bold !important;
+	background: rgba(0, 0, 0, 0.4) !important;
+	border: 1px solid rgba(255, 255, 255, 0.2) !important;
+	border-radius: 4px !important;
+	padding: 2px 8px !important;
+	min-width: 48px !important;
+	text-align: center !important;
+	font-size: 0.9rem !important;
+	line-height: 1.6 !important;
+	margin-left: 8px !important;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
 }

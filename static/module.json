@@ -35,7 +35,10 @@
 			{
 				"id": "yugen-utils",
 				"type": "module",
-				"manifest": "https://raw.githubusercontent.com/yugenvtt/yugen-utils/refs/heads/main/static/module.json"
+				"manifest": "https://raw.githubusercontent.com/yugenvtt/yugen-utils/refs/heads/main/static/module.json",
+				"compatibility": {
+					"minimum": "1.0.1"
+				}
 			}
 		]
 	}
