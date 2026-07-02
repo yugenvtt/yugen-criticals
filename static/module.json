@@ -3,7 +3,7 @@
 	"name": "yugen-criticals",
 	"title": "yugen-criticals",
 	"description": "Combat and critical animations for Foundry VTT.",
-	"version": "1.0.8",
+	"version": "1.0.9",
 	"authors": [
 		{
 			"name": "yugen."
@@ -29,7 +29,7 @@
 	"socket": true,
 	"url": "https://github.com/yugenvtt/yugen-criticals",
 	"manifest": "https://raw.githubusercontent.com/yugenvtt/yugen-criticals/refs/heads/main/static/module.json",
-	"download": "https://github.com/yugenvtt/yugen-criticals/releases/download/1.0.8/module.zip",
+	"download": "https://github.com/yugenvtt/yugen-criticals/releases/download/1.0.9/module.zip",
 	"relationships": {
 		"requires": [
 			{
@@ -37,7 +37,7 @@
 				"type": "module",
 				"manifest": "https://raw.githubusercontent.com/yugenvtt/yugen-utils/refs/heads/main/static/module.json",
 				"compatibility": {
-					"minimum": "1.0.1"
+					"minimum": "1.0.3"
 				}
 			}
 		]
