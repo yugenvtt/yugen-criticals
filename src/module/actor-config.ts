@@ -86,6 +86,12 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 		const img_offset_y = this.actor.getFlag( 'yugen-criticals', 'img-offset-y' ) ?? 0;
 		const img_zoom = this.actor.getFlag( 'yugen-criticals', 'img-zoom' ) ?? 0;
 
+		/** retrieve the custom critical portrait image flag **/
+		const crit_img = this.actor.getFlag( 'yugen-criticals', 'crit-img' ) || '';
+
+		/** retrieve the custom fumble portrait image flag **/
+		const fumble_img = this.actor.getFlag( 'yugen-criticals', 'fumble-img' ) || '';
+
 		return ( {
 			actor: this.actor,
 			crit_quote,
@@ -95,7 +101,9 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 			style_override,
 			img_offset_x,
 			img_offset_y,
-			img_zoom
+			img_zoom,
+			crit_img,
+			fumble_img
 		} );
 	}
 
@@ -123,9 +131,11 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 					return;
 				}
 
-				/** browse the server file directory for audio **/
+				const file_type = button.dataset.type || 'audio';
+
+				/** browse the server file directory for media **/
 				new FilePickerClass( {
-					type: 'audio',
+					type: file_type,
 					field: input,
 					current: input.value,
 					button: button,
@@ -190,6 +200,9 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 			const img_offset_y = parseInt( ( el.querySelector( 'input[name="img_offset_y"]' ) as HTMLInputElement )?.value ) || 0;
 			const img_zoom = parseInt( ( el.querySelector( 'input[name="img_zoom"]' ) as HTMLInputElement )?.value ) || 0;
 
+			const crit_img = ( el.querySelector( 'input[name="crit_img"]' ) as HTMLInputElement )?.value?.trim( ) || '';
+			const fumble_img = ( el.querySelector( 'input[name="fumble_img"]' ) as HTMLInputElement )?.value?.trim( ) || '';
+
 			const { CriticalAnimation } = await import( './critical-animation.js' );
 			void CriticalAnimation.show_animation( this.actor, 'critical', '', {
 				quote,
@@ -197,7 +210,9 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 				sound,
 				img_offset_x,
 				img_offset_y,
-				img_zoom
+				img_zoom,
+				crit_img,
+				fumble_img
 			} );
 		} );
 
@@ -226,6 +241,12 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 
 			/** unset the actor custom signature animation style override flag **/
 			await this.actor.unsetFlag( 'yugen-criticals', 'style-override' );
+
+			/** unset the actor custom critical portrait image flag **/
+			await this.actor.unsetFlag( 'yugen-criticals', 'crit-img' );
+
+			/** unset the actor custom fumble portrait image flag **/
+			await this.actor.unsetFlag( 'yugen-criticals', 'fumble-img' );
 
 			/** unset the image offset and zoom flags **/
 			await this.actor.unsetFlag( 'yugen-criticals', 'img-offset-x' );
@@ -264,6 +285,8 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 		const crit_sound = form_data.crit_sound?.trim( ) || '';
 		const fumble_sound = form_data.fumble_sound?.trim( ) || '';
 		const style_override = form_data.style_override || 'default';
+		const crit_img = form_data.crit_img?.trim( ) || '';
+		const fumble_img = form_data.fumble_img?.trim( ) || '';
 
 		if ( crit_quotes.length > 0 ) 
 		{
@@ -318,6 +341,28 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 		{
 			/** unset the custom signature animation style override flag **/
 			await this.actor.unsetFlag( 'yugen-criticals', 'style-override' );
+		}
+
+		if ( crit_img ) 
+		{
+			/** save the custom critical portrait flag **/
+			await this.actor.setFlag( 'yugen-criticals', 'crit-img', crit_img );
+		}
+		else 
+		{
+			/** unset the custom critical portrait flag **/
+			await this.actor.unsetFlag( 'yugen-criticals', 'crit-img' );
+		}
+
+		if ( fumble_img ) 
+		{
+			/** save the custom fumble portrait flag **/
+			await this.actor.setFlag( 'yugen-criticals', 'fumble-img', fumble_img );
+		}
+		else 
+		{
+			/** unset the custom fumble portrait flag **/
+			await this.actor.unsetFlag( 'yugen-criticals', 'fumble-img' );
 		}
 
 		/** save the custom image offset and zoom flags **/

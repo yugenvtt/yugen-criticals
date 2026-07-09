@@ -206,17 +206,30 @@ export class CriticalAnimation
 		}
 
 		/**
-		 * resolve the portrait image, falling back to token texture if portrait is mystery man
+		 * resolve the portrait image: custom override -> fallback
 		 **/
-		let portrait_img = actor.img || '';
-
-		const token_img = ( actor as any ).prototypeToken?.texture?.src;
-
-		if ( !portrait_img || portrait_img.includes( 'mystery-man.svg' ) ) 
+		let portrait_img = '';
+		if ( is_fumble ) 
 		{
-			if ( token_img ) 
+			/** retrieve the custom fumble portrait image flag **/
+			portrait_img = overrides.fumble_img || ( actor as any ).getFlag( 'yugen-criticals', 'fumble-img' ) || overrides.crit_img || ( actor as any ).getFlag( 'yugen-criticals', 'crit-img' ) || '';
+		}
+		else 
+		{
+			/** retrieve the custom critical portrait image flag **/
+			portrait_img = overrides.crit_img || ( actor as any ).getFlag( 'yugen-criticals', 'crit-img' ) || '';
+		}
+
+		if ( !portrait_img ) 
+		{
+			portrait_img = actor.img || '';
+			const token_img = ( actor as any ).prototypeToken?.texture?.src;
+			if ( !portrait_img || portrait_img.includes( 'mystery-man.svg' ) ) 
 			{
-				portrait_img = token_img;
+				if ( token_img ) 
+				{
+					portrait_img = token_img;
+				}
 			}
 		}
 
@@ -616,7 +629,8 @@ export class CriticalAnimation
 		let idx = 1;
 		for ( const actor of actors )
 		{
-			let portrait_img = actor.img || '';
+			/** retrieve the custom critical portrait image flag **/
+			let portrait_img = ( actor as any ).getFlag( 'yugen-criticals', 'crit-img' ) || actor.img || '';
 			const token_img = ( actor as any ).prototypeToken?.texture?.src;
 
 			if ( !portrait_img || portrait_img.includes( 'mystery-man.svg' ) ) 

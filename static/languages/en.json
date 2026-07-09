@@ -100,6 +100,10 @@
 			"crit-sound-hint": "Override the default critical sound effect for this actor.",
 			"fumble-sound-name": "Fumble Sound Override",
 			"fumble-sound-hint": "Override the default fumble sound effect for this actor.",
+			"crit-img-name": "Critical Portrait Override",
+			"crit-img-hint": "Override the portrait/token image displayed during a critical hit animation for this actor.",
+			"fumble-img-name": "Fumble Portrait Override",
+			"fumble-img-hint": "Override the portrait/token image displayed during a fumble animation for this actor.",
 			"style-name": "Signature Animation Style",
 			"style-hint": "Choose a signature visual style for this actor's animations.",
 			"style-choices": {

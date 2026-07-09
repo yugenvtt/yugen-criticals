@@ -2865,116 +2865,39 @@
 
 /** TEAM APP UI STYLES **/
 
-#yugen-team-critical-app.window-app
-{
-	background: rgba(20, 20, 25, 0.8) !important;
-	backdrop-filter: blur(16px) !important;
-	border: 1px solid rgba(255, 100, 0, 0.3) !important;
-	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8) !important;
-	border-radius: 12px !important;
-	color: #e0e0e0 !important;
-	overflow: hidden;
-}
-
-#yugen-team-critical-app.window-app .window-content
-{
-	background: transparent !important;
-	padding: 20px !important;
-	overflow: hidden !important;
-	color: #e0e0e0 !important;
-}
-
-#yugen-team-critical-app.window-app .window-header
-{
-	background: transparent !important;
-	border-bottom: none !important;
-	box-shadow: none !important;
-}
-
-#yugen-team-critical-app.window-app .window-header .window-title
-{
-	display: none !important; /* Hide default window title */
-}
-
-#yugen-team-critical-app.window-app .window-header button.header-control,
-#yugen-team-critical-app.window-app .window-header [data-action="close"],
-#yugen-team-critical-app.window-app .window-header button.close,
-#yugen-team-critical-app.window-app .window-header .close
-{
-	color: #aaaaaa !important;
-	text-shadow: none !important;
-}
-
-#yugen-team-critical-app.window-app .window-header button.header-control:hover,
-#yugen-team-critical-app.window-app .window-header [data-action="close"]:hover,
-#yugen-team-critical-app.window-app .window-header button.close:hover,
-#yugen-team-critical-app.window-app .window-header .close:hover
-{
-	color: #ff6400 !important;
-}
-
 .yugen-tc-form
 {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-	gap: 20px;
 }
 
-.yugen-tc-header
+.yugen-tc-row
 {
 	display: flex;
-	flex-direction: column;
-	gap: 4px;
+	gap: 16px;
+	margin-bottom: 16px;
 }
 
-.yugen-tc-title
-{
-	margin: 0 !important;
-	border-bottom: 2px solid rgba(255, 100, 0, 0.8) !important;
-	padding-bottom: 8px;
-	font-family: 'Signika', sans-serif;
-	color: #ffffff !important;
-	text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	font-size: 1.5rem !important;
-	font-weight: bold;
-}
-
-.yugen-tc-subtitle
-{
-	margin: 0 !important;
-	font-size: 0.95rem !important;
-	color: #cccccc !important;
-	line-height: 1.4;
-}
-
-.yugen-tc-content
+.yugen-tc-field
 {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
+	gap: 6px;
 }
 
-.yugen-tc-section
+.yugen-tc-label
 {
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: var( --yugen-text-primary );
+	margin-bottom: 0 !important;
 }
 
-.yugen-tc-section-title
+.yugen-tc-search-wrap
 {
-	margin: 0 !important;
-	font-weight: bold;
-	color: #ff9c00 !important;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	font-size: 0.9rem !important;
-	text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-	border-bottom: none !important;
+	margin-bottom: 16px;
 }
 
 .yugen-tc-grid
@@ -2994,13 +2917,17 @@
 }
 .yugen-tc-grid::-webkit-scrollbar-track
 {
-	background: rgba(0, 0, 0, 0.4);
+	background: rgba(0, 0, 0, 0.2);
 	border-radius: 3px;
 }
 .yugen-tc-grid::-webkit-scrollbar-thumb
 {
-	background: rgba(255, 100, 0, 0.8);
+	background: var( --yugen-border-color );
 	border-radius: 3px;
+}
+.yugen-tc-grid::-webkit-scrollbar-thumb:hover
+{
+	background: var( --yugen-accent-border );
 }
 
 .yugen-tc-card-label
@@ -3018,9 +2945,9 @@
 .yugen-tc-card
 {
 	position: relative;
-	background: rgba(0, 0, 0, 0.6);
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	border-radius: 8px;
+	background: rgba(0, 0, 0, 0.2);
+	border: 1px solid var( --yugen-border-color );
+	border-radius: var( --yugen-border-radius-md );
 	padding: 12px 8px;
 	display: flex;
 	flex-direction: column;
@@ -3031,10 +2958,10 @@
 
 .yugen-tc-card-label:hover .yugen-tc-card
 {
-	background: rgba(255, 100, 0, 0.15);
-	border-color: rgba(255, 100, 0, 0.4);
+	background: var( --yugen-accent-trans );
+	border-color: var( --yugen-accent-border );
 	transform: translateY(-4px);
-	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
 .yugen-tc-avatar-wrap
@@ -3050,8 +2977,8 @@
 	height: 64px;
 	border-radius: 50%;
 	object-fit: cover;
-	border: 2px solid rgba(255, 255, 255, 0.2) !important;
-	box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+	border: 2px solid var( --yugen-border-color ) !important;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 	transition: all 0.2s ease;
 	display: block;
 	margin: 0 auto;
@@ -3059,13 +2986,13 @@
 
 .yugen-tc-name
 {
-	font-size: 0.95rem;
+	font-size: 0.85rem;
 	text-align: center;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	width: 100%;
-	color: #cccccc;
+	color: var( --yugen-text-secondary );
 	transition: color 0.2s ease;
 	font-weight: 500;
 }
@@ -3073,23 +3000,22 @@
 /* checked state styles */
 .yugen-tc-checkbox:checked + .yugen-tc-card
 {
-	border-color: #ff6400 !important;
-	background: rgba(255, 100, 0, 0.2) ;
-	box-shadow: 0 0 20px rgba(255, 100, 0, 0.4);
+	border-color: var( --yugen-accent ) !important;
+	background: var( --yugen-accent-trans ) !important;
+	box-shadow: 0 0 20px var( --yugen-accent-trans );
 	transform: scale(1.05);
 }
 
 .yugen-tc-checkbox:checked + .yugen-tc-card .yugen-tc-avatar
 {
-	border-color: #ff6400 !important;
-	box-shadow: 0 0 15px rgba(255, 100, 0, 0.8);
+	border-color: var( --yugen-accent ) !important;
+	box-shadow: 0 0 15px var( --yugen-accent-trans );
 }
 
 .yugen-tc-checkbox:checked + .yugen-tc-card .yugen-tc-name
 {
 	color: #ffffff;
 	font-weight: bold;
-	text-shadow: 0 0 5px rgba(255, 100, 0, 0.8);
 }
 
 /* checkmark badge */
@@ -3098,8 +3024,8 @@
 	position: absolute;
 	top: -6px;
 	right: -6px;
-	background: #ff6400;
-	color: white;
+	background: var( --yugen-accent );
+	color: #0f172a;
 	width: 22px;
 	height: 22px;
 	border-radius: 50%;
@@ -3107,7 +3033,7 @@
 	justify-content: center;
 	align-items: center;
 	font-size: 0.75rem;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 	opacity: 0;
 	transform: scale(0.5);
 	transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -3120,106 +3046,26 @@
 	transform: scale(1);
 }
 
-.yugen-tc-footer
+.yugen-app.app .execute-team-critical
 {
-	margin-top: auto;
-	display: flex;
-	justify-content: flex-end;
-}
-
-.yugen-tc-btn
-{
-	background: linear-gradient(to right, #ff4500, #ff8c00);
-	color: white !important;
-	border: none !important;
-	border-radius: 6px !important;
-	padding: 10px 24px !important;
-	font-weight: bold !important;
-	font-size: 1.1rem !important;
-	cursor: pointer;
-	box-shadow: 0 4px 10px rgba(255, 100, 0, 0.3) !important;
-	transition: all 0.2s ease;
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	line-height: normal !important;
-}
-
-.yugen-tc-btn:hover
-{
-	transform: translateY(-2px);
-	box-shadow: 0 6px 15px rgba(255, 100, 0, 0.5) !important;
-	background: linear-gradient(to right, #ff5500, #ff9c00);
-}
-
-.yugen-tc-btn:active
-{
-	transform: translateY(1px);
-	box-shadow: 0 2px 5px rgba(255, 100, 0, 0.3) !important;
-}
-
-.yugen-tc-controls-row
-{
-	display: flex;
-	gap: 16px;
-	background: rgba(0, 0, 0, 0.3);
-	border: 1px solid rgba(255, 255, 255, 0.05);
-	padding: 12px;
-	border-radius: 8px;
-	box-sizing: border-box;
-}
-
-.yugen-tc-field
-{
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	gap: 6px;
-}
-
-.yugen-tc-field-label
-{
-	font-weight: bold;
-	color: #ff9c00 !important;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	font-size: 0.8rem !important;
-	text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-	margin: 0 !important;
-}
-
-.yugen-tc-select,
-.yugen-tc-input
-{
-	background: rgba(0, 0, 0, 0.6) !important;
-	border: 1px solid rgba(255, 255, 255, 0.15) !important;
-	color: #ffffff !important;
-	border-radius: 4px !important;
-	padding: 6px 10px !important;
-	height: 32px !important;
-	box-sizing: border-box !important;
-	font-size: 0.9rem !important;
+	background: var( --yugen-accent ) !important;
+	color: #0f172a !important;
+	border: 1px solid var( --yugen-accent ) !important;
+	border-radius: var( --yugen-border-radius-sm ) !important;
+	font-weight: 600 !important;
 	transition: all 0.2s ease !important;
-	width: 100% !important;
+	box-shadow: 0 4px 12px var( --yugen-accent-trans ) !important;
+	padding: 0 20px !important;
+	height: 38px !important;
 }
 
-.yugen-tc-select:focus,
-.yugen-tc-input:focus
+.yugen-app.app .execute-team-critical:hover
 {
-	border-color: #ff6400 !important;
-	box-shadow: 0 0 8px rgba(255, 100, 0, 0.4) !important;
-	outline: none !important;
+	background: #58c5f9 !important;
+	border-color: #58c5f9 !important;
+	box-shadow: 0 4px 16px rgba(56, 189, 248, 0.2) !important;
 }
 
-.yugen-tc-search-wrap
-{
-	position: relative;
-	width: 100%;
-	margin-bottom: 8px;
-	box-sizing: border-box;
-}
 
 /* Portrait Image Offset and Zoom Alignments */
 .yugen-anime-portrait,

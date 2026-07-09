@@ -6,7 +6,9 @@
 	"version": "1.0.9",
 	"authors": [
 		{
-			"name": "yugen."
+			"name": "yugen.",
+			"url": "https://yugenvtt.com",
+			"discord": "yugenvtt"
 		}
 	],
 	"compatibility": {

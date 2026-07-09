@@ -74,6 +74,31 @@
 		</fieldset>
 
 		<fieldset>
+			<legend>Portrait Overrides</legend>
+			<div class="form-group">
+				<label>{{localize "yugen-criticals.actor-config.crit-img-name"}}</label>
+				<p class="notes">{{localize "yugen-criticals.actor-config.crit-img-hint"}}</p>
+				<div class="form-fields">
+					<input type="text" name="crit_img" value="{{crit_img}}" placeholder="path/to/image.png">
+					<button type="button" class="yugen-file-picker-btn" data-target="crit_img" data-type="image" title="Browse Image">
+						<i class="fas fa-file-image"></i>
+					</button>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label>{{localize "yugen-criticals.actor-config.fumble-img-name"}}</label>
+				<p class="notes">{{localize "yugen-criticals.actor-config.fumble-img-hint"}}</p>
+				<div class="form-fields">
+					<input type="text" name="fumble_img" value="{{fumble_img}}" placeholder="path/to/image.png">
+					<button type="button" class="yugen-file-picker-btn" data-target="fumble_img" data-type="image" title="Browse Image">
+						<i class="fas fa-file-image"></i>
+					</button>
+				</div>
+			</div>
+		</fieldset>
+
+		<fieldset>
 			<legend>Sound Overrides</legend>
 			<div class="form-group">
 				<label>{{localize "yugen-criticals.actor-config.crit-sound-name"}}</label>
