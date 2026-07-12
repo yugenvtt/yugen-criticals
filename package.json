@@ -1,6 +1,6 @@
 {
 	"name": "yugen-criticals",
-	"version": "1.0.10",
+	"version": "1.0.11",
 	"description": "fire emblem style critical animations for foundry vtt.",
 	"main": "index.js",
 	"type": "module",

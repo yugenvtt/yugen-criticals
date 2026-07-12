@@ -1,0 +1,56 @@
+<form class="yugen-tc-form" autocomplete="off">
+	<header class="sheet-header">
+		<div class="header-details">
+			<h1 class="charname"><i class="fas fa-bolt"></i> {{localize "yugen-criticals.team-critical.title"}}</h1>
+		</div>
+	</header>
+
+	<div class="yugen-config-body">
+		<div class="yugen-tc-row">
+			<div class="yugen-tc-field">
+				<label class="yugen-tc-label">{{localize "yugen-criticals.team-critical.theme"}}</label>
+				<select name="theme">
+					<option value="persona">{{localize "yugen-criticals.team-critical.themes.persona"}}</option>
+					<option value="vertical">{{localize "yugen-criticals.team-critical.themes.vertical"}}</option>
+					<option value="slash">{{localize "yugen-criticals.team-critical.themes.slash"}}</option>
+					<option value="horizontal">{{localize "yugen-criticals.team-critical.themes.horizontal"}}</option>
+					<option value="grid">{{localize "yugen-criticals.team-critical.themes.grid"}}</option>
+					<option value="circle">{{localize "yugen-criticals.team-critical.themes.circle"}}</option>
+					<option value="zoom">{{localize "yugen-criticals.team-critical.themes.zoom"}}</option>
+					<option value="fade">{{localize "yugen-criticals.team-critical.themes.fade"}}</option>
+				</select>
+			</div>
+			<div class="yugen-tc-field">
+				<label class="yugen-tc-label">{{localize "yugen-criticals.team-critical.custom-message"}}</label>
+				<input type="text" name="custom_message" value="" placeholder="Team Attack" />
+			</div>
+		</div>
+
+		<div class="yugen-tc-search-wrap">
+			<input type="text" class="yugen-tc-search" placeholder="{{localize 'yugen-criticals.team-critical.search-placeholder'}}" />
+		</div>
+
+		<div class="yugen-tc-grid">
+			{{#each allies}}
+			<label class="yugen-tc-card-label">
+				<input type="checkbox" class="yugen-tc-checkbox" name="selected_allies" value="{{this.uuid}}" />
+				<div class="yugen-tc-card">
+					<div class="yugen-tc-avatar-wrap">
+						<img src="{{this.img}}" class="yugen-tc-avatar" alt="{{this.name}}" />
+						<div class="yugen-tc-badge"><i class="fas fa-check"></i></div>
+					</div>
+					<span class="yugen-tc-name">{{this.name}}</span>
+				</div>
+			</label>
+			{{/each}}
+		</div>
+	</div>
+
+	<footer class="sheet-footer">
+		<button type="button" class="execute-team-critical">
+			<i class="fas fa-play"></i> {{localize "yugen-criticals.team-critical.execute"}}
+		</button>
+	</footer>
+</form>
+
+
