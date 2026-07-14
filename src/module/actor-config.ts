@@ -92,18 +92,44 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 		/** retrieve the custom fumble portrait image flag **/
 		const fumble_img = this.actor.getFlag( 'yugen-criticals', 'fumble-img' ) || '';
 
+		const show_on_finisher = this.actor.getFlag( 'yugen-criticals', 'show-on-finisher' ) || false;
+
+		/** retrieve the current finisher style override flag **/
+		const finisher_style_override = this.actor.getFlag( 'yugen-criticals', 'finisher-style-override' ) || 'default';
+
+		/** retrieve the current finisher quotes flag **/
+		const raw_finisher = this.actor.getFlag( 'yugen-criticals', 'finisher-quote' );
+		let finisher_quote = '';
+		if ( raw_finisher ) 
+		{
+			if ( Array.isArray( raw_finisher ) ) 
+			{
+				finisher_quote = raw_finisher.join( '\n' );
+			}
+			else 
+			{
+				finisher_quote = raw_finisher.split( '|' ).map( ( q : string ) => 
+				{
+					return q.trim( );
+				} ).join( '\n' );
+			}
+		}
+
 		return ( {
 			actor: this.actor,
 			crit_quote,
 			fumble_quote,
+			finisher_quote,
 			crit_sound,
 			fumble_sound,
 			style_override,
+			finisher_style_override,
 			img_offset_x,
 			img_offset_y,
 			img_zoom,
 			crit_img,
-			fumble_img
+			fumble_img,
+			show_on_finisher
 		} );
 	}
 
@@ -248,6 +274,14 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 			/** unset the actor custom fumble portrait image flag **/
 			await this.actor.unsetFlag( 'yugen-criticals', 'fumble-img' );
 
+			await this.actor.unsetFlag( 'yugen-criticals', 'show-on-finisher' );
+
+			/** unset the actor custom finisher quote flag **/
+			await this.actor.unsetFlag( 'yugen-criticals', 'finisher-quote' );
+
+			/** unset the actor custom finisher style override flag **/
+			await this.actor.unsetFlag( 'yugen-criticals', 'finisher-style-override' );
+
 			/** unset the image offset and zoom flags **/
 			await this.actor.unsetFlag( 'yugen-criticals', 'img-offset-x' );
 			await this.actor.unsetFlag( 'yugen-criticals', 'img-offset-y' );
@@ -282,11 +316,21 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 			} )
 			.filter( Boolean );
 
+		const finisher_quotes = form_data.finisher_quote
+			.split( '\n' )
+			.map( ( q : string ) => 
+			{
+				return q.trim( );
+			} )
+			.filter( Boolean );
+
 		const crit_sound = form_data.crit_sound?.trim( ) || '';
 		const fumble_sound = form_data.fumble_sound?.trim( ) || '';
 		const style_override = form_data.style_override || 'default';
+		const finisher_style_override = form_data.finisher_style_override || 'default';
 		const crit_img = form_data.crit_img?.trim( ) || '';
 		const fumble_img = form_data.fumble_img?.trim( ) || '';
+		const show_on_finisher = form_data.show_on_finisher === true;
 
 		if ( crit_quotes.length > 0 ) 
 		{
@@ -308,6 +352,17 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 		{
 			/** unset the custom fumble quotes flags **/
 			await this.actor.unsetFlag( 'yugen-criticals', 'fumble-quote' );
+		}
+
+		if ( finisher_quotes.length > 0 ) 
+		{
+			/** save the custom finisher quotes flags **/
+			await this.actor.setFlag( 'yugen-criticals', 'finisher-quote', finisher_quotes );
+		}
+		else 
+		{
+			/** unset the custom finisher quotes flags **/
+			await this.actor.unsetFlag( 'yugen-criticals', 'finisher-quote' );
 		}
 
 		if ( crit_sound ) 
@@ -343,6 +398,17 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 			await this.actor.unsetFlag( 'yugen-criticals', 'style-override' );
 		}
 
+		if ( finisher_style_override && finisher_style_override !== 'default' ) 
+		{
+			/** save the custom finisher animation style override flag **/
+			await this.actor.setFlag( 'yugen-criticals', 'finisher-style-override', finisher_style_override );
+		}
+		else 
+		{
+			/** unset the custom finisher animation style override flag **/
+			await this.actor.unsetFlag( 'yugen-criticals', 'finisher-style-override' );
+		}
+
 		if ( crit_img ) 
 		{
 			/** save the custom critical portrait flag **/
@@ -363,6 +429,15 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 		{
 			/** unset the custom fumble portrait flag **/
 			await this.actor.unsetFlag( 'yugen-criticals', 'fumble-img' );
+		}
+
+		if ( show_on_finisher ) 
+		{
+			await this.actor.setFlag( 'yugen-criticals', 'show-on-finisher', true );
+		}
+		else 
+		{
+			await this.actor.unsetFlag( 'yugen-criticals', 'show-on-finisher' );
 		}
 
 		/** save the custom image offset and zoom flags **/

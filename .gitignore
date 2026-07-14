@@ -11,3 +11,6 @@ vite.local.ts
 
 # ignore root manifest if it accidentally appears
 /module.json
+
+# untracked assets
+static/assets/flames_corona.png

@@ -6,6 +6,7 @@
 
 import { CriticalAnimation } from '../module/critical-animation.js';
 import { debug_log } from '../module/utils.js';
+import { mark_recent_crit } from './finisher.js';
 
 /**
  * track processed roll instances to prevent double-triggering on the same roll
@@ -39,255 +40,267 @@ export const attack_roll_hook = ( ) =>
  **/
 const process_message_rolls = ( message : any ) => 
 {
-	if ( !message?.id ) 
+	try 
 	{
-		return;
-	}
-
-	if ( !message.rolls || message.rolls.length === 0 ) 
-	{
-		return;
-	}
-
-	/**
-	 * only process rolls created by the current user to prevent duplicate triggers across clients
-	 **/
-	if ( !message.isAuthor ) 
-	{
-		return;
-	}
-
-	/** check setting for hiding private rolls **/
-	const hide_private = ( game as any ).settings.get( 'yugen-criticals', 'hide-private-rolls' );
-	if ( hide_private ) 
-	{
-		/**
-		 * check if the current user should see the message rolls (handles secret and blind rolls)
-		 **/
-		const is_whisper = message.whisper && message.whisper.length > 0;
-		if ( is_whisper ) 
+		if ( !message?.id ) 
 		{
-			const is_recipient = message.whisper.includes( ( game as any ).user.id );
-			const is_author = message.author?.id === ( game as any ).user.id;
-			if ( !is_recipient && !is_author && !( game as any ).user.isGM ) 
+			return;
+		}
+
+		if ( !message.rolls || message.rolls.length === 0 ) 
+		{
+			return;
+		}
+
+		/**
+		 * only process rolls created by the current user to prevent duplicate triggers across clients
+		 **/
+		if ( !message.isAuthor ) 
+		{
+			return;
+		}
+
+		/** check setting for hiding private rolls **/
+		const hide_private = ( game as any ).settings.get( 'yugen-criticals', 'hide-private-rolls' );
+		if ( hide_private ) 
+		{
+			/**
+			 * check if the current user should see the message rolls (handles secret and blind rolls)
+			 **/
+			const is_whisper = message.whisper && message.whisper.length > 0;
+			if ( is_whisper ) 
+			{
+				const is_recipient = message.whisper.includes( ( game as any ).user.id );
+				const is_author = message.author?.id === ( game as any ).user.id;
+				if ( !is_recipient && !is_author && !( game as any ).user.isGM ) 
+				{
+					return;
+				}
+			}
+
+			/**
+			 * blind rolls should only be visible to gms
+			 **/
+			if ( message.blind && !( game as any ).user.isGM ) 
 			{
 				return;
 			}
 		}
 
+		debug_log( 'processing chat message:', message.id );
+
 		/**
-		 * blind rolls should only be visible to gms
+		 * ignore initiative rolls to prevent yugen-criticals from incorrectly playing critical hit animations during combat entry
 		 **/
-		if ( message.blind && !( game as any ).user.isGM ) 
+		const is_initiative = message.flags?.dnd5e?.roll?.type === 'initiative';
+		if ( is_initiative ) 
 		{
+			debug_log( 'ignored message because it is an initiative roll:', message.id );
 			return;
 		}
-	}
 
-	debug_log( 'processing chat message:', message.id );
+		/**
+		 * determine if the message is a valid attack roll
+		 **/
+		const is_attack = 
+			message.flags?.dnd5e?.roll?.type === 'attack' ||
+			!!message.flags?.['midi-qol']?.hasAttack ||
+			message.rolls?.some( ( r : any ) => 
+			{
+				return r.options?.type === 'attack' || r.options?.rollType === 'attack';
+			} );
+		
+		/**
+		 * check setting for showing all critical hits
+		 **/
+		const always_crit = ( game as any ).settings.get( 'yugen-criticals', 'always-show-crit' );
+		
+		/**
+		 * check setting for showing all fumble failures
+		 **/
+		const always_fumble = ( game as any ).settings.get( 'yugen-criticals', 'always-show-fumble' );
 
-	/**
-	 * ignore initiative rolls to prevent yugen-criticals from incorrectly playing critical hit animations during combat entry
-	 **/
-	const is_initiative = message.flags?.dnd5e?.roll?.type === 'initiative';
-	if ( is_initiative ) 
-	{
-		debug_log( 'ignored message because it is an initiative roll:', message.id );
-		return;
-	}
-
-	/**
-	 * determine if the message is a valid attack roll
-	 **/
-	const is_attack = 
-		message.flags?.dnd5e?.roll?.type === 'attack' ||
-		!!message.flags?.['midi-qol']?.hasAttack ||
-		message.rolls?.some( ( r : any ) => 
+		/**
+		 * only process if it is a valid attack roll, or if always show crit/fumble is active on any roll
+		 **/
+		if ( !is_attack && !always_crit && !always_fumble ) 
 		{
-			return r.options?.type === 'attack' || r.options?.rollType === 'attack';
-		} );
-	
-	/**
-	 * check setting for showing all critical hits
-	 **/
-	const always_crit = ( game as any ).settings.get( 'yugen-criticals', 'always-show-crit' );
-	
-	/**
-	 * check setting for showing all fumble failures
-	 **/
-	const always_fumble = ( game as any ).settings.get( 'yugen-criticals', 'always-show-fumble' );
-
-	/**
-	 * only process if it is a valid attack roll, or if always show crit/fumble is active on any roll
-	 **/
-	if ( !is_attack && !always_crit && !always_fumble ) 
-	{
-		debug_log( 'ignored message because it is not an attack roll and always-show is disabled:', message.id );
-		return;
-	}
-
-	/**
-	 * resolve the actor from the message
-	 **/
-	/**
-	 * fetch actor by id if speaker actor is defined
-	 **/
-	const actor = message.actor || ( message.speaker?.actor ? ( game as any ).actors.get( message.speaker.actor ) : null );
-	if ( !actor ) 
-	{
-		debug_log( 'ignored message because no actor could be resolved:', message.id );
-		return;
-	}
-
-	/**
-	 * check setting for ignoring discarded d20 dice
-	 **/
-	const ignore_discarded = ( game as any ).settings.get( 'yugen-criticals', 'ignore-discarded-dice' );
-	
-	/**
-	 * check setting for ignoring multi dice pools
-	 **/
-	const ignore_multi = ( game as any ).settings.get( 'yugen-criticals', 'ignore-multi-dice' );
-	
-	/**
-	 * check setting for showing animations locally only
-	 **/
-	const user_only = ( game as any ).settings.get( 'yugen-criticals', 'user-only' );
-
-	let type : 'critical' | 'fumble' | null = null;
-	let matching_roll : any = null;
-	let unprocessed_count = 0;
-
-	/**
-	 * find the first unprocessed roll with a natural critical/fumble
-	 **/
-	for ( const roll of message.rolls ) 
-	{
-		if ( processed_rolls.has( roll ) ) 
-		{
-			continue;
+			debug_log( 'ignored message because it is not an attack roll and always-show is disabled:', message.id );
+			return;
 		}
 
 		/**
-		 * ignore damage rolls to prevent double triggering on damage
+		 * resolve the actor from the message
 		 **/
-		if ( roll.constructor.name === 'DamageRoll' || roll.options?.type === 'damage' || roll.options?.rollType === 'damage' ) 
+		/**
+		 * fetch actor by id if speaker actor is defined
+		 **/
+		const actor = message.actor || ( message.speaker?.actor ? ( game as any ).actors.get( message.speaker.actor ) : null );
+		if ( !actor ) 
 		{
-			processed_rolls.add( roll );
-			continue;
+			debug_log( 'ignored message because no actor could be resolved:', message.id );
+			return;
 		}
 
-		unprocessed_count++;
-		const roll_type = check_single_roll( roll, { ignore_discarded, ignore_multi } );
-		if ( roll_type ) 
-		{
-			type = roll_type;
-			matching_roll = roll;
-			break;
-		}
-	}
+		/**
+		 * check setting for ignoring discarded d20 dice
+		 **/
+		const ignore_discarded = ( game as any ).settings.get( 'yugen-criticals', 'ignore-discarded-dice' );
+		
+		/**
+		 * check setting for ignoring multi dice pools
+		 **/
+		const ignore_multi = ( game as any ).settings.get( 'yugen-criticals', 'ignore-multi-dice' );
+		
+		/**
+		 * check setting for showing animations locally only
+		 **/
+		const user_only = ( game as any ).settings.get( 'yugen-criticals', 'user-only' );
 
-	const is_natural = type !== null;
+		let type : 'critical' | 'fumble' | null = null;
+		let matching_roll : any = null;
+		let unprocessed_count = 0;
 
-	/**
-	 * fallback to always show options if no natural result was detected
-	 **/
-	if ( !type ) 
-	{
-		const new_roll = message.rolls.find( ( r : any ) => 
+		/**
+		 * find the first unprocessed roll with a natural critical/fumble
+		 **/
+		for ( const roll of message.rolls ) 
 		{
-			const is_unprocessed = !processed_rolls.has( r );
-			const is_not_damage = r.constructor.name !== 'DamageRoll' && r.options?.type !== 'damage' && r.options?.rollType !== 'damage';
-			return is_unprocessed && is_not_damage;
-		} );
-		if ( new_roll ) 
-		{
-			if ( always_crit ) 
+			if ( processed_rolls.has( roll ) ) 
 			{
-				type = 'critical';
-				matching_roll = new_roll;
+				continue;
 			}
-			else if ( always_fumble ) 
+
+			/**
+			 * ignore damage rolls to prevent double triggering on damage
+			 **/
+			if ( roll.constructor.name === 'DamageRoll' || roll.options?.type === 'damage' || roll.options?.rollType === 'damage' ) 
 			{
-				type = 'fumble';
-				matching_roll = new_roll;
+				processed_rolls.add( roll );
+				continue;
+			}
+
+			unprocessed_count++;
+			const roll_type = check_single_roll( roll, { ignore_discarded, ignore_multi } );
+			if ( roll_type ) 
+			{
+				type = roll_type;
+				matching_roll = roll;
+				break;
 			}
 		}
-	}
 
-	if ( !type || !matching_roll ) 
-	{
-		debug_log( 'ignored message because no new or matching critical/fumble rolls were found. unprocessed rolls count:', unprocessed_count );
-		return;
-	}
+		const is_natural = type !== null;
 
-	/**
-	 * mark this roll instance as processed to prevent double-triggering
-	 **/
-	processed_rolls.add( matching_roll );
-
-	let damage_type = '';
-	
-	/**
-	 * attempt to resolve damage type from the rolled item
-	 **/
-	const item_uuid = message.flags?.dnd5e?.roll?.itemUuid || message.flags?.dnd5e?.itemUuid;
-	if ( typeof item_uuid === 'string' ) 
-	{
 		/**
-		 * retrieve document by uuid synchronously
+		 * fallback to always show options if no natural result was detected
 		 **/
-		const item : any = ( fromUuidSync as any )( item_uuid );
-		if ( item ) 
+		if ( !type ) 
 		{
-			damage_type = item.system?.damage?.parts?.[ 0 ]?.[ 1 ] || damage_type;
+			const new_roll = message.rolls.find( ( r : any ) => 
+			{
+				const is_unprocessed = !processed_rolls.has( r );
+				const is_not_damage = r.constructor.name !== 'DamageRoll' && r.options?.type !== 'damage' && r.options?.rollType !== 'damage';
+				return is_unprocessed && is_not_damage;
+			} );
+			if ( new_roll ) 
+			{
+				if ( always_crit ) 
+				{
+					type = 'critical';
+					matching_roll = new_roll;
+				}
+				else if ( always_fumble ) 
+				{
+					type = 'fumble';
+					matching_roll = new_roll;
+				}
+			}
+		}
+
+		if ( !type || !matching_roll ) 
+		{
+			debug_log( 'ignored message because no new or matching critical/fumble rolls were found. unprocessed rolls count:', unprocessed_count );
+			return;
+		}
+
+		/**
+		 * mark this roll instance as processed to prevent double-triggering
+		 **/
+		processed_rolls.add( matching_roll );
+
+		let damage_type = '';
+		
+		/**
+		 * attempt to resolve damage type from the rolled item
+		 **/
+		const item_uuid = message.flags?.dnd5e?.roll?.itemUuid || message.flags?.dnd5e?.itemUuid;
+		if ( typeof item_uuid === 'string' ) 
+		{
+			/**
+			 * retrieve document by uuid synchronously
+			 **/
+			const item : any = ( fromUuidSync as any )( item_uuid );
+			if ( item ) 
+			{
+				damage_type = item.system?.damage?.parts?.[ 0 ]?.[ 1 ] || damage_type;
+			}
+		}
+
+		debug_log( 'triggering local animation:', {
+			actor: actor.name,
+			type,
+			damage_type,
+			is_natural,
+			is_attack
+		} );
+
+		/**
+		 * trigger locally for the rolling player
+		 **/
+		/**
+		 * check if dice so nice module is active
+		 **/
+		const is_dsn_active = ( game as any ).modules.get( 'dice-so-nice' )?.active && ( game as any ).dice3d?.isEnabled?.( );
+		if ( is_dsn_active ) 
+		{
+			debug_log( 'queueing animation (dice so nice is active):', message.id );
+			CriticalAnimation.queue_animation( message.id, actor, type, damage_type );
+		}
+		else 
+		{
+			debug_log( 'showing animation immediately (dice so nice is inactive or client-disabled)' );
+			void CriticalAnimation.show_animation( actor, type, damage_type );
+		}
+
+		if ( type === 'critical' ) 
+		{
+			mark_recent_crit( );
+		}
+
+		/**
+		 * broadcast to other clients
+		 **/
+		if ( !user_only && is_natural ) 
+		{
+			const socket_data = {
+				actor_uuid: actor.uuid,
+				type: type,
+				damage_type: damage_type,
+				sender_id: ( game as any ).user.id,
+				roll_id: message.id
+			};
+
+			debug_log( 'broadcasting animation to other clients via socket:', socket_data );
+			/**
+			 * emit critical animation socket event to all clients
+			 **/
+			( game as any ).socket.emit( 'module.yugen-criticals', socket_data );
 		}
 	}
-
-	debug_log( 'triggering local animation:', {
-		actor: actor.name,
-		type,
-		damage_type,
-		is_natural,
-		is_attack
-	} );
-
-	/**
-	 * trigger locally for the rolling player
-	 **/
-	/**
-	 * check if dice so nice module is active
-	 **/
-	const is_dsn_active = ( game as any ).modules.get( 'dice-so-nice' )?.active && ( game as any ).dice3d?.isEnabled?.( );
-	if ( is_dsn_active ) 
+	catch ( error )
 	{
-		debug_log( 'queueing animation (dice so nice is active):', message.id );
-		CriticalAnimation.queue_animation( message.id, actor, type, damage_type );
-	}
-	else 
-	{
-		debug_log( 'showing animation immediately (dice so nice is inactive or client-disabled)' );
-		void CriticalAnimation.show_animation( actor, type, damage_type );
-	}
-
-	/**
-	 * broadcast to other clients
-	 **/
-	if ( !user_only && is_natural ) 
-	{
-		const socket_data = {
-			actor_uuid: actor.uuid,
-			type: type,
-			damage_type: damage_type,
-			sender_id: ( game as any ).user.id,
-			roll_id: message.id
-		};
-
-		debug_log( 'broadcasting animation to other clients via socket:', socket_data );
-		/**
-		 * emit critical animation socket event to all clients
-		 **/
-		( game as any ).socket.emit( 'module.yugen-criticals', socket_data );
+		console.warn( 'yugen-criticals | error in process_message_rolls:', error );
 	}
 };
 

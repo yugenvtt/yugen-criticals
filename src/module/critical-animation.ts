@@ -7,7 +7,7 @@ import { debug_log } from './utils.js';
 
 export class CriticalAnimation 
 {
-	private static _pending = new Map<string, { actor : Actor; type : 'critical' | 'fumble'; damage_type : string }>( );
+	private static _pending = new Map<string, { actor : Actor; type : 'critical' | 'fumble' | 'finisher'; damage_type : string }>( );
 	private static _current_overrides : any = { };
 
 	/**
@@ -28,7 +28,7 @@ export class CriticalAnimation
 	/**
 	 * queues a critical/fumble animation waiting for dice rolling completion
 	 **/
-	public static queue_animation( id : string, actor : Actor, type : 'critical' | 'fumble', damage_type : string ) : void 
+	public static queue_animation( id : string, actor : Actor, type : 'critical' | 'fumble' | 'finisher', damage_type : string ) : void 
 	{
 		this._pending.set( id, { actor, type, damage_type } );
 
@@ -73,7 +73,7 @@ export class CriticalAnimation
 	 **/
 	public static async show_animation( 
 		actor : Actor, 
-		type : 'critical' | 'fumble' = 'critical', 
+		type : 'critical' | 'fumble' | 'finisher' = 'critical', 
 		damage_type : string = '',
 		overrides : any = { }
 	) : Promise<void>
@@ -101,12 +101,24 @@ export class CriticalAnimation
 		/** retrieve settings and localization **/
 		const settings = ( game as any ).settings;
 		const is_fumble = type === 'fumble';
+		const is_finisher = type === 'finisher';
 		
 		const default_crit_msg = settings.get( 'yugen-criticals', 'critical-message' ) || "CRITICAL HIT";
 		const default_fumble_msg = settings.get( 'yugen-criticals', 'fumble-message' ) || "FUMBLE";
+		const default_finisher_msg = "FINISHER";
 		
 		/** resolve the actor quote: supports strings, arrays, or delimited strings **/
-		const raw_quote = overrides.quote || ( actor as any ).getFlag( 'yugen-criticals', is_fumble ? 'fumble-quote' : 'crit-quote' );
+		let flag_name = 'crit-quote';
+		if ( is_fumble ) 
+		{
+			flag_name = 'fumble-quote';
+		}
+		else if ( is_finisher ) 
+		{
+			flag_name = 'finisher-quote';
+		}
+
+		const raw_quote = overrides.quote || ( actor as any ).getFlag( 'yugen-criticals', flag_name );
 		let actor_quote = '';
 
 		if ( raw_quote ) 
@@ -143,7 +155,16 @@ export class CriticalAnimation
 		}
 		
 		/** use the actor's quote if present, otherwise fallback to defaults **/
-		const message = actor_quote || ( is_fumble ? default_fumble_msg : default_crit_msg );
+		let default_msg = default_crit_msg;
+		if ( is_fumble ) 
+		{
+			default_msg = default_fumble_msg;
+		}
+		else if ( is_finisher ) 
+		{
+			default_msg = default_finisher_msg;
+		}
+		const message = actor_quote || default_msg;
 		
 		/** resolve theme color based on damage type or default settings **/
 		let color = is_fumble ? '#333333' : ( settings.get( 'yugen-criticals', 'critical-color' ) || '#ffffff' );
@@ -160,7 +181,15 @@ export class CriticalAnimation
 		const volume = settings.get( 'yugen-criticals', 'critical-volume' ) ?? 0.5;
 
 		/** retrieve the custom signature style override flag **/
-		const actor_style = ( actor as any ).getFlag( 'yugen-criticals', 'style-override' );
+		let actor_style = null;
+		if ( is_finisher ) 
+		{
+			actor_style = ( actor as any ).getFlag( 'yugen-criticals', 'finisher-style-override' );
+		}
+		if ( !actor_style || actor_style === 'default' ) 
+		{
+			actor_style = ( actor as any ).getFlag( 'yugen-criticals', 'style-override' );
+		}
 
 		/** retrieve the force global style setting **/
 		const gm_override = settings.get( 'yugen-criticals', 'gm-style-override' );

@@ -5,6 +5,7 @@
 
 import { attack_roll_hook } from './attack-roll.js';
 import { pf2e_hooks } from './pf2e.js';
+import { finisher_hooks } from './finisher.js';
 
 import { CriticalAnimation } from '../module/critical-animation.js';
 import { ActorConfigApp } from '../module/actor-config.js';
@@ -28,6 +29,7 @@ export const init_hook = ( ) =>
 		/** initialize system-specific critical animation hooks **/
 		attack_roll_hook( );
 		pf2e_hooks( );
+		finisher_hooks( );
 
 
 		/**
