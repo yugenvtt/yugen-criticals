@@ -31,6 +31,10 @@ In 1.0.12, this can occur for finishers as well.
 *   **Debug Mode:** A togglable client-side configuration setting that outputs trace logs to the browser console to help debug system hooks or modules.
 
 ## Actor Customization
+<p align="center">
+  <img src=".github/assets/actor-customization.png" width="100%" alt="Actor Customization">
+</p>
+
 ### 1. Set Signature Quotes
 This replaces the "CRITICAL HIT" or "FUMBLE" text with your custom line. You can provide a single string, a delimiter string, or an array of strings. If multiple quotes are provided, one will be chosen at random for each animation.
 
