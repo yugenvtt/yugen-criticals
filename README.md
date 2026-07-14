@@ -7,8 +7,6 @@
   <a href="https://www.youtube.com/watch?v=cyKwPv-iJ3s">Click here for video demonstration</a>
 </p>
 
-_Fire Emblem Awakening style critical animations for Foundry VTT v14._
-
 ---
 
 ## Description
@@ -16,7 +14,16 @@ This module adds an overlay animation when a critical hit or natural 1 fumble is
 
 Elemental themes are automatically applied based on the damage type. Animations trigger for everyone at the table simultaneously. Quotes and sounds are customizable via actor flags.
 
-You can also make it so that it always appears for you or everyone whenever you attack.
+You can also make it so that it always appears for you or everyone whenever you attack. 
+
+In 1.0.12, this can occur for finishers as well.
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=wDBrH93bTSw">
+    <img src="https://img.youtube.com/vi/wDBrH93bTSw/maxresdefault.jpg" width="100%" alt="Watch the demo">
+  </a>
+  <br>
+  <a href="https://www.youtube.com/watch?v=wDBrH93bTSw">Finishers demonstration.</a>
+</p>
 
 ## Features
 *   **Dice So Nice! Integration:** Automatically detects if Dice So Nice! 3D dice are active. When enabled, critical animations are deferred until the 3D dice finish rolling and settle on the screen.
