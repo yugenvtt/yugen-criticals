@@ -88,6 +88,18 @@
 			"hide-private-rolls": {
 				"name": "Hide Private Rolls",
 				"hint": "If enabled, critical animations will not show on player screens if they do not have permission to see the roll details."
+			},
+			"critical-threshold-type": {
+				"name": "Critical Threshold Type",
+				"hint": "Select whether critical hits are triggered by a natural die roll or by the total roll result.",
+				"choices": {
+					"die": "Natural Die Roll",
+					"total": "Total Roll Result"
+				}
+			},
+			"critical-threshold-value": {
+				"name": "Critical Threshold Value",
+				"hint": "The minimum value required to trigger a critical animation (either on the die or total result)."
 			}
 		},
 		"actor-config": {
@@ -123,7 +135,17 @@
 				"wizard": "Wizard/Sorcerer"
 			},
 			"reset": "Reset to Defaults",
-			"save": "Save Changes"
+			"save": "Save Changes",
+			"crit-threshold-legend": "Critical Trigger Threshold",
+			"crit-threshold-type-name": "Threshold Type",
+			"crit-threshold-type-hint": "Select whether critical hits are triggered by a natural die roll or by the total roll result.",
+			"crit-threshold-type-choices": {
+				"default": "Default (Use settings)",
+				"die": "Natural Die Roll",
+				"total": "Total Roll Result"
+			},
+			"crit-threshold-value-name": "Threshold Value",
+			"crit-threshold-value-hint": "The minimum total result or die roll required to trigger a critical hit animation."
 		},
 		"team-critical": {
 			"title": "yugen-criticals (Team)",

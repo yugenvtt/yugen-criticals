@@ -1,6 +1,6 @@
 {
 	"name": "yugen-criticals",
-	"version": "1.0.12",
+	"version": "1.0.13",
 	"description": "fire emblem style combat animations (critical hits & finishers) for foundry vtt.",
 	"main": "index.js",
 	"type": "module",

@@ -97,6 +97,10 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 		/** retrieve the current finisher style override flag **/
 		const finisher_style_override = this.actor.getFlag( 'yugen-criticals', 'finisher-style-override' ) || 'default';
 
+		/** retrieve the custom threshold override flags **/
+		const crit_threshold_type = this.actor.getFlag( 'yugen-criticals', 'crit-threshold-type' ) || 'default';
+		const crit_threshold_value = this.actor.getFlag( 'yugen-criticals', 'crit-threshold-value' ) ?? '';
+
 		/** retrieve the current finisher quotes flag **/
 		const raw_finisher = this.actor.getFlag( 'yugen-criticals', 'finisher-quote' );
 		let finisher_quote = '';
@@ -129,7 +133,9 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 			img_zoom,
 			crit_img,
 			fumble_img,
-			show_on_finisher
+			show_on_finisher,
+			crit_threshold_type,
+			crit_threshold_value
 		} );
 	}
 
@@ -286,6 +292,10 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 			await this.actor.unsetFlag( 'yugen-criticals', 'img-offset-x' );
 			await this.actor.unsetFlag( 'yugen-criticals', 'img-offset-y' );
 			await this.actor.unsetFlag( 'yugen-criticals', 'img-zoom' );
+
+			/** unset the custom threshold override flags **/
+			await this.actor.unsetFlag( 'yugen-criticals', 'crit-threshold-type' );
+			await this.actor.unsetFlag( 'yugen-criticals', 'crit-threshold-value' );
 
 			( ui as any ).notifications?.info( `yugen-criticals | reset configurations for ${ this.actor.name }` );
 			this.close( );
@@ -456,6 +466,27 @@ export class ActorConfigApp extends ( FormApplicationClass as any )
 		if ( !isNaN( img_zoom ) )
 		{
 			await this.actor.setFlag( 'yugen-criticals', 'img-zoom', img_zoom );
+		}
+
+		const crit_threshold_type = form_data.crit_threshold_type || 'default';
+		const crit_threshold_value = parseInt( form_data.crit_threshold_value );
+
+		if ( crit_threshold_type && crit_threshold_type !== 'default' ) 
+		{
+			await this.actor.setFlag( 'yugen-criticals', 'crit-threshold-type', crit_threshold_type );
+		}
+		else 
+		{
+			await this.actor.unsetFlag( 'yugen-criticals', 'crit-threshold-type' );
+		}
+
+		if ( !isNaN( crit_threshold_value ) ) 
+		{
+			await this.actor.setFlag( 'yugen-criticals', 'crit-threshold-value', crit_threshold_value );
+		}
+		else 
+		{
+			await this.actor.unsetFlag( 'yugen-criticals', 'crit-threshold-value' );
 		}
 	}
 }

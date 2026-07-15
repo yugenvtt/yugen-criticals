@@ -102,13 +102,26 @@ const process_message_rolls = ( message : any ) =>
 		/**
 		 * determine if the message is a valid attack roll
 		 **/
+		const supported_systems = [ 
+			'dnd5e', 
+			'pf2e' 
+		];
+		const is_unsupported = !supported_systems.includes( ( game as any ).system?.id );
+
 		const is_attack = 
 			message.flags?.dnd5e?.roll?.type === 'attack' ||
 			!!message.flags?.['midi-qol']?.hasAttack ||
 			message.rolls?.some( ( r : any ) => 
 			{
 				return r.options?.type === 'attack' || r.options?.rollType === 'attack';
-			} );
+			} ) ||
+			( is_unsupported && message.rolls?.some( ( r : any ) => 
+			{
+				return r.dice?.some( ( d : any ) => 
+				{
+					return d.faces === 20;
+				} );
+			} ) );
 		
 		/**
 		 * check setting for showing all critical hits
@@ -181,7 +194,7 @@ const process_message_rolls = ( message : any ) =>
 			}
 
 			unprocessed_count++;
-			const roll_type = check_single_roll( roll, { ignore_discarded, ignore_multi } );
+			const roll_type = check_single_roll( roll, actor, { ignore_discarded, ignore_multi } );
 			if ( roll_type ) 
 			{
 				type = roll_type;
@@ -307,7 +320,11 @@ const process_message_rolls = ( message : any ) =>
 /**
  * checks if any of the provided arguments represent a critical hit or a fumble
  **/
-const check_single_roll = ( roll : any, options : { ignore_discarded : boolean; ignore_multi : boolean } ) : 'critical' | 'fumble' | null => 
+const check_single_roll = ( 
+	roll : any, 
+	actor : any,
+	options : { ignore_discarded : boolean; ignore_multi : boolean } 
+) : 'critical' | 'fumble' | null => 
 {
 	if ( !roll || typeof roll !== 'object' ) 
 	{
@@ -322,12 +339,51 @@ const check_single_roll = ( roll : any, options : { ignore_discarded : boolean; 
 		return null;
 	}
 
+	let threshold_type = actor.getFlag( 'yugen-criticals', 'crit-threshold-type' );
+	if ( !threshold_type || threshold_type === 'default' ) 
+	{
+		if ( ( game as any ).system?.id === 'lancer' ) 
+		{
+			if ( actor.type === 'mech' || actor.type === 'npc' ) 
+			{
+				threshold_type = 'total';
+			}
+			else 
+			{
+				threshold_type = 'die';
+			}
+		}
+		else 
+		{
+			threshold_type = ( game as any ).settings.get( 'yugen-criticals', 'critical-threshold-type' ) || 'die';
+		}
+	}
+
+	const threshold_value = actor.getFlag( 'yugen-criticals', 'crit-threshold-value' ) ?? ( game as any ).settings.get( 'yugen-criticals', 'critical-threshold-value' ) ?? 20;
+
+	const has_d20 = roll.dice?.some( ( d : any ) => 
+	{
+		return d.faces === 20;
+	} );
+
 	debug_log( 'checking roll result:', {
 		formula: roll.formula,
 		total: roll.total,
 		isCritical: roll.isCritical,
-		isFumble: roll.isFumble
+		isFumble: roll.isFumble,
+		threshold_type,
+		threshold_value,
+		has_d20
 	} );
+
+	if ( has_d20 && threshold_type === 'total' ) 
+	{
+		if ( typeof roll.total === 'number' && roll.total >= threshold_value ) 
+		{
+			debug_log( 'critical hit detected via total threshold' );
+			return 'critical';
+		}
+	}
 
 	/** 
 	 * dnd5e v3/v4 uses isCritical/isFumble properties.

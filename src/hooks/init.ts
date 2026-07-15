@@ -147,7 +147,8 @@ const register_settings = ( ) =>
 		scope: 'world',
 		config: true,
 		type: String,
-		default: 'CRITICAL HIT'
+		default: 'CRITICAL HIT',
+		requiresReload: true
 	} );
 
 	/** register the default fumble message **/
@@ -158,7 +159,8 @@ const register_settings = ( ) =>
 		scope: 'world',
 		config: true,
 		type: String,
-		default: 'FUMBLE'
+		default: 'FUMBLE',
+		requiresReload: true
 	} );
 
 	/** register setting for the animation style (client preference) **/
@@ -185,7 +187,8 @@ const register_settings = ( ) =>
 			'warlock': 'yugen-criticals.settings.animation-style.choices.warlock',
 			'wizard': 'yugen-criticals.settings.animation-style.choices.wizard'
 		},
-		default: 'cinematic'
+		default: 'cinematic',
+		requiresReload: true
 	} );
 
 	/** register setting for the global animation style (gm choice) **/
@@ -212,7 +215,8 @@ const register_settings = ( ) =>
 			'warlock': 'yugen-criticals.settings.animation-style.choices.warlock',
 			'wizard': 'yugen-criticals.settings.animation-style.choices.wizard'
 		},
-		default: 'cinematic'
+		default: 'cinematic',
+		requiresReload: true
 	} );
 
 	/** gm setting: override client animation style **/
@@ -223,7 +227,8 @@ const register_settings = ( ) =>
 		scope: 'world',
 		config: true,
 		type: Boolean,
-		default: false
+		default: false,
+		requiresReload: true
 	} );
 
 	/** register setting for the critical animation color **/
@@ -234,7 +239,8 @@ const register_settings = ( ) =>
 		scope: 'client',
 		config: true,
 		type: String,
-		default: '#ffffff'
+		default: '#ffffff',
+		requiresReload: true
 	} );
 
 	/** register setting for the critical animation size **/
@@ -245,12 +251,14 @@ const register_settings = ( ) =>
 		scope: 'client',
 		config: true,
 		type: Number,
-		range: {
+		range: 
+		{
 			min: 0.5,
 			max: 2.0,
 			step: 0.1
 		},
-		default: 1.0
+		default: 1.0,
+		requiresReload: true
 	} );
 
 	/** register setting for the critical animation sound **/
@@ -262,7 +270,8 @@ const register_settings = ( ) =>
 		config: true,
 		type: String,
 		filePicker: 'audio',
-		default: 'modules/yugen-criticals/sounds/crit.ogg'
+		default: 'modules/yugen-criticals/sounds/crit.ogg',
+		requiresReload: true
 	} );
 
 	/** register the sound effect for fumbles **/
@@ -274,7 +283,8 @@ const register_settings = ( ) =>
 		config: true,
 		type: String,
 		filePicker: 'audio',
-		default: 'sounds/dice.wav'
+		default: 'sounds/dice.wav',
+		requiresReload: true
 	} );
 
 	/** register the sound volume for sound effects **/
@@ -285,12 +295,14 @@ const register_settings = ( ) =>
 		scope: 'client',
 		config: true,
 		type: Number,
-		range: {
+		range: 
+		{
 			min: 0,
 			max: 1,
 			step: 0.1
 		},
-		default: 0.5
+		default: 0.5,
+		requiresReload: true
 	} );
 
 	/** user setting: always show criticals **/
@@ -301,7 +313,8 @@ const register_settings = ( ) =>
 		scope: 'client',
 		config: true,
 		type: Boolean,
-		default: false
+		default: false,
+		requiresReload: true
 	} );
 
 	/** user setting: always show fumbles **/
@@ -312,7 +325,8 @@ const register_settings = ( ) =>
 		scope: 'client',
 		config: true,
 		type: Boolean,
-		default: false
+		default: false,
+		requiresReload: true
 	} );
 
 	/** gm setting: user-only animations **/
@@ -323,7 +337,8 @@ const register_settings = ( ) =>
 		scope: 'world',
 		config: true,
 		type: Boolean,
-		default: false
+		default: false,
+		requiresReload: true
 	} );
 
 	/** gm setting: ignore discarded dice in advantage/disadvantage **/
@@ -334,7 +349,8 @@ const register_settings = ( ) =>
 		scope: 'world',
 		config: true,
 		type: Boolean,
-		default: true
+		default: true,
+		requiresReload: true
 	} );
 
 	/** gm setting: ignore large dice pools **/
@@ -345,7 +361,8 @@ const register_settings = ( ) =>
 		scope: 'world',
 		config: true,
 		type: Boolean,
-		default: true
+		default: true,
+		requiresReload: true
 	} );
 
 	/** user setting: enable screen shake and zoom **/
@@ -356,7 +373,8 @@ const register_settings = ( ) =>
 		scope: 'client',
 		config: true,
 		type: Boolean,
-		default: true
+		default: true,
+		requiresReload: true
 	} );
 
 	/** user setting: enable debug mode **/
@@ -367,7 +385,8 @@ const register_settings = ( ) =>
 		scope: 'client',
 		config: true,
 		type: Boolean,
-		default: false
+		default: false,
+		requiresReload: true
 	} );
 
 	/** gm setting: hide private rolls **/
@@ -378,6 +397,36 @@ const register_settings = ( ) =>
 		scope: 'world',
 		config: true,
 		type: Boolean,
-		default: true
+		default: true,
+		requiresReload: true
+	} );
+
+	/** gm setting: critical threshold type **/
+	settings.register( 'yugen-criticals', 'critical-threshold-type', 
+	{
+		name: 'yugen-criticals.settings.critical-threshold-type.name',
+		hint: 'yugen-criticals.settings.critical-threshold-type.hint',
+		scope: 'world',
+		config: true,
+		type: String,
+		choices: 
+		{
+			'die': 'yugen-criticals.settings.critical-threshold-type.choices.die',
+			'total': 'yugen-criticals.settings.critical-threshold-type.choices.total'
+		},
+		default: 'die',
+		requiresReload: true
+	} );
+
+	/** gm setting: critical threshold value **/
+	settings.register( 'yugen-criticals', 'critical-threshold-value', 
+	{
+		name: 'yugen-criticals.settings.critical-threshold-value.name',
+		hint: 'yugen-criticals.settings.critical-threshold-value.hint',
+		scope: 'world',
+		config: true,
+		type: Number,
+		default: 20,
+		requiresReload: true
 	} );
 };
