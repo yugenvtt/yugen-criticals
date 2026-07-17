@@ -100,6 +100,10 @@
 			"critical-threshold-value": {
 				"name": "Critical Threshold Value",
 				"hint": "The minimum value required to trigger a critical animation (either on the die or total result)."
+			},
+			"pf2e-natural-only": {
+				"name": "PF2e Natural Crits Only",
+				"hint": "If enabled, critical hit and fumble animations for Pathfinder 2e will only trigger on a natural 20 or natural 1 on the die, rather than any critical success/failure outcome."
 			}
 		},
 		"actor-config": {

@@ -151,6 +151,11 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 	const always_fumble = ( game as any ).settings.get( 'yugen-criticals', 'always-show-fumble' );
 	
 	/**
+	 * check setting for pf2e natural critical hits only
+	 **/
+	const pf2e_natural_only = ( game as any ).settings.get( 'yugen-criticals', 'pf2e-natural-only' );
+
+	/**
 	 * check setting for showing animations locally only
 	 **/
 	const user_only = ( game as any ).settings.get( 'yugen-criticals', 'user-only' );
@@ -158,18 +163,59 @@ const handle_pf2e_data = ( data : any, actor : any, roll : any = null ) =>
 	let type : 'critical' | 'fumble' | null = null;
 	let is_natural = false;
 
-	/**
-	 * 1. check for natural outcomes (0=crit fail, 3=crit success)
-	 **/
-	if ( dos === 3 || outcome === 'criticalSuccess' ) 
+	if ( pf2e_natural_only ) 
 	{
-		type = 'critical';
-		is_natural = true;
+		const first_roll = message_rolls[ 0 ];
+		if ( first_roll ) 
+		{
+			const d20 = first_roll.dice?.find( ( d : any ) => 
+			{
+				return d.faces === 20;
+			} );
+			if ( d20 ) 
+			{
+				const active_results = d20.results?.filter( ( r : any ) => 
+				{
+					return r.active !== false && r.discarded !== true;
+				} ) || [ ];
+
+				const has_natural_20 = active_results.some( ( r : any ) => 
+				{
+					return r.result === 20;
+				} );
+				const has_natural_1 = active_results.some( ( r : any ) => 
+				{
+					return r.result === 1;
+				} );
+
+				if ( has_natural_20 && ( dos === 3 || outcome === 'criticalSuccess' ) ) 
+				{
+					type = 'critical';
+					is_natural = true;
+				}
+				else if ( has_natural_1 && ( dos === 0 || outcome === 'criticalFailure' ) ) 
+				{
+					type = 'fumble';
+					is_natural = true;
+				}
+			}
+		}
 	}
-	else if ( dos === 0 || outcome === 'criticalFailure' ) 
+	else 
 	{
-		type = 'fumble';
-		is_natural = true;
+		/**
+		 * 1. check for natural outcomes (0=crit fail, 3=crit success)
+		 **/
+		if ( dos === 3 || outcome === 'criticalSuccess' ) 
+		{
+			type = 'critical';
+			is_natural = true;
+		}
+		else if ( dos === 0 || outcome === 'criticalFailure' ) 
+		{
+			type = 'fumble';
+			is_natural = true;
+		}
 	}
 
 	/**

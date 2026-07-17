@@ -429,4 +429,16 @@ const register_settings = ( ) =>
 		default: 20,
 		requiresReload: true
 	} );
+
+	/** register setting for pf2e natural critical hits only **/
+	settings.register( 'yugen-criticals', 'pf2e-natural-only', 
+	{
+		name: 'yugen-criticals.settings.pf2e-natural-only.name',
+		hint: 'yugen-criticals.settings.pf2e-natural-only.hint',
+		scope: 'world',
+		config: true,
+		type: Boolean,
+		default: false,
+		requiresReload: true
+	} );
 };
